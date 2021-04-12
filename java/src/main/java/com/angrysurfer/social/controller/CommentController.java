@@ -3,7 +3,6 @@ package com.angrysurfer.social.controller;
 import com.angrysurfer.social.dto.CommentDTO;
 import com.angrysurfer.social.dto.ReactionDTO;
 import com.angrysurfer.social.service.CommentService;
-import com.angrysurfer.social.service.ReactionService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

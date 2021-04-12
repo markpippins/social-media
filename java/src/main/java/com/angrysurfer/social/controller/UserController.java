@@ -1,16 +1,10 @@
 package com.angrysurfer.social.controller;
 
-import java.util.Collections;
-import java.util.Optional;
 import java.util.Set;
 
 import com.angrysurfer.social.ResourceNotFoundException;
 import com.angrysurfer.social.dto.ProfileDTO;
 import com.angrysurfer.social.dto.UserDTO;
-import com.angrysurfer.social.model.Post;
-import com.angrysurfer.social.model.User;
-import com.angrysurfer.social.repository.UserRepository;
-import com.angrysurfer.social.service.ProfileService;
 import com.angrysurfer.social.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;

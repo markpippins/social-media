@@ -54,10 +54,6 @@ public class User implements Serializable {
 	@Setter
 	private Profile profile;
 
-	@OneToMany(mappedBy = "postedBy", cascade = CascadeType.ALL, orphanRemoval = true)
-	@Getter
-	private Set<Post> posts;
-
 	@OneToMany(fetch = FetchType.EAGER)
 	@Getter
 	private Set<User> followers = new HashSet<>();
