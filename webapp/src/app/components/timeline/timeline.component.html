@@ -1,0 +1,18 @@
+<div class="row">
+    <div class="col-md-3">
+        <app-left-nav [pageUserName]="pageUserName" [pageForumId]="pageForumId"></app-left-nav>
+    </div>
+    <div class="col-md-6">
+        <app-user-page-header *ngIf=" user " [user]="user "></app-user-page-header>
+        <app-create-post [prompt]=" getPrompt() " (postEvent)="postAdded($event) "></app-create-post>
+        <div class="col overflow-auto">
+            <div *ngFor="let post of posts ">
+                <app-post-container [post]=post></app-post-container>
+                <div class="pb-1 mb-1 "></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <app-right-nav></app-right-nav>
+    </div>
+</div>

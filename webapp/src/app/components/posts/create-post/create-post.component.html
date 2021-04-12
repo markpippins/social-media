@@ -1,0 +1,14 @@
+<!-- <a>create-post</a> -->
+<div class="col">
+    <div class="row">
+        <label class="sr-only" for="message">post</label>
+        <textarea class="form-control" [formControl]="message" id="message" rows="3" (keyup.enter)="onEnter()" (keyup.escape)="onEscape()" placeholder={{prompt}}></textarea>
+    </div>
+    <div class="pb-1 mb-1"></div>
+    <!-- <div class="row">
+        <div class="col" style="padding:0;">
+            <button type="submit" class="btn btn-primary float-right" (click)="updateMessage()">share</button>
+        </div>
+    </div> -->
+    <div class="pb-1 mb-1"></div>
+</div>

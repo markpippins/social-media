@@ -1,0 +1,5 @@
+<div *ngFor="let member of forum.members" class="h5 m-0">
+    <img class="rounded-circle" width="35" src={{member.avatarUrl}} alt="">
+    <a [routerLink]="'/'+ member.alias"> {{member.alias}}</a>
+    <div class="pb-1 mb-1"></div>
+</div>

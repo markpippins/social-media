@@ -1,0 +1,12 @@
+<div class="col" style="background: darkgray; padding: 5px; border-radius: 5px;">
+    <app-post-header [post]=post></app-post-header>
+    <div class="card" style="padding: 5px;">
+        <a>{{post.text}}</a>
+    </div>
+    <app-post-footer [post]=post [showCancelLink]="!hideCreatePost " (commentClickedEvent)="toggleCreatePost() "></app-post-footer>
+    <app-create-post [prompt]="getPrompt() " *ngIf="!hideCreatePost " (postEvent)="commentPosted($event) " (escapeEvent)="escapeClicked() "></app-create-post>
+</div>
+<div class="col ">
+    <div class="pb-1 mb-1 "></div>
+    <app-comment-list [replies]=post.replies></app-comment-list>
+</div>
