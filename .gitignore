@@ -1,0 +1,19 @@
+.gitignore
+webapp/node_modules/*
+webapp/dist
+java/target
+.idea
+.vscode
+.mvn
+.settings
+.classpath
+.factorypath
+.project
+*.log
+*.iml
+.browserslistrc
+.editorconfig
+mvnw
+mvnw.*
+package-lock.json
+social media.code-workspace
