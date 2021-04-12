@@ -19,6 +19,8 @@ import com.angrysurfer.social.repository.ReactionRepository;
 import com.angrysurfer.social.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -53,9 +55,9 @@ public class PostService {
 		throw new ResourceNotFoundException(POST.concat(Long.toString(postId).concat(NOT_FOUND)));
 	}
 
-	// public Page<Post> findByForumId(Long forumId, Pageable pageable) {
-	// return postRepository.findByForumId(forumId, pageable);
-	// }
+	 public Page<Post> findByForumId(Long forumId, Pageable pageable) {
+	 return postRepository.findByForumId(forumId, pageable);
+	 }
 
 	public Set<PostDTO> findAll() {
 		return postRepository.findAll().stream().map(PostDTO::new).collect(Collectors.toSet());
@@ -157,21 +159,25 @@ public class PostService {
 		throw new ResourceNotFoundException(POST.concat(Long.toString(postId).concat(NOT_FOUND)));
 	}
 
-	public ReactionDTO addReaction(Long postId, ReactionDTO reactionDTO) {
+	public ReactionDTO addReaction(Long postId, ReactionDTO reactionDTO) throws ResourceNotFoundException {
 
 		ReactionType type = ReactionType.valueOf(reactionDTO.getType().toUpperCase());
 		Optional<User> userOpt = this.userRepository.findByAlias(reactionDTO.getAlias());
 		Optional<Post> postOpt = postRepository.findById(postId);
 
-		Post post = postOpt.get();
-		User user = userOpt.get();
+		if (postOpt.isPresent() && userOpt.isPresent()) {
+			Post post = postOpt.get();
+			User user = userOpt.get();
 
-		Reaction reaction = reactionRepository.save(new Reaction(user, type));
+			Reaction reaction = reactionRepository.save(new Reaction(user, type));
 
-		post.getReactions().add(reaction);
-		postRepository.save(post);
+			post.getReactions().add(reaction);
+			postRepository.save(post);
 
-		return ReactionDTO.fromReaction(reaction);
+			return ReactionDTO.fromReaction(reaction);
+		}
+
+		throw new ResourceNotFoundException(POST.concat(Long.toString(postId).concat(NOT_FOUND)));
 	}
 
 	public void removeReaction(Long postId, ReactionDTO reactionDTO) {
