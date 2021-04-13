@@ -4,9 +4,9 @@
         <a>{{post.text}}</a>
     </div>
     <app-post-footer [post]=post [showCancelLink]="!hideCreatePost " (commentClickedEvent)="toggleCreatePost() "></app-post-footer>
+    <div *ngIf="!hideCreatePost" class="pb-1 mb-1"></div>
     <app-create-post [prompt]="getPrompt() " *ngIf="!hideCreatePost " (postEvent)="commentPosted($event) " (escapeEvent)="escapeClicked() "></app-create-post>
 </div>
-<div class="col ">
-    <div class="pb-1 mb-1 "></div>
+<div class="col">
     <app-comment-list [replies]=post.replies></app-comment-list>
 </div>
