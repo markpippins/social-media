@@ -1,19 +1,18 @@
 package com.angrysurfer.social.service;
 
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import com.angrysurfer.social.ResourceNotFoundException;
 import com.angrysurfer.social.dto.UserDTO;
 import com.angrysurfer.social.model.Profile;
 import com.angrysurfer.social.model.User;
 import com.angrysurfer.social.repository.ProfileRepository;
 import com.angrysurfer.social.repository.UserRepository;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {

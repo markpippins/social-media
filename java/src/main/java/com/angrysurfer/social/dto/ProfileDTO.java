@@ -1,12 +1,11 @@
 package com.angrysurfer.social.dto;
 
+import com.angrysurfer.social.model.Profile;
+import lombok.Data;
+
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
-
-import com.angrysurfer.social.model.Profile;
-
-import lombok.Data;
 
 @Data
 public class ProfileDTO implements Serializable {

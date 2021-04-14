@@ -1,8 +1,7 @@
 package com.angrysurfer.social.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-
 import com.angrysurfer.social.model.Edit;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface EditRepository extends JpaRepository<Edit, Long>{
 

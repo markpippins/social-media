@@ -1,22 +1,11 @@
 package com.angrysurfer.social;
 
-import com.angrysurfer.social.model.Comment;
-import com.angrysurfer.social.model.Forum;
-import com.angrysurfer.social.model.Post;
-import com.angrysurfer.social.model.Profile;
-import com.angrysurfer.social.model.Reaction;
+import com.angrysurfer.social.model.*;
 import com.angrysurfer.social.model.Reaction.ReactionType;
-import com.angrysurfer.social.model.User;
-import com.angrysurfer.social.repository.CommentRepository;
-import com.angrysurfer.social.repository.EditRepository;
-import com.angrysurfer.social.repository.PostRepository;
-import com.angrysurfer.social.repository.ProfileRepository;
-import com.angrysurfer.social.repository.ReactionRepository;
-import com.angrysurfer.social.repository.UserRepository;
+import com.angrysurfer.social.repository.*;
 import com.angrysurfer.social.service.ForumService;
 import com.angrysurfer.social.service.PostService;
 import com.angrysurfer.social.service.ReactionService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;

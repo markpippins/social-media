@@ -1,7 +1,6 @@
 package com.angrysurfer.social.dto;
 
 import com.angrysurfer.social.model.Post;
-
 import lombok.Getter;
 import lombok.Setter;
 

@@ -2,7 +2,6 @@ package com.angrysurfer.social.dto;
 
 import com.angrysurfer.social.model.Comment;
 import com.angrysurfer.social.model.IContent;
-
 import lombok.Getter;
 import lombok.Setter;
 

@@ -1,13 +1,12 @@
 package com.angrysurfer.social.dto;
 
+import com.angrysurfer.social.model.Forum;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
-
-import com.angrysurfer.social.model.Forum;
-
-import lombok.Getter;
-import lombok.Setter;
 
 public class ForumDTO implements Serializable {
 

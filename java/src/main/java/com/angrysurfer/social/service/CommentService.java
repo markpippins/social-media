@@ -1,8 +1,5 @@
 package com.angrysurfer.social.service;
 
-import java.util.Optional;
-import java.util.stream.Collectors;
-
 import com.angrysurfer.social.ResourceNotFoundException;
 import com.angrysurfer.social.dto.CommentDTO;
 import com.angrysurfer.social.dto.ReactionDTO;
@@ -15,11 +12,13 @@ import com.angrysurfer.social.repository.CommentRepository;
 import com.angrysurfer.social.repository.PostRepository;
 import com.angrysurfer.social.repository.ReactionRepository;
 import com.angrysurfer.social.repository.UserRepository;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CommentService {

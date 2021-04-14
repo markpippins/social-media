@@ -1,13 +1,12 @@
 package com.angrysurfer.social.dto;
 
+import com.angrysurfer.social.model.IContent;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import com.angrysurfer.social.model.IContent;
-
-import lombok.Getter;
-import lombok.Setter;
 
 @Getter
 @Setter
