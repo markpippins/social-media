@@ -32,6 +32,7 @@ import { UserPageHeaderComponent } from './components/headers/user-page-header/u
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { IonicModule } from '@ionic/angular';
 import { ReactionContainerComponent } from './components/posts/reaction-container/reaction-container.component';
+import { PostListComponent } from './components/posts/post-list/post-list.component';
 
 @NgModule({
   declarations: [
@@ -63,6 +64,7 @@ import { ReactionContainerComponent } from './components/posts/reaction-containe
     UserPageHeaderComponent,
     PageNotFoundComponent,
     ReactionContainerComponent,
+    PostListComponent,
   ],
   imports: [
     BrowserModule,
