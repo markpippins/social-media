@@ -2,6 +2,17 @@
     outline: 1px solid blue;
 }
 
+.clean-style {
+    background: white;
+    padding: 2px;
+}
+
+.balloon-style {
+    background: darkgray;
+    padding: 10px;
+    border-radius: 5px;
+}
+
 .area-fill {
     margin: 0;
     padding: 5px;
