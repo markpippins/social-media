@@ -6,7 +6,6 @@
         <!-- <app-user-page-header *ngIf=" user " [user]="user "></app-user-page-header> -->
         <app-create-post [prompt]=" getPrompt() " (postEvent)="postAdded($event) "></app-create-post>
         <app-post-list [posts]=posts></app-post-list>
-
     </div>
     <div class="col-md-3">
         <app-right-nav></app-right-nav>
