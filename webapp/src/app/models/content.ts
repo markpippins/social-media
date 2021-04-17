@@ -3,8 +3,8 @@ import { Reaction } from './reaction';
 export interface Content {
   id: number;
   text: string;
-  postedByAlias: string;
-  postedToAlias: string;
+  postedBy: string;
+  postedTo: string;
   postedDate: string;
   updated: string;
   replies: Comment[];

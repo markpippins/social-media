@@ -71,7 +71,7 @@ public class CommentService {
 		Optional<User> user;
 
 		try {
-			user = userRepository.findByAlias(data.getPostedByAlias());
+			user = userRepository.findByAlias(data.getPostedBy());
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
 		}

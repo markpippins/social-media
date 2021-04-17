@@ -88,18 +88,18 @@ public class PostService {
 	public PostDTO save(PostDTO post) {
 
 		Optional<User> postedBy;
-		postedBy = userRepository.findByAlias(post.getPostedByAlias());
+		postedBy = userRepository.findByAlias(post.getPostedBy());
 
 		// handle forum post
 		if (post.getForumId() != null && postedBy.isPresent())
 			return save(postedBy.get(), post.getForumId(), post.getText());
 
 		// handle post where post.getPostedTo is null
-		if (postedBy.isPresent() && post.getPostedToAlias() == null)
+		if (postedBy.isPresent() && post.getPostedTo() == null)
 			return save(postedBy.get(), post.getText());
 
 		// handle post where post.getPostedTo is not null
-		Optional<User> postedTo = userRepository.findByAlias(post.getPostedToAlias());
+		Optional<User> postedTo = userRepository.findByAlias(post.getPostedTo());
 		if (postedBy.isPresent() && postedTo.isPresent())
 			return save(postedBy.get(), postedTo.get(), post.getText());
 
@@ -109,7 +109,7 @@ public class PostService {
 	public PostDTO addPostToForum(Long forumId, PostDTO post) {
 
 		Optional<User> postedBy;
-		postedBy = userRepository.findByAlias(post.getPostedByAlias());
+		postedBy = userRepository.findByAlias(post.getPostedBy());
 
 		// handle forum post
 		if (postedBy.isPresent())

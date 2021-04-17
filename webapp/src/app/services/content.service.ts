@@ -28,7 +28,7 @@ export class ContentService {
 
   addPost(message: string): Observable<Post> {
     if (this.userService.activeUser) {
-      let post = { postedByAlias: this.userService.activeUser.alias, postedToAlias: undefined, text: message };
+      let post = { postedBy: this.userService.activeUser.alias, postedTo: undefined, text: message };
       return this.http.post<Post>(this.POSTS.concat('/').concat('add'),
         post, httpOptions);
       // .pipe(
@@ -41,7 +41,7 @@ export class ContentService {
 
   addPostTo(postedTo: string, message: string): Observable<Post> {
     if (this.userService.activeUser) {
-      let post = { postedByAlias: this.userService.activeUser.alias, postedToAlias: postedTo, text: message };
+      let post = { postedBy: this.userService.activeUser.alias, postedTo: postedTo, text: message };
       return this.http.post<Post>(this.POSTS.concat('/').concat('add'),
         post, httpOptions);
       // .pipe(s
@@ -54,7 +54,7 @@ export class ContentService {
 
   addPostToForum(forumId: number, message: string): Observable<Post> {
     if (this.userService.activeUser) {
-      let post = { postedByAlias: this.userService.activeUser.alias, text: message };
+      let post = { postedBy: this.userService.activeUser.alias, text: message };
       return this.http.post<Post>(this.POSTS.concat('/forums/' + forumId).concat('/add'),
         post, httpOptions);
       // .pipe(s
@@ -67,7 +67,7 @@ export class ContentService {
 
   addCommentToPost(postId: number, message: string, parentId?: number): Observable<Comment> {
     if (this.userService.activeUser) {
-      let comment = { postId: postId, postedByAlias: this.userService.activeUser.alias, text: message };
+      let comment = { postId: postId, postedBy: this.userService.activeUser.alias, text: message };
       return this.http.post<Comment>(this.REPLIES.concat('/').concat('add'),
         comment, httpOptions);
       // .pipe(s
@@ -80,7 +80,7 @@ export class ContentService {
 
   addReplyToComment(parentId: number, message: string): Observable<Comment> {
     if (this.userService.activeUser) {
-      let comment = { parentId: parentId, postedByAlias: this.userService.activeUser.alias, text: message };
+      let comment = { parentId: parentId, postedBy: this.userService.activeUser.alias, text: message };
       return this.http.post<Comment>(this.REPLIES.concat('/').concat('add'),
         comment, httpOptions);
     }

@@ -47,6 +47,6 @@ export class CommentContainerComponent implements OnInit {
   }
 
   getPrompt(): string {
-    return this.comment.postedByAlias;
+    return this.comment.postedBy;
   }
 }

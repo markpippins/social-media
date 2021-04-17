@@ -19,8 +19,8 @@ export class CommentHeaderComponent implements OnInit {
   constructor(private userService: UserService) { }
 
   ngOnInit(): void {
-    this.postedBy = this.userService.users.has(this.comment.postedByAlias) ? this.userService.users.get(this.comment.postedByAlias) : undefined;
-    this.postedTo = this.comment.postedToAlias && this.userService.users.has(this.comment.postedToAlias) ? this.userService.users.get(this.comment.postedToAlias) : undefined;
+    this.postedBy = this.userService.users.has(this.comment.postedBy) ? this.userService.users.get(this.comment.postedBy) : undefined;
+    this.postedTo = this.comment.postedTo && this.userService.users.has(this.comment.postedTo) ? this.userService.users.get(this.comment.postedTo) : undefined;
   }
 
 }

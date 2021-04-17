@@ -18,8 +18,8 @@ export class PostHeaderComponent implements OnInit {
   constructor(private userService: UserService) { }
 
   ngOnInit(): void {
-    if (this.userService.users.has(this.post.postedByAlias)) {
-      this.postedBy = this.userService.users.get(this.post.postedByAlias);
+    if (this.userService.users.has(this.post.postedBy)) {
+      this.postedBy = this.userService.users.get(this.post.postedBy);
     }
 
   }
