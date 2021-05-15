@@ -1,9 +1,5 @@
 package com.angrysurfer.social.service;
 
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import com.angrysurfer.social.ResourceNotFoundException;
 import com.angrysurfer.social.dto.PostDTO;
 import com.angrysurfer.social.dto.PostStatDTO;
@@ -17,11 +13,14 @@ import com.angrysurfer.social.repository.EditRepository;
 import com.angrysurfer.social.repository.PostRepository;
 import com.angrysurfer.social.repository.ReactionRepository;
 import com.angrysurfer.social.repository.UserRepository;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class PostService {
@@ -89,18 +88,18 @@ public class PostService {
 	public PostDTO save(PostDTO post) {
 
 		Optional<User> postedBy;
-		postedBy = userRepository.findByAlias(post.getPostedByAlias());
+		postedBy = userRepository.findByAlias(post.getPostedBy());
 
 		// handle forum post
 		if (post.getForumId() != null && postedBy.isPresent())
 			return save(postedBy.get(), post.getForumId(), post.getText());
 
 		// handle post where post.getPostedTo is null
-		if (postedBy.isPresent() && post.getPostedToAlias() == null)
+		if (postedBy.isPresent() && post.getPostedTo() == null)
 			return save(postedBy.get(), post.getText());
 
 		// handle post where post.getPostedTo is not null
-		Optional<User> postedTo = userRepository.findByAlias(post.getPostedToAlias());
+		Optional<User> postedTo = userRepository.findByAlias(post.getPostedTo());
 		if (postedBy.isPresent() && postedTo.isPresent())
 			return save(postedBy.get(), postedTo.get(), post.getText());
 
@@ -110,7 +109,7 @@ public class PostService {
 	public PostDTO addPostToForum(Long forumId, PostDTO post) {
 
 		Optional<User> postedBy;
-		postedBy = userRepository.findByAlias(post.getPostedByAlias());
+		postedBy = userRepository.findByAlias(post.getPostedBy());
 
 		// handle forum post
 		if (postedBy.isPresent())

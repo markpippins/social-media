@@ -1,14 +1,13 @@
 package com.angrysurfer.social.service;
 
+import com.angrysurfer.social.model.Reaction;
+import com.angrysurfer.social.repository.ReactionRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
-
-import com.angrysurfer.social.model.Reaction;
-import com.angrysurfer.social.repository.ReactionRepository;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 @Service
 public class ReactionService {

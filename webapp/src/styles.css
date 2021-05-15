@@ -2,6 +2,17 @@
     outline: 1px solid blue;
 }
 
+.clean-style {
+    background: white;
+    padding: 0px;
+}
+
+.balloon-style {
+    background: darkgray;
+    padding: 10px;
+    border-radius: 5px;
+}
+
 .area-fill {
     margin: 0;
     padding: 5px;
@@ -18,6 +29,8 @@ stretch-content {
     padding: 0%;
 }
 
+
+/*
 html,
 body {
     height: 100%;
@@ -35,3 +48,4 @@ body {
 .footer {
     flex-shrink: 0;
 }
+*/

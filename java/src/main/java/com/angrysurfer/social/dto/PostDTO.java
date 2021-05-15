@@ -1,7 +1,6 @@
 package com.angrysurfer.social.dto;
 
 import com.angrysurfer.social.model.Post;
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,7 +17,7 @@ public class PostDTO extends AbstractContentDTO {
 	public PostDTO(Post post) {
 		super(post);
 		this.setForumId(post.getForumId());
-		this.setPostedToAlias((post.getPostedTo() == null ? null : post.getPostedTo().getAlias()));
+		this.setPostedTo((post.getPostedTo() == null ? null : post.getPostedTo().getAlias()));
 	}
 
 }

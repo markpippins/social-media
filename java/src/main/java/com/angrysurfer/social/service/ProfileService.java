@@ -1,15 +1,14 @@
 package com.angrysurfer.social.service;
 
-import java.util.Optional;
-
 import com.angrysurfer.social.ResourceNotFoundException;
 import com.angrysurfer.social.dto.ProfileDTO;
 import com.angrysurfer.social.model.Profile;
 import com.angrysurfer.social.model.User;
 import com.angrysurfer.social.repository.ProfileRepository;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class ProfileService {

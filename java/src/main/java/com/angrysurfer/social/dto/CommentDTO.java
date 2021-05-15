@@ -2,7 +2,6 @@ package com.angrysurfer.social.dto;
 
 import com.angrysurfer.social.model.Comment;
 import com.angrysurfer.social.model.IContent;
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -25,13 +24,13 @@ public class CommentDTO extends AbstractContentDTO {
 	public CommentDTO(IContent post, IContent comment) {
 		super(comment);
 		setPostId(post.getId());
-		setPostedToAlias(post.getPostedBy().getAlias());
+		setPostedTo(post.getPostedBy().getAlias());
 	}
 
-	public CommentDTO(IContent comment, Long parentId, String postedToAlias) {
+	public CommentDTO(IContent comment, Long parentId, String postedTo) {
 		super(comment);
 		setParentId(parentId);
-		setPostedToAlias(postedToAlias);
+		setPostedTo(postedTo);
 	}
 
 }

@@ -1,13 +1,12 @@
 package com.angrysurfer.social.dto;
 
+import com.angrysurfer.social.model.IContent;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import com.angrysurfer.social.model.IContent;
-
-import lombok.Getter;
-import lombok.Setter;
 
 @Getter
 @Setter
@@ -15,9 +14,9 @@ abstract class AbstractContentDTO {
 
     private Long id;
 
-    private String postedByAlias;
+    private String postedBy;
 
-    private String postedToAlias;
+    private String postedTo;
 
     private String postedDate;
 
@@ -38,7 +37,7 @@ abstract class AbstractContentDTO {
     AbstractContentDTO(IContent content) {
         this.setId(content.getId());
         this.setUrl(content.getUrl());
-        this.setPostedByAlias(content.getPostedBy().getAlias());
+        this.setPostedBy(content.getPostedBy().getAlias());
         this.setPostedDate(content.getPostedDate());
         this.setRating(content.getRating());
         this.setReactions(content.getReactions().stream().map(reaction -> ReactionDTO.fromReaction(reaction))

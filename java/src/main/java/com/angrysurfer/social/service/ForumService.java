@@ -1,15 +1,14 @@
 package com.angrysurfer.social.service;
 
-import java.util.Optional;
-import java.util.stream.Collectors;
-
 import com.angrysurfer.social.ResourceNotFoundException;
 import com.angrysurfer.social.dto.ForumDTO;
 import com.angrysurfer.social.model.Forum;
 import com.angrysurfer.social.repository.ForumRepository;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ForumService {

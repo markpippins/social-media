@@ -1,19 +1,17 @@
 package com.angrysurfer.social.model;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-
-import javax.persistence.EntityListeners;
-import javax.persistence.Lob;
-import javax.persistence.MappedSuperclass;
-
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import lombok.Getter;
-import lombok.Setter;
+import javax.persistence.EntityListeners;
+import javax.persistence.Lob;
+import javax.persistence.MappedSuperclass;
+import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)

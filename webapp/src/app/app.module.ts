@@ -32,7 +32,9 @@ import { UserPageHeaderComponent } from './components/headers/user-page-header/u
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { IonicModule } from '@ionic/angular';
 import { ReactionContainerComponent } from './components/posts/reaction-container/reaction-container.component';
-
+import { PostListComponent } from './components/posts/post-list/post-list.component';
+import { APP_INITIALIZER } from '@angular/core';
+import { AppConfigService } from './services/app-config.service';
 @NgModule({
   declarations: [
     AppComponent,
@@ -63,6 +65,7 @@ import { ReactionContainerComponent } from './components/posts/reaction-containe
     UserPageHeaderComponent,
     PageNotFoundComponent,
     ReactionContainerComponent,
+    PostListComponent,
   ],
   imports: [
     BrowserModule,
@@ -71,7 +74,19 @@ import { ReactionContainerComponent } from './components/posts/reaction-containe
     ReactiveFormsModule,
     IonicModule.forRoot(),
   ],
-  providers: [],
+  providers: [
+    {
+      provide: APP_INITIALIZER,
+      multi: true,
+      deps: [AppConfigService],
+      useFactory: (appConfigService: AppConfigService) => {
+        return () => {
+          //Make sure to return a promise!
+          return appConfigService.loadAppConfig();
+        };
+      }
+    }
+  ],
   bootstrap: [AppComponent]
 })
 

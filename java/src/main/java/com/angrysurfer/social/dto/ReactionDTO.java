@@ -1,10 +1,9 @@
 package com.angrysurfer.social.dto;
 
-import java.io.Serializable;
-
 import com.angrysurfer.social.model.Reaction;
-
 import lombok.Data;
+
+import java.io.Serializable;
 
 @Data
 public class ReactionDTO implements Serializable {

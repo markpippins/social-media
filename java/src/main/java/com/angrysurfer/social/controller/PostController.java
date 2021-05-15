@@ -8,7 +8,14 @@ import com.angrysurfer.social.dto.ReactionDTO;
 import com.angrysurfer.social.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Set;
@@ -22,8 +29,7 @@ public class PostController {
     private PostService postService;
 
     @PostMapping(path = "/add")
-    public @ResponseBody
-    PostDTO addPost(@RequestBody PostDTO post) {
+    public @ResponseBody PostDTO addPost(@RequestBody PostDTO post) {
 
         try {
             return postService.save(post);
@@ -33,7 +39,7 @@ public class PostController {
     }
 
     @PostMapping(path = "/forums/{forumId}/add")
-    public PostDTO addPostToForum(@PathVariable Long forumId, @RequestBody PostDTO post) {
+    public @ResponseBody PostDTO addPostToForum(@PathVariable Long forumId, @RequestBody PostDTO post) {
 
         try {
             return postService.addPostToForum(forumId, post);
@@ -43,14 +49,12 @@ public class PostController {
     }
 
     @GetMapping(path = "/all")
-    public @ResponseBody
-    Set<PostDTO> getAllPosts() {
+    public @ResponseBody Set<PostDTO> getAllPosts() {
         return postService.findAll();
     }
 
     @GetMapping(path = "/{postId}/replies")
-    public @ResponseBody
-    Set<CommentDTO> getRepliesForPost(@PathVariable Long postId) {
+    public @ResponseBody Set<CommentDTO> getRepliesForPost(@PathVariable Long postId) {
         try {
             PostDTO post = postService.findById(postId);
             return post.getReplies();
@@ -60,7 +64,7 @@ public class PostController {
     }
 
     @PostMapping(path = "/{postId}/add/reaction")
-    public ReactionDTO addReaction(@PathVariable Long postId, @RequestBody ReactionDTO reaction) {
+    public @ResponseBody ReactionDTO addReaction(@PathVariable Long postId, @RequestBody ReactionDTO reaction) {
         try {
             return postService.addReaction(postId, reaction);
             // } catch (ResourceNotFoundException e) {
@@ -80,7 +84,7 @@ public class PostController {
     }
 
     @PostMapping(path = "/{postId}/rating/increment")
-    public PostStatDTO incrementRating(@PathVariable Long postId) {
+    public @ResponseBody PostStatDTO incrementRating(@PathVariable Long postId) {
         try {
             return postService.incrementRating(postId);
             // } catch (ResourceNotFoundException e) {
@@ -90,7 +94,7 @@ public class PostController {
     }
 
     @PostMapping(path = "/{postId}/rating/decrement")
-    public PostStatDTO decrementRating(@PathVariable Long postId) {
+    public @ResponseBody PostStatDTO decrementRating(@PathVariable Long postId) {
         try {
             return postService.decrementRating(postId);
             // } catch (ResourceNotFoundException e) {

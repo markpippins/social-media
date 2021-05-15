@@ -1,21 +1,25 @@
+import { AppConfigService } from './app-config.service';
 import { User } from './../models/user';
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Content, Post, Comment } from '../models/content';
 import { Reaction } from '../models/reaction';
 import { httpOptions } from './constants';
 import { UserService } from './user.service';
-
+import { environment } from '../../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
 export class ContentService {
 
-  POSTS = 'http://localhost:8080/api/posts';
-  REPLIES = 'http://localhost:8080/api/replies'
+  POSTS!: string;
+  REPLIES!: string;
 
-  constructor(private http: HttpClient, private userService: UserService) { console.log('ContentService is constructed'); }
+  constructor(private http: HttpClient, private userService: UserService, private appConfigService: AppConfigService) { console.log('ContentService is constructed');
+    this.POSTS = this.appConfigService.host + '/api/posts';
+    this.REPLIES = this.appConfigService.host + '/api/replies';
+  }
 
   getPosts() {
     return this.http.get<Post[]>(this.POSTS.concat('/all'));
@@ -28,7 +32,7 @@ export class ContentService {
 
   addPost(message: string): Observable<Post> {
     if (this.userService.activeUser) {
-      let post = { postedByAlias: this.userService.activeUser.alias, postedToAlias: undefined, text: message };
+      let post = { postedBy: this.userService.activeUser.alias, postedTo: undefined, text: message };
       return this.http.post<Post>(this.POSTS.concat('/').concat('add'),
         post, httpOptions);
       // .pipe(
@@ -41,7 +45,7 @@ export class ContentService {
 
   addPostTo(postedTo: string, message: string): Observable<Post> {
     if (this.userService.activeUser) {
-      let post = { postedByAlias: this.userService.activeUser.alias, postedToAlias: postedTo, text: message };
+      let post = { postedBy: this.userService.activeUser.alias, postedTo: postedTo, text: message };
       return this.http.post<Post>(this.POSTS.concat('/').concat('add'),
         post, httpOptions);
       // .pipe(s
@@ -54,7 +58,7 @@ export class ContentService {
 
   addPostToForum(forumId: number, message: string): Observable<Post> {
     if (this.userService.activeUser) {
-      let post = { postedByAlias: this.userService.activeUser.alias, text: message };
+      let post = { postedBy: this.userService.activeUser.alias, text: message };
       return this.http.post<Post>(this.POSTS.concat('/forums/' + forumId).concat('/add'),
         post, httpOptions);
       // .pipe(s
@@ -67,7 +71,7 @@ export class ContentService {
 
   addCommentToPost(postId: number, message: string, parentId?: number): Observable<Comment> {
     if (this.userService.activeUser) {
-      let comment = { postId: postId, postedByAlias: this.userService.activeUser.alias, text: message };
+      let comment = { postId: postId, postedBy: this.userService.activeUser.alias, text: message };
       return this.http.post<Comment>(this.REPLIES.concat('/').concat('add'),
         comment, httpOptions);
       // .pipe(s
@@ -80,7 +84,7 @@ export class ContentService {
 
   addReplyToComment(parentId: number, message: string): Observable<Comment> {
     if (this.userService.activeUser) {
-      let comment = { parentId: parentId, postedByAlias: this.userService.activeUser.alias, text: message };
+      let comment = { parentId: parentId, postedBy: this.userService.activeUser.alias, text: message };
       return this.http.post<Comment>(this.REPLIES.concat('/').concat('add'),
         comment, httpOptions);
     }

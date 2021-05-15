@@ -1,10 +1,9 @@
 package com.angrysurfer.social.repository;
 
-import java.util.Optional;
-
+import com.angrysurfer.social.model.Forum;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.angrysurfer.social.model.Forum;
+import java.util.Optional;
 
 public interface ForumRepository extends JpaRepository<Forum, Long> {
 

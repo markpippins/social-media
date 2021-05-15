@@ -88,8 +88,8 @@ export class TimelineComponent implements OnInit {
     if (this.pageForumId) {
       this.posts = Utils.reverseSortById(this.cache.filter(post => post.forumId && post.forumId == this.pageForumId));
     }
-    else this.posts = Utils.reverseSortById(this.pageUserName == undefined ? this.cache.filter(post => post.postedToAlias == undefined && !post.forumId) :
-      this.cache.filter(post => post.postedToAlias == this.pageUserName && !post.forumId));
+    else this.posts = Utils.reverseSortById(this.pageUserName == undefined ? this.cache.filter(post => post.postedTo == undefined && !post.forumId) :
+      this.cache.filter(post => post.postedTo == this.pageUserName && !post.forumId));
   }
 
   postAdded(message: string) {
