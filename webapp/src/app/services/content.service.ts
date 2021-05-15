@@ -1,21 +1,25 @@
+import { AppConfigService } from './app-config.service';
 import { User } from './../models/user';
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Content, Post, Comment } from '../models/content';
 import { Reaction } from '../models/reaction';
 import { httpOptions } from './constants';
 import { UserService } from './user.service';
-
+import { environment } from '../../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
 export class ContentService {
 
-  POSTS = 'http://localhost:8080/api/posts';
-  REPLIES = 'http://localhost:8080/api/replies'
+  POSTS!: string;
+  REPLIES!: string;
 
-  constructor(private http: HttpClient, private userService: UserService) { console.log('ContentService is constructed'); }
+  constructor(private http: HttpClient, private userService: UserService, private appConfigService: AppConfigService) { console.log('ContentService is constructed');
+    this.POSTS = this.appConfigService.host + '/api/posts';
+    this.REPLIES = this.appConfigService.host + '/api/replies';
+  }
 
   getPosts() {
     return this.http.get<Post[]>(this.POSTS.concat('/all'));

@@ -29,6 +29,7 @@ public class ForumDTO implements Serializable {
 	}
 
 	public static ForumDTO fromForum(Forum forum) {
+
 		ForumDTO result = new ForumDTO();
 		result.id = forum.getId();
 		result.setName(forum.getName());

@@ -1,6 +1,7 @@
 import { Forum } from '../../../../models/forum';
 import { User } from '../../../../models/user';
 import { Component, OnInit, Input } from '@angular/core';
+import { Utils } from '../../../../models/utils';
 
 @Component({
   selector: 'app-forum-members',
@@ -12,12 +13,10 @@ export class ForumMembersComponent implements OnInit {
   @Input()
   forum!: Forum;
 
-  members!: User[];
-
   constructor() { }
 
   ngOnInit(): void {
-    this.members = this.forum.members;
+    this.forum.members = Utils.sortByAlias(this.forum.members);
   }
 
 }

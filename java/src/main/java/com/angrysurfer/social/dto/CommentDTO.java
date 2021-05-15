@@ -27,10 +27,10 @@ public class CommentDTO extends AbstractContentDTO {
 		setPostedTo(post.getPostedBy().getAlias());
 	}
 
-	public CommentDTO(IContent comment, Long parentId, String postedToAlias) {
+	public CommentDTO(IContent comment, Long parentId, String postedTo) {
 		super(comment);
 		setParentId(parentId);
-		setPostedTo(postedToAlias);
+		setPostedTo(postedTo);
 	}
 
 }

@@ -1,18 +1,18 @@
-import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
-import { EventEmitter, Injectable, OnDestroy } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { EventEmitter, Injectable, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { User } from '../models/user';
-import { Content } from '../models/content';
 
+import { User } from '../models/user';
+import { AppConfigService } from './app-config.service';
 
 // @Injectable()
 @Injectable({
   providedIn: 'root'
 })
-export class UserService implements OnDestroy {
+export class UserService  implements OnDestroy {
 
 
-  static USERS: string = 'http://localhost:8080/api/users';
+  USERS!: string;
 
   users: Map<string, User> = new Map<string, User>();
 
@@ -20,11 +20,12 @@ export class UserService implements OnDestroy {
 
   public activeUser: User | undefined;
 
-  ALL_USERS$ = this.http.get<User[]>(UserService.USERS.concat('/all'));
 
+  constructor(private http: HttpClient, private router: Router, private appConfigService: AppConfigService) {
 
-  constructor(private http: HttpClient, private router: Router) {
     console.log('UserService is constructed');
+
+    this.USERS = this.appConfigService.host + '/api/users';
 
     if (!this.activeUser && this.isLoggedIn()) {
 
@@ -42,16 +43,17 @@ export class UserService implements OnDestroy {
     }
   }
 
+
   ngOnDestroy() {
     console.log('UserService is destroyed');
   }
 
   getUsers() {
-    return this.ALL_USERS$;
+    return this.http.get<User[]>(this.USERS.concat('/all'));
   }
 
   getUserByAlias(alias: string) {
-    return this.http.get<User>(UserService.USERS.concat('/alias/' + alias));
+    return this.http.get<User>(this.USERS.concat('/alias/' + alias));
   }
 
 
@@ -73,7 +75,7 @@ export class UserService implements OnDestroy {
 
 
   getUserById(id: number) {
-    return this.http.get<User>(UserService.USERS.concat('/id/' + id));
+    return this.http.get<User>(this.USERS.concat('/id/' + id));
   }
 
   login(alias: string) {

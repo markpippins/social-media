@@ -4,7 +4,7 @@
 
 .clean-style {
     background: white;
-    padding: 2px;
+    padding: 0px;
 }
 
 .balloon-style {
@@ -29,6 +29,8 @@ stretch-content {
     padding: 0%;
 }
 
+
+/*
 html,
 body {
     height: 100%;
@@ -46,3 +48,4 @@ body {
 .footer {
     flex-shrink: 0;
 }
+*/
