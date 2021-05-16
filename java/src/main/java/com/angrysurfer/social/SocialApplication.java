@@ -45,6 +45,9 @@ public class SocialApplication {
         @Autowired
         PostRepository postRepository;
 
+        @Autowired
+        QuoteService quoteService;
+
         static String sample1 = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque rutrum vitae tellus sit amet efficitur.";
         static String sample2 = "Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.";
         static String sample3 = "Nulla porttitor nisl in suscipit semper. Phasellus viverra dignissim mauris, efficitur commodo dui suscipit quis.";
@@ -232,7 +235,7 @@ public class SocialApplication {
                                 comment4.getReactions().add(reaction4);
                                 commentRepository.save(comment4);
 
-                                List<String> quotes = QuoteService.getQuotes();
+                                List<String> quotes = quoteService.getQuotes();
                                 quotes.forEach(quote ->{
                                         Post quoted = new Post();
                                         quoted.setText(quote);

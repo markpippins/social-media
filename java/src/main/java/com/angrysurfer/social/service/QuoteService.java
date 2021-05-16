@@ -7,13 +7,15 @@ import java.util.stream.Collectors;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.springframework.stereotype.Component;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@Component
 public class QuoteService {
 
-    public static List<String> getQuotes() {
+    public List<String> getQuotes() {
 
         List<String> quotes = Collections.emptyList();
 
