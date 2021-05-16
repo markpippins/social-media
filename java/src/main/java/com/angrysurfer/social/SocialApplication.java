@@ -1,10 +1,13 @@
 package com.angrysurfer.social;
 
+import java.util.List;
+
 import com.angrysurfer.social.model.*;
 import com.angrysurfer.social.model.Reaction.ReactionType;
 import com.angrysurfer.social.repository.*;
 import com.angrysurfer.social.service.ForumService;
 import com.angrysurfer.social.service.PostService;
+import com.angrysurfer.social.service.QuoteService;
 import com.angrysurfer.social.service.ReactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -70,8 +73,7 @@ public class SocialApplication {
                                 markProfile.setUser(mark);
                                 markProfile.setFirstName("Mark");
                                 markProfile.setLastName("Pippins");
-                                // markProfile.setProfileImageUrl(
-                                //                 "https://scontent-lga3-2.xx.fbcdn.net/v/t1.0-9/50074671_10156004342620060_4199638508295421952_o.jpg?_nc_cat=102&ccb=1-3&_nc_sid=e3f864&_nc_ohc=rwIlAE6GoYgAX_bkoVJ&_nc_ht=scontent-lga3-2.xx&oh=a7cccaebe3834082b145bc495442784f&oe=60793B52");
+                                markProfile.setProfileImageUrl("https://www.pinclipart.com/picdir/big/559-5594866_necktie-drawing-vector-round-avatar-user-icon-png.png");
                                 profileRepository.save(markProfile);
 
                                 User jeff = new User();
@@ -230,6 +232,14 @@ public class SocialApplication {
                                 comment4.getReactions().add(reaction4);
                                 commentRepository.save(comment4);
 
+                                List<String> quotes = QuoteService.getQuotes();
+                                quotes.forEach(quote ->{
+                                        Post quoted = new Post();
+                                        quoted.setText(quote);
+                                        quoted.setPostedBy(mark);
+                                        quoted. setPostedTo(mark);
+                                        quoted = postRepository.save(quoted);
+                                });
 
                                 // Reaction reaction5 = new Reaction();
                                 // reaction5.setUser(john);
