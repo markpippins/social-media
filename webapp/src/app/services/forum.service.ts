@@ -1,8 +1,9 @@
-import { AppConfigService } from './app-config.service';
 import { HttpClient } from '@angular/common/http';
-import { Injectable, OnInit } from '@angular/core';
+import { Injectable } from '@angular/core';
+
 import { Forum } from '../models/forum';
-import { environment } from '../../environments/environment';
+import { AppConfigService } from './app-config.service';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -11,7 +12,7 @@ export class ForumService {
   FORUMS!: string;
 
   constructor(private http: HttpClient, private appConfigService: AppConfigService) {
-    this.FORUMS = this.appConfigService.host + '/api/forums';
+    this.FORUMS = this.appConfigService.hostURL + '/api/forums';
   }
 
   getForums() {

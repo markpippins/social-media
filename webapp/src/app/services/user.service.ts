@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { EventEmitter, Injectable, OnDestroy, OnInit } from '@angular/core';
+import { EventEmitter, Injectable, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { User } from '../models/user';
@@ -25,7 +25,7 @@ export class UserService  implements OnDestroy {
 
     console.log('UserService is constructed');
 
-    this.USERS = this.appConfigService.host + '/api/users';
+    this.USERS = this.appConfigService.hostURL + '/api/users';
 
     if (!this.activeUser && this.isLoggedIn()) {
 

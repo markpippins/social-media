@@ -1,24 +1,29 @@
-import { AppConfigService } from './app-config.service';
-import { User } from './../models/user';
 import { HttpClient } from '@angular/common/http';
 import { Injectable, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Content, Post, Comment } from '../models/content';
+
+import { Comment, Content, Post } from '../models/content';
 import { Reaction } from '../models/reaction';
+import { User } from './../models/user';
+import { AppConfigService } from './app-config.service';
 import { httpOptions } from './constants';
 import { UserService } from './user.service';
-import { environment } from '../../environments/environment';
+
 @Injectable({
   providedIn: 'root'
 })
-export class ContentService {
+export class ContentService implements OnInit {
 
   POSTS!: string;
   REPLIES!: string;
 
   constructor(private http: HttpClient, private userService: UserService, private appConfigService: AppConfigService) { console.log('ContentService is constructed');
-    this.POSTS = this.appConfigService.host + '/api/posts';
-    this.REPLIES = this.appConfigService.host + '/api/replies';
+    this.POSTS = this.appConfigService.hostURL + '/api/posts';
+    this.REPLIES = this.appConfigService.hostURL + '/api/replies';
+  }
+
+  ngOnInit(): void {
+    console.log("init");
   }
 
   getPosts() {
