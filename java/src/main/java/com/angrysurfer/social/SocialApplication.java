@@ -68,9 +68,11 @@ public class SocialApplication {
                                 User mark = new User();
                                 mark.setEmail("mpippins@gmail.com");
                                 mark.setAlias("Codex");
+                                // mark.setAvatarUrl(
+                                //                 "https://scontent-lga3-2.xx.fbcdn.net/v/t1.0-9/122096068_10157579198200060_6435561549815175270_n.jpg?_nc_cat=102&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=i9wHzz0J-D0AX8jvurk&_nc_ht=scontent-lga3-2.xx&oh=2e301551c30008b4ee00cd968b670b44&oe=60781BF9");
                                 mark.setAvatarUrl(
-                                                "https://scontent-lga3-2.xx.fbcdn.net/v/t1.0-9/122096068_10157579198200060_6435561549815175270_n.jpg?_nc_cat=102&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=i9wHzz0J-D0AX8jvurk&_nc_ht=scontent-lga3-2.xx&oh=2e301551c30008b4ee00cd968b670b44&oe=60781BF9");
-                                userRepository.save(mark);
+                                                        "https://www.kindpng.com/picc/m/78-786207_user-avatar-png-user-avatar-icon-png-transparent.png");
+                                        userRepository.save(mark);
 
                                 Profile markProfile = new Profile();
                                 markProfile.setUser(mark);
