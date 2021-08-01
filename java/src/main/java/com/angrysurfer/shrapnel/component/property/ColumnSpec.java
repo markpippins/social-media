@@ -24,11 +24,14 @@ public class ColumnSpec {
     private String headerLabel;
     private String type;
 
+    public ColumnSpec() {
+    }
     public ColumnSpec(String propertyName, String headerLabel, String type) {
         setPropertyName(propertyName);
         setHeaderLabel(headerLabel);
         setType(type);
     }
+
 
     public static List<ColumnSpec> createColumnSpecs(List<String> properties) {
         return properties.stream().map(property -> new ColumnSpec(property, property.toUpperCase(Locale.ROOT), Types.STRING)).collect(Collectors.toList());

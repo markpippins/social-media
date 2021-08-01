@@ -12,145 +12,9 @@ import java.util.stream.Collectors;
 
 @Slf4j
 public class PropertyUtilsPropertyAccessor implements PropertyAccessor {
-    @Override
-    public Boolean getBooleanValue(Object item, String propertyName) {
-        Boolean result = null;
-
-        try {
-            PropertyDescriptor desc = PropertyUtils.getPropertyDescriptor(item, propertyName);
-            if (Objects.nonNull(desc) && Objects.nonNull(desc.getReadMethod())) {
-                Object value = desc.getReadMethod().invoke(item);
-                if (Objects.nonNull(value))
-                    if (value instanceof Boolean)
-                        return (Boolean) value;
-            }
-        } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
-            log.error(e.getMessage(), e);
-        }
-
-        return result;
-    }
 
     @Override
-    public Double getDoubleValue(Object item, String propertyName) {
-        Double result = null;
-
-        try {
-            PropertyDescriptor desc = PropertyUtils.getPropertyDescriptor(item, propertyName);
-            if (Objects.nonNull(desc) && Objects.nonNull(desc.getReadMethod())) {
-                Object value = desc.getReadMethod().invoke(item);
-                if (Objects.nonNull(value))
-                    if (value instanceof Double)
-                        return (Double) value;
-            }
-        } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
-            log.error(e.getMessage(), e);
-        }
-
-        return result;
-    }
-
-    @Override
-    public Calendar getCalendarValue(Object item, String propertyName) {
-        Calendar result = null;
-
-        try {
-            PropertyDescriptor desc = PropertyUtils.getPropertyDescriptor(item, propertyName);
-            if (Objects.nonNull(desc) && Objects.nonNull(desc.getReadMethod())) {
-                Object value = desc.getReadMethod().invoke(item);
-                if (Objects.nonNull(value))
-                    if (value instanceof Calendar)
-                        return (Calendar) value;
-            }
-        } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
-            log.error(e.getMessage(), e);
-        }
-
-        return result;
-    }
-
-    @Override
-    public Date getDateValue(Object item, String propertyName) {
-        Date result = null;
-
-        try {
-            PropertyDescriptor desc = PropertyUtils.getPropertyDescriptor(item, propertyName);
-            if (Objects.nonNull(desc) && Objects.nonNull(desc.getReadMethod())) {
-                Object value = desc.getReadMethod().invoke(item);
-                if (Objects.nonNull(value))
-                    if (value instanceof Date)
-                        return (Date) value;
-            }
-        } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
-            log.error(e.getMessage(), e);
-        }
-
-        return result;
-    }
-
-    @Override
-    public LocalDate getLocalDateValue(Object item, String propertyName) {
-        LocalDate result = null;
-
-        try {
-            PropertyDescriptor desc = PropertyUtils.getPropertyDescriptor(item, propertyName);
-            if (Objects.nonNull(desc) && Objects.nonNull(desc.getReadMethod())) {
-                Object value = desc.getReadMethod().invoke(item);
-                if (Objects.nonNull(value))
-                    if (value instanceof LocalDate)
-                        return (LocalDate) value;
-            }
-        } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
-            log.error(e.getMessage(), e);
-        }
-
-        return result;
-    }
-
-    @Override
-    public LocalDateTime getLocalDateTimeValue(Object item, String propertyName) {
-        LocalDateTime result = null;
-
-        try {
-            PropertyDescriptor desc = PropertyUtils.getPropertyDescriptor(item, propertyName);
-            if (Objects.nonNull(desc) && Objects.nonNull(desc.getReadMethod())) {
-                Object value = desc.getReadMethod().invoke(item);
-                if (Objects.nonNull(value))
-                    if (value instanceof LocalDateTime)
-                        return (LocalDateTime) value;
-            }
-        } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
-            log.error(e.getMessage(), e);
-        }
-
-        return result;
-    }
-
-    @Override
-    public String getStringValue(Object item, String propertyName) {
-        String result = null;
-
-        try {
-            PropertyDescriptor desc = PropertyUtils.getPropertyDescriptor(item, propertyName);
-            if (Objects.nonNull(desc) && Objects.nonNull(desc.getReadMethod())) {
-                Object value = desc.getReadMethod().invoke(item);
-                if (Objects.nonNull(value))
-                    return value.toString();
-            }
-        } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
-            log.error(e.getMessage(), e);
-        }
-
-        return result;
-    }
-
-    @Override
-    public List<String> getPropertyNames(Object item) {
-        return Arrays.stream(PropertyUtils.getPropertyDescriptors(item)).map(desc -> desc.getName()).collect(Collectors.toList());
-    }
-
-    @Override
-    public boolean valueExists(Object item, String propertyName) {
+    public boolean accessorExists(Object item, String propertyName) {
         boolean result = false;
 
         try {
@@ -161,6 +25,117 @@ public class PropertyUtilsPropertyAccessor implements PropertyAccessor {
         }
 
         return result;
+    }
+
+
+    @Override
+    public Boolean getBoolean(Object item, String propertyName) {
+        try {
+            PropertyDescriptor desc = PropertyUtils.getPropertyDescriptor(item, propertyName);
+            if (Objects.nonNull(desc) && Objects.nonNull(desc.getReadMethod())) {
+                Object value = desc.getReadMethod().invoke(item);
+                if (Objects.nonNull(value) && value instanceof Boolean)
+                    return (Boolean) value;
+            }
+        } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
+            log.error(e.getMessage(), e);
+        }
+        return null;
+    }
+
+    @Override
+    public Calendar getCalendar(Object item, String propertyName) {
+        try {
+            PropertyDescriptor desc = PropertyUtils.getPropertyDescriptor(item, propertyName);
+            if (Objects.nonNull(desc) && Objects.nonNull(desc.getReadMethod())) {
+                Object value = desc.getReadMethod().invoke(item);
+                if (Objects.nonNull(value) && value instanceof Calendar)
+                    return (Calendar) value;
+            }
+        } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
+            log.error(e.getMessage(), e);
+        }
+        return null;
+    }
+
+    @Override
+    public Date getDate(Object item, String propertyName) {
+        try {
+            PropertyDescriptor desc = PropertyUtils.getPropertyDescriptor(item, propertyName);
+            if (Objects.nonNull(desc) && Objects.nonNull(desc.getReadMethod())) {
+                Object value = desc.getReadMethod().invoke(item);
+                if (Objects.nonNull(value) && value instanceof Date)
+                    return (Date) value;
+            }
+        } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
+            log.error(e.getMessage(), e);
+        }
+        return null;
+    }
+
+    @Override
+    public Double getDouble(Object item, String propertyName) {
+        try {
+            PropertyDescriptor desc = PropertyUtils.getPropertyDescriptor(item, propertyName);
+            if (Objects.nonNull(desc) && Objects.nonNull(desc.getReadMethod())) {
+                Object value = desc.getReadMethod().invoke(item);
+                if (Objects.nonNull(value) && value instanceof Double)
+                    return (Double) value;
+            }
+        } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
+            log.error(e.getMessage(), e);
+        }
+        return null;
+    }
+
+    @Override
+    public LocalDate getLocalDate(Object item, String propertyName) {
+        try {
+            PropertyDescriptor desc = PropertyUtils.getPropertyDescriptor(item, propertyName);
+            if (Objects.nonNull(desc) && Objects.nonNull(desc.getReadMethod())) {
+                Object value = desc.getReadMethod().invoke(item);
+                if (Objects.nonNull(value) && value instanceof LocalDate)
+                    return (LocalDate) value;
+            }
+        } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
+            log.error(e.getMessage(), e);
+        }
+        return null;
+    }
+
+    @Override
+    public LocalDateTime getLocalDateTime(Object item, String propertyName) {
+        try {
+            PropertyDescriptor desc = PropertyUtils.getPropertyDescriptor(item, propertyName);
+            if (Objects.nonNull(desc) && Objects.nonNull(desc.getReadMethod())) {
+                Object value = desc.getReadMethod().invoke(item);
+                if (Objects.nonNull(value) && value instanceof LocalDateTime)
+                    return (LocalDateTime) value;
+            }
+        } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
+            log.error(e.getMessage(), e);
+        }
+        return null;
+    }
+
+    @Override
+    public String getString(Object item, String propertyName) {
+        try {
+            PropertyDescriptor desc = PropertyUtils.getPropertyDescriptor(item, propertyName);
+            if (Objects.nonNull(desc) && Objects.nonNull(desc.getReadMethod())) {
+                Object value = desc.getReadMethod().invoke(item);
+                if (Objects.nonNull(value))
+                    return value.toString();
+            }
+        } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
+            log.error(e.getMessage(), e);
+        }
+        return null;
+    }
+
+    @Override
+    public List<String> getPropertyNames(Object item) {
+        return Arrays.stream(PropertyUtils.getPropertyDescriptors(item)).map(desc -> desc.getName()).collect(Collectors.toList());
     }
 
     @Override

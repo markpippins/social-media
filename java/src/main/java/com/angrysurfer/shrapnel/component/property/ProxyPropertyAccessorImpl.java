@@ -16,38 +16,38 @@ public class ProxyPropertyAccessorImpl implements ProxyPropertyAccessor {
     private PropertyAccessor propertyAccessor;
 
     @Override
-    public Boolean getBooleanValue(Object item, String propertyName) {
-        return getPropertyAccessor().getBooleanValue(item, propertyName);
+    public Boolean getBoolean(Object item, String propertyName) {
+        return getPropertyAccessor().getBoolean(item, propertyName);
     }
 
     @Override
-    public Double getDoubleValue(Object item, String propertyName) {
-        return getPropertyAccessor().getDoubleValue(item, propertyName);
+    public Double getDouble(Object item, String propertyName) {
+        return getPropertyAccessor().getDouble(item, propertyName);
     }
 
     @Override
-    public Calendar getCalendarValue(Object item, String propertyName) {
-        return getPropertyAccessor().getCalendarValue(item, propertyName);
+    public Calendar getCalendar(Object item, String propertyName) {
+        return getPropertyAccessor().getCalendar(item, propertyName);
     }
 
     @Override
-    public Date getDateValue(Object item, String propertyName) {
-        return getPropertyAccessor().getDateValue(item, propertyName);
+    public Date getDate(Object item, String propertyName) {
+        return getPropertyAccessor().getDate(item, propertyName);
     }
 
     @Override
-    public LocalDate getLocalDateValue(Object item, String propertyName) {
-        return getPropertyAccessor().getLocalDateValue(item, propertyName);
+    public LocalDate getLocalDate(Object item, String propertyName) {
+        return getPropertyAccessor().getLocalDate(item, propertyName);
     }
 
     @Override
-    public LocalDateTime getLocalDateTimeValue(Object item, String propertyName) {
-        return getPropertyAccessor().getLocalDateTimeValue(item, propertyName);
+    public LocalDateTime getLocalDateTime(Object item, String propertyName) {
+        return getPropertyAccessor().getLocalDateTime(item, propertyName);
     }
 
     @Override
-    public String getStringValue(Object item, String propertyName) {
-        return getPropertyAccessor().getStringValue(item, propertyName);
+    public String getString(Object item, String propertyName) {
+        return getPropertyAccessor().getString(item, propertyName);
     }
 
     @Override
@@ -56,8 +56,8 @@ public class ProxyPropertyAccessorImpl implements ProxyPropertyAccessor {
     }
 
     @Override
-    public boolean valueExists(Object item, String propertyName) {
-        return getPropertyAccessor().valueExists(item, propertyName);
+    public boolean accessorExists(Object item, String propertyName) {
+        return getPropertyAccessor().accessorExists(item, propertyName);
     }
 
     @Override

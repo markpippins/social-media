@@ -25,26 +25,30 @@ public abstract class AbstractValueFormatter implements ValueFormatter {
 
     @Override
     public String format(ColumnSpec col, Calendar value) {
-        return Objects.isNull(value) ? "" : value.toString();
+        return nonNullString(value);
     }
 
     @Override
     public String format(ColumnSpec col, Date value) {
-        return Objects.isNull(value) ? "" : value.toString();
+        return nonNullString(value);
     }
 
     @Override
     public String format(ColumnSpec col, LocalDate value) {
-        return Objects.isNull(value) ? "" : value.toString();
+        return nonNullString(value);
     }
 
     @Override
     public String format(ColumnSpec col, LocalDateTime value) {
-        return Objects.isNull(value) ? "" : value.toString();
+        return nonNullString(value);
     }
 
     @Override
     public String format(ColumnSpec col, String value) {
+        return nonNullString(value);
+    }
+
+    private String nonNullString(Object value) {
         return Objects.isNull(value) ? "" : value.toString();
     }
 }

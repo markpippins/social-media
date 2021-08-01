@@ -134,8 +134,9 @@ public class ExcelRowWriter extends AbstractRowWriter implements RowWriter {
 
     @Override
     public void writeValues(Map<String, Object> outputConfig, Collection<Object> items) {
-        if (!outputConfig.containsKey(WORKBOOK) || !outputConfig.containsKey(SHEET) ||
-                !(outputConfig.get(WORKBOOK) instanceof Workbook || !(outputConfig.get(SHEET) instanceof Sheet)))
+        if (!outputConfig.containsKey(WORKBOOK) || !outputConfig.containsKey(SHEET)
+                || !(outputConfig.get(WORKBOOK) instanceof Workbook || !(outputConfig.get(SHEET) instanceof Sheet))
+                || Objects.isNull(items))
             return;
 
         setWorkbook((Workbook) outputConfig.get(WORKBOOK));
@@ -154,25 +155,25 @@ public class ExcelRowWriter extends AbstractRowWriter implements RowWriter {
     protected void writeValue(Object item, ColumnSpec col, Cell cell) {
         switch (col.getType()) {
             case Types.BOOLEAN:
-                cell.setCellValue(getBooleanValue(item, col.getPropertyName()));
+                cell.setCellValue(getBoolean(item, col.getPropertyName()));
                 break;
             case Types.DATE:
-                cell.setCellValue(getDateValue(item, col.getPropertyName()));
+                cell.setCellValue(getDate(item, col.getPropertyName()));
                 break;
             case Types.DOUBLE:
-                cell.setCellValue(getDoubleValue(item, col.getPropertyName()));
+                cell.setCellValue(getDouble(item, col.getPropertyName()));
                 break;
             case Types.CALENDAR:
-                cell.setCellValue(getCalendarValue(item, col.getPropertyName()));
+                cell.setCellValue(getCalendar(item, col.getPropertyName()));
                 break;
             case Types.LOCALDATE:
-                cell.setCellValue(getLocalDateValue(item, col.getPropertyName()));
+                cell.setCellValue(getLocalDate(item, col.getPropertyName()));
                 break;
             case Types.LOCALDATETIME:
-                cell.setCellValue(getLocalDateTimeValue(item, col.getPropertyName()));
+                cell.setCellValue(getLocalDateTime(item, col.getPropertyName()));
                 break;
             case Types.STRING:
-                cell.setCellValue(getStringValue(item, col.getPropertyName()));
+                cell.setCellValue(getString(item, col.getPropertyName()));
                 break;
             // case Types.RICHTEXT:
             //     cell.setCellValue(getR(item, col.getPropertyName()));
@@ -183,25 +184,25 @@ public class ExcelRowWriter extends AbstractRowWriter implements RowWriter {
     protected void writeFormattedValue(Object item, ColumnSpec col, Cell cell) {
         switch (col.getType()) {
             case Types.BOOLEAN:
-                cell.setCellValue(getValueFormatter().format(col, getBooleanValue(item, col.getPropertyName())));
+                cell.setCellValue(getValueFormatter().format(col, getBoolean(item, col.getPropertyName())));
                 break;
             case Types.DATE:
-                cell.setCellValue(getValueFormatter().format(col, getDateValue(item, col.getPropertyName())));
+                cell.setCellValue(getValueFormatter().format(col, getDate(item, col.getPropertyName())));
                 break;
             case Types.DOUBLE:
-                cell.setCellValue(getValueFormatter().format(col, getDoubleValue(item, col.getPropertyName())));
+                cell.setCellValue(getValueFormatter().format(col, getDouble(item, col.getPropertyName())));
                 break;
             case Types.CALENDAR:
-                cell.setCellValue(getValueFormatter().format(col, getCalendarValue(item, col.getPropertyName())));
+                cell.setCellValue(getValueFormatter().format(col, getCalendar(item, col.getPropertyName())));
                 break;
             case Types.LOCALDATE:
-                cell.setCellValue(getValueFormatter().format(col, getLocalDateValue(item, col.getPropertyName())));
+                cell.setCellValue(getValueFormatter().format(col, getLocalDate(item, col.getPropertyName())));
                 break;
             case Types.LOCALDATETIME:
-                cell.setCellValue(getValueFormatter().format(col, getLocalDateTimeValue(item, col.getPropertyName())));
+                cell.setCellValue(getValueFormatter().format(col, getLocalDateTime(item, col.getPropertyName())));
                 break;
             case Types.STRING:
-                cell.setCellValue(getValueFormatter().format(col, getStringValue(item, col.getPropertyName())));
+                cell.setCellValue(getValueFormatter().format(col, getString(item, col.getPropertyName())));
                 break;
             // case Types.RICHTEXT:
             //     cell.setCellValue(getValueFormatter().format(col, getR(item, col.getPropertyName()));

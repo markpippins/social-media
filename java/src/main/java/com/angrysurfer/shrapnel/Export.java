@@ -2,6 +2,8 @@ package com.angrysurfer.shrapnel;
 
 import com.angrysurfer.shrapnel.component.property.ColumnSpec;
 import com.angrysurfer.shrapnel.component.writer.ExcelRowWriter;
+import com.angrysurfer.shrapnel.component.writer.PDFRowWriter;
+import com.itextpdf.kernel.geom.PageSize;
 
 import java.util.List;
 import java.util.Map;
@@ -10,12 +12,13 @@ public interface Export {
 
     void addFilter(Map<String, Object> filterCriteria);
 
-    List<ColumnSpec> getColumns();
+    String getName();
 
-//    PDFRowWriter getPDFRowWriter();
+    List<ColumnSpec> getColumns();
 
     ExcelRowWriter getExcelRowWriter();
 
-    String getName();
+    PDFRowWriter getPdfRowWriter();
 
+    PageSize getPageSize();
 }

@@ -7,6 +7,7 @@ import com.angrysurfer.shrapnel.service.ExportsRegistryService;
 import com.angrysurfer.shrapnel.service.ExportsService;
 import com.angrysurfer.shrapnel.util.ExcelUtil;
 import com.angrysurfer.shrapnel.util.FileUtil;
+import com.angrysurfer.shrapnel.util.PDFUtil;
 import com.angrysurfer.social.dto.UserDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ByteArrayResource;
@@ -36,13 +37,13 @@ public class ExportServiceImpl implements ExportsService {
         }
     };
 
-    private final List<ExportFactory> factories;
+    private final List<ExportFactory> exportFactories;
 
     @Resource
     ExportsRegistryService exportRegistry;
 
-    public ExportServiceImpl(List<ExportFactory> factories) {
-        this.factories = Objects.nonNull(factories) ? factories : Collections.emptyList();
+    public ExportServiceImpl(List<ExportFactory> exportFactories) {
+        this.exportFactories = Objects.nonNull(exportFactories) ? exportFactories : Collections.emptyList();
     }
 
     @Override
@@ -94,7 +95,7 @@ public class ExportServiceImpl implements ExportsService {
 
             switch (request.getFileType().toUpperCase(Locale.ROOT)) {
                 case PDF_FILE:
-                    return null;
+                    return PDFUtil.generateByteArrayOutputStream(factory.getData(), export);
 
                 case XLSX_FILE:
                     return ExcelUtil.generateByteArrayOutputStream(factory.getData(), export, FileUtil.getTabLabel(export));
@@ -107,7 +108,7 @@ public class ExportServiceImpl implements ExportsService {
     }
 
     private ExportFactory getFactory(ExportRequest request) {
-        return factories.stream().filter(fac -> fac.getExportName().equalsIgnoreCase(request.getExportName())).findFirst()
+        return exportFactories.stream().filter(fac -> fac.getExportName().equalsIgnoreCase(request.getExportName())).findFirst()
                 .orElseGet(() -> exportRegistry.getFactory(request));
     }
 }

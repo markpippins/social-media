@@ -14,7 +14,7 @@ public interface RowWriter {
 
     List<ColumnSpec> getColumns();
 
-    void writeValues(Map<String, Object> outputConfig, Collection<Object> items) throws IOException;
+    void writeValues(Map<String, Object> outputConfig, Collection<Object> items);
 
     default ColumnSpec getColumn(String propertyName) {
         Optional<ColumnSpec> opt = getColumns().stream().filter(c -> c.getPropertyName().equalsIgnoreCase(propertyName)).findFirst();

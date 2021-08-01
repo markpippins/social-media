@@ -38,7 +38,7 @@ public class StringStartsWithFilter implements DataFilter {
             ColumnSpec col = writer.getColumn(propertyName);
             switch (col.getType()) {
                 case Types.STRING:
-                    String propertyValue = accessor.getStringValue(item, propertyName);
+                    String propertyValue = accessor.getString(item, propertyName);
                     if (Objects.isNull(propertyValue) || !propertyValue.toUpperCase(Locale.ROOT).startsWith(criteriaValue.toString().toUpperCase(Locale.ROOT)))
                         result[0] = false;
             }

@@ -55,11 +55,11 @@ public abstract class AbstractRowWriter extends ProxyPropertyAccessorImpl implem
         return Objects.nonNull(col.getPropertyName());
     }
 
-    public boolean valueExists(Object item, String propertyName) {
-        return super.valueExists(item, propertyName);
+    public boolean accessorExists(Object item, String propertyName) {
+        return super.accessorExists(item, propertyName);
     }
 
     public boolean valueExists(Object item, ColumnSpec col) {
-        return valueExists(item, col.getPropertyName());
+        return accessorExists(item, col.getPropertyName());
     }
 }

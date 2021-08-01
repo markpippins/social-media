@@ -37,25 +37,29 @@ public class SimpleCSVRowWriter implements RowWriter {
     }
 
     @Override
-    public void writeValues(Map<String, Object> outputConfig, Collection<Object> items) throws IOException {
+    public void writeValues(Map<String, Object> outputConfig, Collection<Object> items) {
         String filename = outputConfig.get(FileUtil.FILENAME).toString();
         writeValues(items, filename);
     }
 
-    public void writeValues(Collection<Object> items, String filename) throws IOException {
-        FileWriter fileWriter = new FileWriter(filename);
-        items.stream().filter(item -> filters.allow(item, this, this.getPropertyAccessor())).forEach(item -> {
-            StringBuffer line = new StringBuffer();
-            try {
+    public void writeValues(Collection<Object> items, String filename) {
+        try {
+            FileWriter fileWriter = new FileWriter(filename);
+            items.stream().filter(item -> filters.allow(item, this, this.getPropertyAccessor())).forEach(item -> {
+                StringBuffer line = new StringBuffer();
                 getColumns().forEach(col -> {
-                    line.append(getPropertyAccessor().getStringValue(item, col.getPropertyName()));
+                    line.append(getPropertyAccessor().getString(item, col.getPropertyName()));
                     if (getColumns().indexOf(col) < getColumns().size() - 1)
                         line.append(spaceAfterDelim ? getDelimiter() + SPACE : getDelimiter());
                 });
-                fileWriter.write(line.toString().concat("\n"));
-            } catch (IOException e) {
-                log.error(e.getMessage(), e);
-            }
-        });
+                try {
+                    fileWriter.write(line.toString().concat("\n"));
+                } catch (IOException e) {
+                    log.error(e.getMessage(), e);
+                }
+            });
+        } catch (IOException e) {
+            log.error(e.getMessage(), e);
+        }
     }
 }
