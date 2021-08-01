@@ -61,7 +61,9 @@ public class ExportServiceImpl implements ExportsService {
             String filename = null;
             switch (request.getFileType()) {
                 case PDF_FILE:
-                    return null;
+                    filename = PDFUtil.writeTabularFile(factory.getData(), export.getPdfRowWriter(),
+                            FileUtil.makeFileName(user, export));
+                    break;
 
                 case XLSX_FILE:
                     filename = ExcelUtil.writeWorkbookToFile(factory.getData(), export,
@@ -109,6 +111,6 @@ public class ExportServiceImpl implements ExportsService {
 
     private ExportFactory getFactory(ExportRequest request) {
         return exportFactories.stream().filter(fac -> fac.getExportName().equalsIgnoreCase(request.getExportName())).findFirst()
-                .orElseGet(() -> exportRegistry.getFactory(request));
+                .orElseGet(() -> Objects.nonNull(exportRegistry) ? exportRegistry.getFactory(request) : null);
     }
 }

@@ -13,11 +13,27 @@ import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.Table;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
 public class PDFUtil {
+
+    public static Document createDocument(String filename) throws IOException {
+        return createDocument(filename, PageSize.Default);
+    }
+
+    public static Document createDocument(String filename, PageSize pageSize) throws IOException {
+        FileUtil.ensureSafety(filename);
+
+        PdfWriter pdfWriter = new PdfWriter(filename, getWriterProperties());
+        PdfDocument pdfDocument = new PdfDocument(pdfWriter);
+        pdfDocument.setDefaultPageSize(pageSize);
+        pdfDocument.addNewPage();
+
+        return new Document(pdfDocument);
+    }
 
     public static Document createDocument(ByteArrayOutputStream baos, PageSize pageSize) {
         PdfWriter pdfWriter = new PdfWriter(baos, getWriterProperties());
@@ -74,13 +90,31 @@ public class PDFUtil {
         return properties;
     }
 
-    static void writeToTable(Collection<Object> items, PDFRowWriter pdfRowWriter, Table table) {
+    public static String writeTabularFile(Collection<Object> items, PDFRowWriter pdfRowWriter, String filename) throws IOException {
+        return writeTabularFile(items, pdfRowWriter, filename, PageSize.Default);
+    }
+
+    public static String writeTabularFile(Collection<Object> items, PDFRowWriter pdfRowWriter, String filename, PageSize pageSize) throws IOException {
+        String outputFileName = FileUtil.getOutputFileName(filename, "pdf");
+        FileUtil.ensureSafety(outputFileName);
+        Document document = createDocument(outputFileName, pageSize);
+        writeToTable(items, pdfRowWriter);
+        document.add(pdfRowWriter.getTable());
+        document.close();
+        return outputFileName;
+    }
+
+    public static String writeTabularFile(Collection<Object> items, Export export, String filename) throws IOException {
+        return writeTabularFile(items, export.getPdfRowWriter(), filename, export.getPageSize());
+    }
+
+    public static void writeToTable(Collection<Object> items, PDFRowWriter pdfRowWriter, Table table) {
         Map<String, Object> outputConfig = new HashMap<>();
         outputConfig.put(PDFRowWriter.TABLE, table);
         pdfRowWriter.writeValues(outputConfig, items);
     }
 
-    static void writeToTable(Collection<Object> items, PDFRowWriter pdfRowWriter) {
+    public static void writeToTable(Collection<Object> items, PDFRowWriter pdfRowWriter) {
         Table table = pdfRowWriter.createTable();
         Map<String, Object> outputConfig = new HashMap<>();
         outputConfig.put(PDFRowWriter.TABLE, table);
