@@ -18,8 +18,7 @@ export class AppConfigService {
       });
   }
 
-  // This is an example property ... you can make it however you want.
-  get host() {
+  get hostURL() {
 
     if (!this.appConfig) {
       throw Error('Config file not loaded!');

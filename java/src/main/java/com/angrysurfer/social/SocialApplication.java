@@ -1,10 +1,13 @@
 package com.angrysurfer.social;
 
+import java.util.List;
+
 import com.angrysurfer.social.model.*;
 import com.angrysurfer.social.model.Reaction.ReactionType;
 import com.angrysurfer.social.repository.*;
 import com.angrysurfer.social.service.ForumService;
 import com.angrysurfer.social.service.PostService;
+import com.angrysurfer.social.service.QuoteService;
 import com.angrysurfer.social.service.ReactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -42,6 +45,9 @@ public class SocialApplication {
         @Autowired
         PostRepository postRepository;
 
+        @Autowired
+        QuoteService quoteService;
+
         static String sample1 = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque rutrum vitae tellus sit amet efficitur.";
         static String sample2 = "Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.";
         static String sample3 = "Nulla porttitor nisl in suscipit semper. Phasellus viverra dignissim mauris, efficitur commodo dui suscipit quis.";
@@ -62,16 +68,17 @@ public class SocialApplication {
                                 User mark = new User();
                                 mark.setEmail("mpippins@gmail.com");
                                 mark.setAlias("Codex");
+                                // mark.setAvatarUrl(
+                                //                 "https://scontent-lga3-2.xx.fbcdn.net/v/t1.0-9/122096068_10157579198200060_6435561549815175270_n.jpg?_nc_cat=102&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=i9wHzz0J-D0AX8jvurk&_nc_ht=scontent-lga3-2.xx&oh=2e301551c30008b4ee00cd968b670b44&oe=60781BF9");
                                 mark.setAvatarUrl(
-                                                "https://scontent-lga3-2.xx.fbcdn.net/v/t1.0-9/122096068_10157579198200060_6435561549815175270_n.jpg?_nc_cat=102&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=i9wHzz0J-D0AX8jvurk&_nc_ht=scontent-lga3-2.xx&oh=2e301551c30008b4ee00cd968b670b44&oe=60781BF9");
-                                userRepository.save(mark);
+                                                        "https://www.kindpng.com/picc/m/78-786207_user-avatar-png-user-avatar-icon-png-transparent.png");
+                                        userRepository.save(mark);
 
                                 Profile markProfile = new Profile();
                                 markProfile.setUser(mark);
                                 markProfile.setFirstName("Mark");
                                 markProfile.setLastName("Pippins");
-                                // markProfile.setProfileImageUrl(
-                                //                 "https://scontent-lga3-2.xx.fbcdn.net/v/t1.0-9/50074671_10156004342620060_4199638508295421952_o.jpg?_nc_cat=102&ccb=1-3&_nc_sid=e3f864&_nc_ohc=rwIlAE6GoYgAX_bkoVJ&_nc_ht=scontent-lga3-2.xx&oh=a7cccaebe3834082b145bc495442784f&oe=60793B52");
+                                markProfile.setProfileImageUrl("https://www.pinclipart.com/picdir/big/559-5594866_necktie-drawing-vector-round-avatar-user-icon-png.png");
                                 profileRepository.save(markProfile);
 
                                 User jeff = new User();
@@ -230,6 +237,14 @@ public class SocialApplication {
                                 comment4.getReactions().add(reaction4);
                                 commentRepository.save(comment4);
 
+                                List<String> quotes = quoteService.getQuotes();
+                                quotes.forEach(quote ->{
+                                        Post quoted = new Post();
+                                        quoted.setText(quote);
+                                        quoted.setPostedBy(mark);
+                                        quoted. setPostedTo(mark);
+                                        quoted = postRepository.save(quoted);
+                                });
 
                                 // Reaction reaction5 = new Reaction();
                                 // reaction5.setUser(john);
