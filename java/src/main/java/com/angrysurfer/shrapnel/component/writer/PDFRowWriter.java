@@ -1,12 +1,11 @@
 package com.angrysurfer.shrapnel.component.writer;
 
+import com.angrysurfer.shrapnel.component.ColumnSpec;
 import com.angrysurfer.shrapnel.component.filter.DataFilterList;
 import com.angrysurfer.shrapnel.component.format.ValueFormatter;
-import com.angrysurfer.shrapnel.component.ColumnSpec;
 import com.angrysurfer.shrapnel.component.property.Types;
 import com.angrysurfer.shrapnel.component.style.CombinedStyleProvider;
 import com.angrysurfer.shrapnel.component.style.PDFStyleProvider;
-import com.angrysurfer.shrapnel.component.style.StyleProvider;
 import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.kernel.font.PdfFontFactory;
 import com.itextpdf.layout.element.Cell;
@@ -134,7 +133,7 @@ public class PDFRowWriter extends AbstractRowWriter {
             if (index[0] < getCellOffSet(item))
                 row.add(createCell(item, ColumnSpec.DATA_PADDING_LEFT, rowNum));
             else if (shouldWrite(col, item) && !shouldSkip(col, item))
-                row.add(createCell(item, valueExists(item, col) ? col : ColumnSpec.DATA_NULL_VALUE, rowNum));
+                row.add(createCell(item, accessorExists(item, col.getPropertyName()) ? col : ColumnSpec.DATA_NULL_VALUE, rowNum));
         });
 
         index[0]++;
@@ -166,7 +165,7 @@ public class PDFRowWriter extends AbstractRowWriter {
     }
 
     protected void writeFormattedValue(Object item, ColumnSpec col, Cell cell) {
-        if (valueExists(item, col))
+        if (accessorExists(item, col.getPropertyName()))
             try {
                 switch (col.getType()) {
                     case Types.BOOLEAN:
@@ -223,7 +222,7 @@ public class PDFRowWriter extends AbstractRowWriter {
     }
 
     protected void writeValue(Object item, ColumnSpec col, Cell cell) {
-        if (valueExists(item, col))
+        if (accessorExists(item, col.getPropertyName()))
             try {
                 switch (col.getType()) {
                     case Types.BOOLEAN:

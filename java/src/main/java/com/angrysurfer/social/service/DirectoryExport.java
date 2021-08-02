@@ -5,14 +5,16 @@ import com.angrysurfer.shrapnel.TabularExport;
 import com.angrysurfer.shrapnel.component.ColumnSpec;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class DirectoryExport extends TabularExport {
 
-    static List<ColumnSpec> COLUMNS = ColumnSpec.createColumnSpecs(Arrays.asList("absolutePath"));
+    static List<ColumnSpec> COLUMNS = ColumnSpec.createColumnSpecs(Arrays.asList("absolutePath", "name", "parent", "length", "canonicalPath"));
 
     static String NAME = "directory-export";
 
@@ -25,7 +27,7 @@ public class DirectoryExport extends TabularExport {
 
         @Override
         public Collection<Object> getData() {
-            return Collections.EMPTY_LIST;
+            return Stream.of(new File(".").listFiles()).collect(Collectors.toList());
         }
 
         @Override

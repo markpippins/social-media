@@ -3,6 +3,7 @@ package com.angrysurfer.shrapnel.component.writer;
 import com.angrysurfer.shrapnel.component.format.AbstractValueFormatter;
 import com.angrysurfer.shrapnel.component.format.ValueFormatter;
 import com.angrysurfer.shrapnel.component.ColumnSpec;
+import com.angrysurfer.shrapnel.component.property.PropertyUtilsPropertyAccessor;
 import com.angrysurfer.shrapnel.component.property.ProxyPropertyAccessorImpl;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,10 +19,12 @@ public abstract class AbstractRowWriter extends ProxyPropertyAccessorImpl implem
     private ValueFormatter valueFormatter;
 
     public AbstractRowWriter(List<ColumnSpec> columns) {
+        setPropertyAccessor(new PropertyUtilsPropertyAccessor());
         setColumns(columns);
     }
 
     public AbstractRowWriter(List<ColumnSpec> columns, ValueFormatter valueFormatter) {
+        setPropertyAccessor(new PropertyUtilsPropertyAccessor());
         setColumns(columns);
         setValueFormatter(valueFormatter);
     }
@@ -59,7 +62,4 @@ public abstract class AbstractRowWriter extends ProxyPropertyAccessorImpl implem
         return super.accessorExists(item, propertyName);
     }
 
-    public boolean valueExists(Object item, ColumnSpec col) {
-        return accessorExists(item, col.getPropertyName());
-    }
 }

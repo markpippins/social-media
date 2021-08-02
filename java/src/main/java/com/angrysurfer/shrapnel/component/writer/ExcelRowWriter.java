@@ -101,7 +101,7 @@ public class ExcelRowWriter extends AbstractRowWriter implements RowWriter {
     }
 
     protected void writeCell(ColumnSpec col, Object item, Cell cell) {
-        if (valueExists(item, col))
+        if (accessorExists(item, col.getPropertyName()))
             if (getValueFormatter().hasFormatFor(col))
                 writeFormattedValue(item, col, cell);
             else
