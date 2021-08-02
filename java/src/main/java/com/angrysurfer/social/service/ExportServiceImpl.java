@@ -4,6 +4,7 @@ import com.angrysurfer.shrapnel.ExportFactory;
 import com.angrysurfer.shrapnel.service.ExportRequest;
 import com.angrysurfer.shrapnel.service.ExportsRegistryService;
 import com.angrysurfer.shrapnel.service.ExportsService;
+import com.angrysurfer.shrapnel.util.FileUtil;
 import com.angrysurfer.social.dto.UserDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ByteArrayResource;
@@ -18,12 +19,6 @@ import java.util.Objects;
 @Service
 @Slf4j
 public class ExportServiceImpl implements ExportsService {
-
-    final static String CSV_FILE = "csv";
-    final static String PDF_FILE = "pdf";
-    final static String XLSX_FILE = "xlsx";
-
-    private static final long WAIT_SECONDS = 360;
 
     static UserDTO user = new UserDTO() {
         @Override
@@ -44,7 +39,8 @@ public class ExportServiceImpl implements ExportsService {
     @Override
     public ByteArrayResource exportByteArrayResource(ExportRequest request) {
         ExportFactory factory = getFactory(request);
-        return Objects.nonNull(factory) ? factory.exportByteArrayResource(user, request) : null;
+        String filename = FileUtil.makeFileName(user, factory);
+        return Objects.nonNull(factory) ? factory.exportByteArrayResource(request, filename) : null;
     }
 
     @Override

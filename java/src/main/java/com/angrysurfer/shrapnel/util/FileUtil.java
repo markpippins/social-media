@@ -1,6 +1,7 @@
 package com.angrysurfer.shrapnel.util;
 
 import com.angrysurfer.shrapnel.Export;
+import com.angrysurfer.shrapnel.ExportFactory;
 import com.angrysurfer.social.dto.UserDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ByteArrayResource;
@@ -54,8 +55,8 @@ public class FileUtil {
         return result;
     }
 
-    public static String makeFileName(UserDTO user, Export export) {
-        return user.getAlias() + " - " + export.getName() + " - " + LocalDateTime.now().getHour() + LocalDateTime.now().getMinute() + LocalDateTime.now().getSecond();
+    public static String makeFileName(UserDTO user, ExportFactory factory) {
+        return user.getAlias() + " - " + factory.getExportName() + " - " + LocalDateTime.now().getHour() + LocalDateTime.now().getMinute() + LocalDateTime.now().getSecond();
     }
 
     public static void removeFileAfter(String filename, long waitSeconds) {

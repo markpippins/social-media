@@ -1,6 +1,5 @@
 package com.angrysurfer.social.service;
 
-import com.angrysurfer.shrapnel.Export;
 import com.angrysurfer.shrapnel.ExportFactory;
 import com.angrysurfer.shrapnel.service.ExportRequest;
 import com.angrysurfer.shrapnel.service.ExportsRegistryService;
@@ -18,5 +17,4 @@ public class ExportsRegistryServiceImpl implements ExportsRegistryService {
     public ExportFactory getFactory(ExportRequest request) {
         return null;
     }
-
 }

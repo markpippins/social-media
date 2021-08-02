@@ -4,7 +4,6 @@ import com.angrysurfer.shrapnel.service.ExportRequest;
 import com.angrysurfer.shrapnel.util.ExcelUtil;
 import com.angrysurfer.shrapnel.util.FileUtil;
 import com.angrysurfer.shrapnel.util.PDFUtil;
-import com.angrysurfer.social.dto.UserDTO;
 import org.springframework.core.io.ByteArrayResource;
 
 import java.io.ByteArrayOutputStream;
@@ -28,13 +27,31 @@ public interface ExportFactory {
 
     Class<Export> getExportClass();
 
-    default Export newInstance() throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
-        Class<?> clazz = Class.forName(getExportClass().getCanonicalName());
-        Constructor<?> ctor = clazz.getConstructor();
-        return (Export) ctor.newInstance(new Object[]{});
+    default public ByteArrayOutputStream exportByteArrayOutputStream(ExportRequest request) {
+
+        try {
+            Export export = newInstance();
+            if (Objects.isNull(export))
+                return null;
+
+            if (Objects.nonNull(request.getFilterCriteria()) && request.getFilterCriteria().size() > 0)
+                export.addFilter(request.getFilterCriteria());
+
+            switch (request.getFileType().toLowerCase(Locale.ROOT)) {
+                case PDF_FILE:
+                    return PDFUtil.generateByteArrayOutputStream(getData(), export);
+
+                case XLSX_FILE:
+                    return ExcelUtil.generateByteArrayOutputStream(getData(), export, FileUtil.getTabLabel(export));
+            }
+        } catch (Exception e) {
+//            log.error(e.getMessage(), e);
+        }
+
+        return null;
     }
 
-    default public ByteArrayResource exportByteArrayResource(UserDTO user, ExportRequest request) {
+    default public ByteArrayResource exportByteArrayResource(ExportRequest request, String tempFileName) {
         try {
             Export export = newInstance();
             if (Objects.isNull(export))
@@ -45,15 +62,13 @@ public interface ExportFactory {
 
             String filename = null;
 
-            switch (request.getFileType()) {
+            switch (request.getFileType().toLowerCase(Locale.ROOT)) {
                 case PDF_FILE:
-                    filename = PDFUtil.writeTabularFile(getData(), export.getPdfRowWriter(),
-                            FileUtil.makeFileName(user, export));
+                    filename = PDFUtil.writeTabularFile(getData(), export.getPdfRowWriter(), tempFileName);
                     break;
 
                 case XLSX_FILE:
-                    filename = ExcelUtil.writeWorkbookToFile(getData(), export,
-                            FileUtil.makeFileName(user, export));
+                    filename = ExcelUtil.writeWorkbookToFile(getData(), export, tempFileName);
                     break;
             }
 
@@ -68,27 +83,9 @@ public interface ExportFactory {
         return null;
     }
 
-    default public ByteArrayOutputStream exportByteArrayOutputStream(ExportRequest request) {
-
-        try {
-            Export export = newInstance();
-            if (Objects.isNull(export))
-                return null;
-
-            if (Objects.nonNull(request.getFilterCriteria()) && request.getFilterCriteria().size() > 0)
-                export.addFilter(request.getFilterCriteria());
-
-            switch (request.getFileType().toUpperCase(Locale.ROOT)) {
-                case PDF_FILE:
-                    return PDFUtil.generateByteArrayOutputStream(getData(), export);
-
-                case XLSX_FILE:
-                    return ExcelUtil.generateByteArrayOutputStream(getData(), export, FileUtil.getTabLabel(export));
-            }
-        } catch (Exception e) {
-//            log.error(e.getMessage(), e);
-        }
-
-        return null;
+    default Export newInstance() throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+        Class<?> clazz = Class.forName(getExportClass().getCanonicalName());
+        Constructor<?> ctor = clazz.getConstructor();
+        return (Export) ctor.newInstance(new Object[]{});
     }
 }

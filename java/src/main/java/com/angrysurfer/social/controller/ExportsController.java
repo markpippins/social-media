@@ -35,12 +35,12 @@ public class ExportsController {
     }
 
     @PostMapping(value = "/exportStream")
-    public ResponseEntity<ByteArrayOutputStream> exportStream(@RequestBody ExportRequest request) {
+    public ResponseEntity<byte[]> exportStream(@RequestBody ExportRequest request) {
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.CONTENT_DISPOSITION, String.format("attachment;filename=%s.%s", request.getExportName(), request.getFileType()));
         ByteArrayOutputStream stream = exportsService.exportByteArrayOutputStream(request);
         return Objects.nonNull(stream) ?
-                ResponseEntity.ok().headers(headers).contentLength(stream.size()).contentType(MediaType.APPLICATION_OCTET_STREAM).body(stream) :
+                ResponseEntity.ok().headers(headers).contentLength(stream.size()).contentType(MediaType.APPLICATION_OCTET_STREAM).body(stream.toByteArray()) :
                 ResponseEntity.notFound().build();
     }
 
