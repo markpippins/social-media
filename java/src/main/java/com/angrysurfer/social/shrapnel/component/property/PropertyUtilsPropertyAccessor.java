@@ -134,8 +134,8 @@ public class PropertyUtilsPropertyAccessor implements PropertyAccessor {
     }
 
     @Override
-    public List<String> getPropertyNames(Object item) {
-        return Arrays.stream(PropertyUtils.getPropertyDescriptors(item)).map(desc -> desc.getName()).collect(Collectors.toList());
+    public Set<String> getPropertyNames(Object item) {
+        return Arrays.stream(PropertyUtils.getPropertyDescriptors(item)).map(desc -> desc.getName()).collect(Collectors.toSet());
     }
 
     @Override

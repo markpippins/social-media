@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 public interface PropertyAccessor {
 
@@ -26,7 +27,7 @@ public interface PropertyAccessor {
 
     String getString(Object item, String propertyName);
 
-    List<String> getPropertyNames(Object item);
+    Set<String> getPropertyNames(Object item);
 
     void inspect(Object value);
 }

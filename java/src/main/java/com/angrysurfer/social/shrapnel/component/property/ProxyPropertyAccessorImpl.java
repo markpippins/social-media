@@ -7,13 +7,28 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
 public class ProxyPropertyAccessorImpl implements ProxyPropertyAccessor {
 
     private PropertyAccessor propertyAccessor;
+
+    @Override
+    public Set<String> getPropertyNames(Object item) {
+        return getPropertyAccessor().getPropertyNames(item);
+    }
+
+    @Override
+    public boolean accessorExists(Object item, String propertyName) {
+        return getPropertyAccessor().accessorExists(item, propertyName);
+    }
+
+    @Override
+    public void inspect(Object value) {
+        getPropertyAccessor().inspect(value);
+    }
 
     @Override
     public Boolean getBoolean(Object item, String propertyName) {
@@ -50,18 +65,4 @@ public class ProxyPropertyAccessorImpl implements ProxyPropertyAccessor {
         return getPropertyAccessor().getString(item, propertyName);
     }
 
-    @Override
-    public List<String> getPropertyNames(Object item) {
-        return getPropertyAccessor().getPropertyNames(item);
-    }
-
-    @Override
-    public boolean accessorExists(Object item, String propertyName) {
-        return getPropertyAccessor().accessorExists(item, propertyName);
-    }
-
-    @Override
-    public void inspect(Object value) {
-        getPropertyAccessor().inspect(value);
-    }
 }

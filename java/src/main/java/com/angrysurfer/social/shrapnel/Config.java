@@ -14,7 +14,7 @@ import javax.annotation.Resource;
 
 @Slf4j
 @Component
-class ShrapnelConfig implements CommandLineRunner {
+class Config implements CommandLineRunner {
 
     @Resource
     ColumnSpecModelRepository columnSpecModelRepository;
