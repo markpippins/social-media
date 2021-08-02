@@ -4,6 +4,8 @@ import com.angrysurfer.shrapnel.component.filter.DataFilterList;
 import com.angrysurfer.shrapnel.component.format.ValueFormatter;
 import com.angrysurfer.shrapnel.component.ColumnSpec;
 import com.angrysurfer.shrapnel.component.property.Types;
+import com.angrysurfer.shrapnel.component.style.CombinedStyleProvider;
+import com.angrysurfer.shrapnel.component.style.PDFStyleProvider;
 import com.angrysurfer.shrapnel.component.style.StyleProvider;
 import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.kernel.font.PdfFontFactory;
@@ -33,7 +35,7 @@ public class PDFRowWriter extends AbstractRowWriter {
 
     private Table table;
 
-    private StyleProvider styleProvider;
+    private PDFStyleProvider styleProvider;
 
     private DataFilterList filters = new DataFilterList.DataFilterListImpl();
 
@@ -96,6 +98,13 @@ public class PDFRowWriter extends AbstractRowWriter {
         }
 
         return table.setFontSize(PDFRowWriter.DEFAULT_FONT_SIZE);
+    }
+
+    public PDFStyleProvider getStyleProvider() {
+        if (Objects.isNull(styleProvider))
+            styleProvider = new CombinedStyleProvider();
+
+        return styleProvider;
     }
 
     private float[] getTableWidths() {

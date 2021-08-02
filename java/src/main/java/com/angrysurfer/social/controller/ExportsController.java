@@ -1,4 +1,4 @@
-package com.angrysurfer.shrapnel.service.controller;
+package com.angrysurfer.social.controller;
 
 import com.angrysurfer.shrapnel.service.ExportRequest;
 import com.angrysurfer.shrapnel.service.ExportsService;

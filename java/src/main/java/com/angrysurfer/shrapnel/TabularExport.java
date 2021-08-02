@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @Slf4j
 @Getter
@@ -21,9 +22,9 @@ public class TabularExport implements Export {
 
     private String name;
 
-    private ExcelRowWriter excelRowWriter = new ExcelRowWriter(getColumns());
+    private ExcelRowWriter excelRowWriter;
 
-    private PDFRowWriter pdfRowWriter = new PDFRowWriter(getColumns());
+    private PDFRowWriter pdfRowWriter;
 
     public TabularExport(String name, List<ColumnSpec> columns) {
         setName(name);
@@ -34,6 +35,22 @@ public class TabularExport implements Export {
     public void addFilter(Map<String, Object> filterCriteria) {
         getExcelRowWriter().getFilters().add(new StringStartsWithFilter(filterCriteria));
         getPdfRowWriter().getFilters().add(new StringStartsWithFilter(filterCriteria));
+    }
+
+    @Override
+    public ExcelRowWriter getExcelRowWriter() {
+        if (Objects.isNull(excelRowWriter))
+            excelRowWriter = new ExcelRowWriter(getColumns());
+
+        return excelRowWriter;
+    }
+
+    @Override
+    public PDFRowWriter getPdfRowWriter() {
+        if (Objects.isNull(pdfRowWriter))
+            pdfRowWriter = new PDFRowWriter(getColumns());
+
+        return pdfRowWriter;
     }
 
     @Override

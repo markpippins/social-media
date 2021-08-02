@@ -1,5 +1,7 @@
-package com.angrysurfer.shrapnel;
+package com.angrysurfer.social.service;
 
+import com.angrysurfer.shrapnel.ExportFactory;
+import com.angrysurfer.shrapnel.TabularExport;
 import com.angrysurfer.shrapnel.component.ColumnSpec;
 import org.springframework.stereotype.Component;
 

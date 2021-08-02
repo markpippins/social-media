@@ -1,10 +1,11 @@
 package com.angrysurfer.shrapnel.component.writer;
 
+import com.angrysurfer.shrapnel.component.ColumnSpec;
 import com.angrysurfer.shrapnel.component.filter.DataFilterList;
 import com.angrysurfer.shrapnel.component.format.ValueFormatter;
-import com.angrysurfer.shrapnel.component.ColumnSpec;
 import com.angrysurfer.shrapnel.component.property.Types;
 import com.angrysurfer.shrapnel.component.style.CombinedStyleProvider;
+import com.angrysurfer.shrapnel.component.style.ExcelStyleProvider;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +33,7 @@ public class ExcelRowWriter extends AbstractRowWriter implements RowWriter {
 
     private DataFilterList filters = new DataFilterList.DataFilterListImpl();
 
-    private CombinedStyleProvider styleProvider;
+    private ExcelStyleProvider styleProvider;
 
     private boolean autoCreateTopLevelHeader = true;
 
@@ -82,7 +83,7 @@ public class ExcelRowWriter extends AbstractRowWriter implements RowWriter {
 
     }
 
-    public CombinedStyleProvider getStyleProvider() {
+    public ExcelStyleProvider getStyleProvider() {
         if (Objects.isNull(styleProvider))
             styleProvider = new CombinedStyleProvider();
 
