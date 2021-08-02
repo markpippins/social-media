@@ -1,6 +1,6 @@
 package com.angrysurfer.shrapnel.component.style;
 
-import com.angrysurfer.shrapnel.component.property.ColumnSpec;
+import com.angrysurfer.shrapnel.component.ColumnSpec;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 

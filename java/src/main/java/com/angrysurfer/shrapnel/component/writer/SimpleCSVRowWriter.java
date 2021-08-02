@@ -1,7 +1,7 @@
 package com.angrysurfer.shrapnel.component.writer;
 
 import com.angrysurfer.shrapnel.component.filter.DataFilterList;
-import com.angrysurfer.shrapnel.component.property.ColumnSpec;
+import com.angrysurfer.shrapnel.component.ColumnSpec;
 import com.angrysurfer.shrapnel.component.property.PropertyAccessor;
 import com.angrysurfer.shrapnel.component.property.PropertyUtilsPropertyAccessor;
 import com.angrysurfer.shrapnel.util.FileUtil;

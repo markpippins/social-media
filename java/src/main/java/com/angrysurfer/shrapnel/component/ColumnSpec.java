@@ -1,5 +1,6 @@
-package com.angrysurfer.shrapnel.component.property;
+package com.angrysurfer.shrapnel.component;
 
+import com.angrysurfer.shrapnel.component.property.Types;
 import com.angrysurfer.shrapnel.component.writer.RowWriter;
 import lombok.Getter;
 import lombok.Setter;
@@ -31,7 +32,6 @@ public class ColumnSpec {
         setHeaderLabel(headerLabel);
         setType(type);
     }
-
 
     public static List<ColumnSpec> createColumnSpecs(List<String> properties) {
         return properties.stream().map(property -> new ColumnSpec(property, property.toUpperCase(Locale.ROOT), Types.STRING)).collect(Collectors.toList());

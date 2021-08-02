@@ -1,6 +1,6 @@
 package com.angrysurfer.shrapnel.service.mapping;
 
-import com.angrysurfer.shrapnel.component.property.ColumnSpec;
+import com.angrysurfer.shrapnel.component.ColumnSpec;
 import com.angrysurfer.shrapnel.service.model.ColumnSpecification;
 
 public class ColumnSpecMapper {

@@ -1,7 +1,8 @@
 package com.angrysurfer.shrapnel.component.writer;
 
 import com.angrysurfer.shrapnel.component.filter.DataFilterList;
-import com.angrysurfer.shrapnel.component.property.ColumnSpec;
+import com.angrysurfer.shrapnel.component.format.ValueFormatter;
+import com.angrysurfer.shrapnel.component.ColumnSpec;
 import com.angrysurfer.shrapnel.component.property.Types;
 import com.angrysurfer.shrapnel.component.style.StyleProvider;
 import com.itextpdf.kernel.font.PdfFont;
@@ -40,7 +41,11 @@ public class PDFRowWriter extends AbstractRowWriter {
         super(columns);
     }
 
-    protected void beforeRow() {
+    public PDFRowWriter(List<ColumnSpec> columns, ValueFormatter valueFormatter) {
+        super(columns, valueFormatter);
+    }
+
+    protected void beforeRow(Object item) {
 
     }
 
@@ -144,7 +149,7 @@ public class PDFRowWriter extends AbstractRowWriter {
 
         final int[] rowNum = {0};
         items.stream().filter(item -> getFilters().allow(item, this, this)).forEach(item -> {
-            beforeRow();
+            beforeRow(item);
             writeDataRow(item, rowNum[0]).forEach(getTable()::addCell);
         });
 

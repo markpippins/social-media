@@ -1,6 +1,6 @@
 package com.angrysurfer.shrapnel.component.format;
 
-import com.angrysurfer.shrapnel.component.property.ColumnSpec;
+import com.angrysurfer.shrapnel.component.ColumnSpec;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

@@ -59,6 +59,7 @@ public class ExportServiceImpl implements ExportsService {
                 export.addFilter(request.getFilterCriteria());
 
             String filename = null;
+
             switch (request.getFileType()) {
                 case PDF_FILE:
                     filename = PDFUtil.writeTabularFile(factory.getData(), export.getPdfRowWriter(),

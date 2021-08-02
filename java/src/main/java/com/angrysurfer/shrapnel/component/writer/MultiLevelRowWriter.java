@@ -1,6 +1,6 @@
 package com.angrysurfer.shrapnel.component.writer;
 
-import com.angrysurfer.shrapnel.component.property.ColumnSpec;
+import com.angrysurfer.shrapnel.component.ColumnSpec;
 import com.angrysurfer.shrapnel.component.property.PropertyAccessor;
 
 import java.util.List;

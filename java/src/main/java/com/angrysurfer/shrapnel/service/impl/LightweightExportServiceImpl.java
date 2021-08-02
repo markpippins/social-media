@@ -1,6 +1,6 @@
 package com.angrysurfer.shrapnel.service.impl;
 
-import com.angrysurfer.shrapnel.component.property.ColumnSpec;
+import com.angrysurfer.shrapnel.component.ColumnSpec;
 import com.angrysurfer.shrapnel.component.writer.ExcelRowWriter;
 import com.angrysurfer.shrapnel.component.writer.PDFRowWriter;
 import com.angrysurfer.shrapnel.component.writer.SimpleCSVRowWriter;

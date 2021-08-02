@@ -2,7 +2,7 @@ package com.angrysurfer.shrapnel.component.writer;
 
 import com.angrysurfer.shrapnel.component.format.AbstractValueFormatter;
 import com.angrysurfer.shrapnel.component.format.ValueFormatter;
-import com.angrysurfer.shrapnel.component.property.ColumnSpec;
+import com.angrysurfer.shrapnel.component.ColumnSpec;
 import com.angrysurfer.shrapnel.component.property.ProxyPropertyAccessorImpl;
 import lombok.Getter;
 import lombok.Setter;

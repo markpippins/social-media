@@ -1,6 +1,6 @@
 package com.angrysurfer.shrapnel.component.style;
 
-import com.angrysurfer.shrapnel.component.property.ColumnSpec;
+import com.angrysurfer.shrapnel.component.ColumnSpec;
 import com.angrysurfer.shrapnel.component.style.preset.CellStyleAdapter;
 import com.angrysurfer.shrapnel.component.style.preset.HeaderStyleAdapter;
 import lombok.Getter;
