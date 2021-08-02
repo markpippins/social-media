@@ -1,7 +1,7 @@
 package com.angrysurfer.shrapnel.component.filter;
 
 import com.angrysurfer.shrapnel.component.property.Types;
-import com.angrysurfer.shrapnel.component.property.ColumnSpec;
+import com.angrysurfer.shrapnel.component.ColumnSpec;
 import com.angrysurfer.shrapnel.component.property.PropertyAccessor;
 import com.angrysurfer.shrapnel.component.writer.RowWriter;
 import lombok.Getter;
@@ -38,7 +38,7 @@ public class StringStartsWithFilter implements DataFilter {
             ColumnSpec col = writer.getColumn(propertyName);
             switch (col.getType()) {
                 case Types.STRING:
-                    String propertyValue = accessor.getStringValue(item, propertyName);
+                    String propertyValue = accessor.getString(item, propertyName);
                     if (Objects.isNull(propertyValue) || !propertyValue.toUpperCase(Locale.ROOT).startsWith(criteriaValue.toString().toUpperCase(Locale.ROOT)))
                         result[0] = false;
             }

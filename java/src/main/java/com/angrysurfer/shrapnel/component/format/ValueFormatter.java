@@ -1,6 +1,6 @@
 package com.angrysurfer.shrapnel.component.format;
 
-import com.angrysurfer.shrapnel.component.property.ColumnSpec;
+import com.angrysurfer.shrapnel.component.ColumnSpec;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -15,7 +15,7 @@ public interface ValueFormatter {
     String format(ColumnSpec col, Date value);
     String format(ColumnSpec col, LocalDate value);
     String format(ColumnSpec col, LocalDateTime value);
-//    String format(ColumnSpec col, Richtext value);
+//    String format(ColumnSpecification col, Richtext value);
     String format(ColumnSpec col, String value);
 
     boolean hasFormatFor(ColumnSpec col);
