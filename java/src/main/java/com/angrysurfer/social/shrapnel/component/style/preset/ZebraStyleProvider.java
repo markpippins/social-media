@@ -15,19 +15,42 @@ import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 @Setter
 public class ZebraStyleProvider extends CombinedStyleProvider {
 
+    private IndexedColors excelBackgroundColor = IndexedColors.GREY_40_PERCENT;
+
+    private CombinedStyleProvider darkStyleProvider = new CombinedStyleProvider() {
+        @Override
+        public void onWorkbookSet(Workbook workbook) {
+            getCellStyle(workbook).setFillForegroundColor(getExcelBackgroundColor().getIndex());
+            getCellStyle(workbook).setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        }
+    };
+
+    public ZebraStyleProvider() {
+        getDarkStyleProvider().getDefaultCellStyleAdapter().setBackgroundColor(Color.LIGHT_GRAY);
+    }
+
     public ZebraStyleProvider(Color backgroundColor) {
-        darkStyleProvider.getDefaultCellStyleAdapter().setBackgroundColor(backgroundColor);
+        getDarkStyleProvider().getDefaultCellStyleAdapter().setBackgroundColor(backgroundColor);
+    }
+
+    public ZebraStyleProvider(IndexedColors excelBackgroundColor) {
+        setExcelBackgroundColor(excelBackgroundColor);
+    }
+
+    public ZebraStyleProvider(Color backgroundColor, IndexedColors excelBackgroundColor) {
+        getDarkStyleProvider().getDefaultCellStyleAdapter().setBackgroundColor(backgroundColor);
+        setExcelBackgroundColor(excelBackgroundColor);
     }
 
     @Override
     public StyleAdapter getCellStyle(Object item, ColumnSpec col, int row) {
-        return row % 2 == 1 ? darkStyleProvider.getCellStyle(item, col, row) :
+        return row % 2 == 0 ? getDarkStyleProvider().getCellStyle(item, col, row) :
                 super.getCellStyle(item, col, row);
     }
 
     @Override
     public XSSFCellStyle getCellStyle(Object item, Workbook workbook, ColumnSpec col, int row) {
-        return row % 2 == 0 ? darkStyleProvider.getCellStyle(item, workbook, col, row) :
+        return row % 2 == 0 ? getDarkStyleProvider().getCellStyle(item, workbook, col, row) :
                 super.getCellStyle(item, workbook, col, row);
     }
 
@@ -35,12 +58,4 @@ public class ZebraStyleProvider extends CombinedStyleProvider {
     public void onWorkbookSet(Workbook workbook) {
         getDarkStyleProvider().onWorkbookSet(workbook);
     }
-
-    private CombinedStyleProvider darkStyleProvider = new CombinedStyleProvider() {
-        @Override
-        public void onWorkbookSet(Workbook workbook) {
-            getDarkStyleProvider().getCellStyle(workbook).setFillForegroundColor(IndexedColors.GREY_40_PERCENT.getIndex());
-            getDarkStyleProvider().getCellStyle(workbook).setFillPattern(FillPatternType.SOLID_FOREGROUND);
-        }
-    };
 }

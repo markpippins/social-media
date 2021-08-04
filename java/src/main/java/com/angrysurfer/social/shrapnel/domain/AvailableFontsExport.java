@@ -4,7 +4,6 @@ import com.angrysurfer.social.shrapnel.ExportFactory;
 import com.angrysurfer.social.shrapnel.TabularExport;
 import com.angrysurfer.social.shrapnel.component.ColumnSpec;
 import com.angrysurfer.social.shrapnel.component.format.AbstractValueFormatter;
-import com.angrysurfer.social.shrapnel.component.style.CombinedStyleProvider;
 import com.angrysurfer.social.shrapnel.component.style.PdfFontSource;
 import com.angrysurfer.social.shrapnel.component.style.StyleAdapter;
 import com.angrysurfer.social.shrapnel.component.style.preset.ZebraStyleProvider;
@@ -13,9 +12,7 @@ import com.itextpdf.kernel.font.PdfFont;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.IndexedColors;
-import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -44,15 +41,8 @@ public class AvailableFontsExport extends TabularExport {
     static class AvailableFontsStyleProvider extends ZebraStyleProvider {
 
         public AvailableFontsStyleProvider() {
-            super(Color.PINK);
+            super(Color.PINK, IndexedColors.PALE_BLUE);
             getDefaultCellStyleAdapter().setBackgroundColor(Color.ORANGE);
-            setDarkStyleProvider(new CombinedStyleProvider() {
-                @Override
-                public void onWorkbookSet(Workbook workbook) {
-                    getDarkStyleProvider().getCellStyle(workbook).setFillForegroundColor(IndexedColors.PALE_BLUE.getIndex());
-                    getDarkStyleProvider().getCellStyle(workbook).setFillPattern(FillPatternType.SOLID_FOREGROUND);
-                }
-            });
         }
 
         @Override
