@@ -37,13 +37,7 @@ public class StyleAdapter extends Style {
     }
 
     public void apply(Cell cell) {
-        for (int index = 0; index < MAX_PROPERTY_INDEX; index++)
-            if (hasProperty(index))
-                try {
-                    cell.setProperty(index, getProperty(index));
-                } catch (Exception e) {
-                    log.error(e.getMessage(), e);
-                }
+        cell.addStyle(this);
     }
 
     public boolean hasExtendedProperty(int property) {

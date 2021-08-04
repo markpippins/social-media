@@ -4,7 +4,6 @@ import com.angrysurfer.social.shrapnel.service.ExportRequest;
 import com.angrysurfer.social.shrapnel.util.ExcelUtil;
 import com.angrysurfer.social.shrapnel.util.FileUtil;
 import com.angrysurfer.social.shrapnel.util.PdfUtil;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ByteArrayResource;
 
 import java.io.ByteArrayOutputStream;

@@ -7,37 +7,39 @@ import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.kernel.font.PdfFontFactory;
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
+import java.util.HashMap;
+import java.util.Map;
 
 @Slf4j
 public class PDFFontSource {
 
     public final static String FONTS_FOLDER = "java/src/main/resources/fonts/";
 
-    public static PdfFont getPdfFont(String name) throws IOException {
-        PdfFont pdfFont = null;
+    final static Map<String, PdfFont> fonts = new HashMap<>();
 
-        File file = new File(".");
-        String fontProperties = file.getAbsolutePath().substring(0, file.getAbsolutePath().length() - 1) + FONTS_FOLDER + "fonts.properties";
+    public static PdfFont getPdfFont(String fontName) throws IOException {
 
-        try (InputStream inputStream = new FileInputStream(fontProperties)) {
-            Properties properties = new Properties();
-            properties.load(inputStream);
+        if (fonts.containsKey(fontName))
+            return fonts.get(fontName);
 
-            String fontName = properties.getProperty("font.name");
-            String fontFileName = getFontFileName(fontName);
-            FontProgram fontProgram = FontProgramFactory.createFont(fontFileName);
-            pdfFont = PdfFontFactory.createFont(fontProgram, PdfEncodings.WINANSI, true);
-        }
+        String fontFileName = FONTS_FOLDER + fontName + ".ttf";
+        FontProgram fontProgram = FontProgramFactory.createFont(fontFileName);
+        fonts.put(fontName, PdfFontFactory.createFont(fontProgram, PdfEncodings.WINANSI, true));
 
-        return pdfFont;
+        return fonts.get(fontName);
     }
 
-    private static String getFontFileName(String fontName) {
-        return FONTS_FOLDER + fontName + ".ttf";
+    public static PdfFont getPdfFont2(String fontName) throws IOException {
+
+        if (fonts.containsKey(fontName))
+            return fonts.get(fontName);
+
+        String fontFileName = FONTS_FOLDER + fontName;
+        FontProgram fontProgram = FontProgramFactory.createFont(fontFileName);
+        fonts.put(fontName, PdfFontFactory.createFont(fontProgram, PdfEncodings.WINANSI, true));
+
+        return fonts.get(fontName);
     }
+
 }

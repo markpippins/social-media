@@ -44,7 +44,7 @@ public class CombinedStyleProvider extends PDFStyleProvider implements ExcelStyl
         if (!styleXSSFCellStyleMap.containsKey(adapter)) {
             XSSFCellStyle cellStyle = createCellStyle(workbook);
             apply(workbook, adapter, cellStyle);
-            setCellDefaults(workbook, cellStyle);
+            setXSSFCellDefaults(workbook, cellStyle);
 
             if (Objects.nonNull(col) && cellDefaultsAccessed) {
                 XSSFCellStyle defaultCellStyle = getCellStyle(workbook);
@@ -69,7 +69,7 @@ public class CombinedStyleProvider extends PDFStyleProvider implements ExcelStyl
         if (!styleXSSFCellStyleMap.containsKey(adapter)) {
             XSSFCellStyle headerStyle = createHeaderStyle(workbook);
             apply(workbook, adapter, headerStyle);
-            setHeaderDefaults(workbook, headerStyle);
+            setXSSFHeaderDefaults(workbook, headerStyle);
 
             if (Objects.nonNull(col) && headerDefaultsAccessed) {
                 XSSFCellStyle defaultHeaderStyle = getHeaderStyle(workbook);
@@ -85,7 +85,7 @@ public class CombinedStyleProvider extends PDFStyleProvider implements ExcelStyl
         return styleXSSFCellStyleMap.get(adapter);
     }
 
-    private void setCellDefaults(Workbook workbook, XSSFCellStyle cellStyle) {
+    private void setXSSFCellDefaults(Workbook workbook, XSSFCellStyle cellStyle) {
         XSSFFont xssfFont = ((XSSFWorkbook) workbook).createFont();
         xssfFont.setFontName("Courier");
         xssfFont.setFontHeight(11);
@@ -95,7 +95,7 @@ public class CombinedStyleProvider extends PDFStyleProvider implements ExcelStyl
         cellStyle.setFont(xssfFont);
     }
 
-    private void setHeaderDefaults(Workbook workbook, XSSFCellStyle cellStyle) {
+    private void setXSSFHeaderDefaults(Workbook workbook, XSSFCellStyle cellStyle) {
         XSSFFont xssfFont = ((XSSFWorkbook) workbook).createFont();
         xssfFont.setFontName("Courier");
         xssfFont.setFontHeight(10.5);

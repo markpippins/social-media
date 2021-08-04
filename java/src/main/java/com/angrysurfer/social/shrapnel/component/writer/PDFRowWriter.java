@@ -81,20 +81,20 @@ public class PDFRowWriter extends AbstractRowWriter {
 
         Table table = new Table(UnitValue.createPointArray(getTableWidths()));
 
-        if (getStyleProvider().getCellStyle().hasProperty(Property.FONT))
-            try {
-                PdfFont font = getStyleProvider().getCellStyle().getProperty(Property.FONT);
-                table.setFont(font);
-            } catch (Exception e) {
-                log.error(e.getMessage(), e);
-            }
-
-        else try {
-            PdfFont font = PdfFontFactory.createFont(PDFRowWriter.DEFAULT_FONT_NAME);
-            table.setFont(font);
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-        }
+//        if (getStyleProvider().getCellStyle().hasProperty(Property.FONT))
+//            try {
+//                PdfFont font = getStyleProvider().getCellStyle().getProperty(Property.FONT);
+//                table.setFont(font);
+//            } catch (Exception e) {
+//                log.error(e.getMessage(), e);
+//            }
+//
+//        else try {
+//            PdfFont font = PdfFontFactory.createFont(PDFRowWriter.DEFAULT_FONT_NAME);
+//            table.setFont(font);
+//        } catch (Exception e) {
+//            log.error(e.getMessage(), e);
+//        }
 
         return table.setFontSize(PDFRowWriter.DEFAULT_FONT_SIZE);
     }
