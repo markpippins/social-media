@@ -158,10 +158,8 @@ public class PDFRowWriter extends AbstractRowWriter {
         final int[] rowNum = {0};
         items.stream().filter(item -> getFilters().allow(item, this, this)).forEach(item -> {
             beforeRow(item);
-            writeDataRow(item, rowNum[0]).forEach(getTable()::addCell);
+            writeDataRow(item, rowNum[0]++).forEach(getTable()::addCell);
         });
-
-        rowNum[0]++;
     }
 
     protected void writeFormattedValue(Object item, ColumnSpec col, Cell cell) {

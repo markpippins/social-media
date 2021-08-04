@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -37,13 +39,13 @@ public class ExportServiceImpl implements ExportsService {
     }
 
     @Override
-    public ByteArrayResource exportByteArrayResource(ExportRequest request) {
+    public ByteArrayResource exportByteArrayResource(ExportRequest request) throws IOException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         ExportFactory factory = getFactory(request);
         return Objects.nonNull(factory) ? factory.exportByteArrayResource(request, FileUtil.makeFileName(user, factory)) : null;
     }
 
     @Override
-    public ByteArrayOutputStream exportByteArrayOutputStream(ExportRequest request) {
+    public ByteArrayOutputStream exportByteArrayOutputStream(ExportRequest request) throws IOException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         ExportFactory factory = getFactory(request);
         return Objects.nonNull(factory) ? factory.exportByteArrayOutputStream(request) : null;
     }

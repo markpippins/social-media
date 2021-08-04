@@ -14,51 +14,68 @@ import java.util.Objects;
 @Setter
 public class PDFStyleProvider implements StyleProvider {
 
+    int firstRow = -1;
     private boolean applyDefaultStyles = true;
 
-    private StyleAdapter iTextCellStyleDefault;
+    private StyleAdapter defaultCellStyleAdapter;
+    private StyleAdapter defaultHeaderStyleAdapter;
 
-    private StyleAdapter iTextHeaderStyleDefault;
-
-    private Map<ColumnSpec, StyleAdapter> iTextCellStyles = new HashMap<>();
-
-    private Map<ColumnSpec, StyleAdapter> iTextHeaderStyles = new HashMap<>();
+    private Map<ColumnSpec, StyleAdapter> cellStyles = new HashMap<>();
+    private Map<ColumnSpec, StyleAdapter> headerStyles = new HashMap<>();
 
     @Override
     public StyleAdapter getCellStyle(Object item, ColumnSpec col, int row) {
-        if (Objects.nonNull(col) && iTextCellStyles.containsKey(col))
-            return iTextCellStyles.get(col);
+        if (Objects.nonNull(col) && cellStyles.containsKey(col))
+            return cellStyles.get(col);
 
-        if (Objects.nonNull(col) && !iTextCellStyles.containsKey(col)) {
+        if (Objects.nonNull(col) && !cellStyles.containsKey(col)) {
             StyleAdapter result = new CellStyleAdapter();
-            if (Objects.nonNull(this.iTextCellStyleDefault))
-                result.absorb(this.iTextCellStyleDefault);
-            iTextCellStyles.put(col, result);
+
+            if (Objects.nonNull(this.defaultCellStyleAdapter))
+                result.absorb(this.defaultCellStyleAdapter);
+
+            cellStyles.put(col, result);
             return result;
         }
 
-        if (Objects.isNull(iTextCellStyleDefault))
-            iTextCellStyleDefault = new CellStyleAdapter();
-        
-        return iTextCellStyleDefault;
+        if (Objects.isNull(defaultCellStyleAdapter))
+            defaultCellStyleAdapter = new CellStyleAdapter();
+
+        return defaultCellStyleAdapter;
+    }
+
+    public StyleAdapter getDefaultCellStyleAdapter() {
+        if (Objects.isNull(defaultCellStyleAdapter))
+            defaultCellStyleAdapter = new CellStyleAdapter();
+
+        return defaultCellStyleAdapter;
+    }
+
+    public StyleAdapter getDefaultHeaderStyleAdapter() {
+        if (Objects.isNull(defaultHeaderStyleAdapter))
+            defaultHeaderStyleAdapter = new CellStyleAdapter();
+
+        return defaultHeaderStyleAdapter;
     }
 
     @Override
     public StyleAdapter getHeaderStyle(ColumnSpec col) {
-        if (Objects.nonNull(col) && iTextHeaderStyles.containsKey(col))
-            return iTextHeaderStyles.get(col);
+        if (Objects.nonNull(col) && headerStyles.containsKey(col))
+            return headerStyles.get(col);
 
-        if (Objects.nonNull(col) && !iTextHeaderStyles.containsKey(col)) {
+        if (Objects.nonNull(col) && !headerStyles.containsKey(col)) {
             StyleAdapter result = new HeaderStyleAdapter();
-            if (Objects.nonNull(this.iTextHeaderStyleDefault))
-                result.absorb(this.iTextHeaderStyleDefault);
-            iTextHeaderStyles.put(col, result);
+
+            if (Objects.nonNull(this.defaultHeaderStyleAdapter))
+                result.absorb(this.defaultHeaderStyleAdapter);
+
+            headerStyles.put(col, result);
             return result;
         }
 
-        if (Objects.isNull(iTextHeaderStyleDefault))
-            iTextHeaderStyleDefault = new HeaderStyleAdapter();
+        if (Objects.isNull(defaultHeaderStyleAdapter))
+            defaultHeaderStyleAdapter = new HeaderStyleAdapter();
 
-        return iTextHeaderStyleDefault;
+        return defaultHeaderStyleAdapter;
     }
 }

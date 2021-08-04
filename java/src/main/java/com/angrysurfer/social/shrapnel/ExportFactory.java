@@ -7,6 +7,7 @@ import com.angrysurfer.social.shrapnel.util.PdfUtil;
 import org.springframework.core.io.ByteArrayResource;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
@@ -27,57 +28,49 @@ public interface ExportFactory {
 
     Class<Export> getExportClass();
 
-    default public ByteArrayOutputStream exportByteArrayOutputStream(ExportRequest request) {
+    default public ByteArrayOutputStream exportByteArrayOutputStream(ExportRequest request) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException, IOException {
 
-        try {
-            Export export = newInstance();
-            if (Objects.isNull(export))
-                return null;
+        Export export = newInstance();
+        if (Objects.isNull(export))
+            return null;
 
-            if (Objects.nonNull(request.getFilterCriteria()) && request.getFilterCriteria().size() > 0)
-                export.addFilter(request.getFilterCriteria());
+        if (Objects.nonNull(request.getFilterCriteria()) && request.getFilterCriteria().size() > 0)
+            export.addFilter(request.getFilterCriteria());
 
-            switch (request.getFileType().toLowerCase(Locale.ROOT)) {
-                case PDF_FILE:
-                    return PdfUtil.generateByteArrayOutputStream(getData(), export);
+        switch (request.getFileType().toLowerCase(Locale.ROOT)) {
+            case PDF_FILE:
+                return PdfUtil.generateByteArrayOutputStream(getData(), export);
 
-                case XLSX_FILE:
-                    return ExcelUtil.generateByteArrayOutputStream(getData(), export, FileUtil.getTabLabel(export));
-            }
-        } catch (Exception e) {
-//            log.error(e.getMessage(), e);
+            case XLSX_FILE:
+                return ExcelUtil.generateByteArrayOutputStream(getData(), export, FileUtil.getTabLabel(export));
         }
 
         return null;
     }
 
-    default public ByteArrayResource exportByteArrayResource(ExportRequest request, String tempFileName) {
-        try {
-            Export export = newInstance();
-            if (Objects.isNull(export))
-                return null;
+    default public ByteArrayResource exportByteArrayResource(ExportRequest request, String tempFileName) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException, IOException {
+        Export export = newInstance();
+        if (Objects.isNull(export))
+            return null;
 
-            if (Objects.nonNull(request.getFilterCriteria()) && request.getFilterCriteria().size() > 0)
-                export.addFilter(request.getFilterCriteria());
+        if (Objects.nonNull(request.getFilterCriteria()) && request.getFilterCriteria().size() > 0)
+            export.addFilter(request.getFilterCriteria());
 
-            String filename = null;
+        String filename = null;
 
-            switch (request.getFileType().toLowerCase(Locale.ROOT)) {
-                case PDF_FILE:
-                    filename = PdfUtil.writeTabularFile(getData(), export.getPdfRowWriter(), tempFileName);
-                    break;
+        switch (request.getFileType().toLowerCase(Locale.ROOT)) {
+            case PDF_FILE:
+                filename = PdfUtil.writeTabularFile(getData(), export.getPdfRowWriter(), tempFileName);
+                break;
 
-                case XLSX_FILE:
-                    filename = ExcelUtil.writeWorkbookToFile(getData(), export, tempFileName);
-                    break;
-            }
+            case XLSX_FILE:
+                filename = ExcelUtil.writeWorkbookToFile(getData(), export, tempFileName);
+                break;
+        }
 
-            if (Objects.nonNull(filename)) {
-                FileUtil.removeFileAfter(filename, WAIT_SECONDS);
-                return FileUtil.getByteArrayResource(filename);
-            }
-        } catch (Exception e) {
-//            log.error(e.getMessage(), e);
+        if (Objects.nonNull(filename)) {
+            FileUtil.removeFileAfter(filename, WAIT_SECONDS);
+            return FileUtil.getByteArrayResource(filename);
         }
 
         return null;
