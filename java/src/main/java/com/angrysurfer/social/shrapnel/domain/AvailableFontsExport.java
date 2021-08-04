@@ -4,23 +4,29 @@ import com.angrysurfer.social.shrapnel.ExportFactory;
 import com.angrysurfer.social.shrapnel.TabularExport;
 import com.angrysurfer.social.shrapnel.component.ColumnSpec;
 import com.angrysurfer.social.shrapnel.component.format.AbstractValueFormatter;
-import com.angrysurfer.social.shrapnel.component.style.PDFFontSource;
+import com.angrysurfer.social.shrapnel.component.style.CombinedStyleProvider;
+import com.angrysurfer.social.shrapnel.component.style.PdfFontSource;
 import com.angrysurfer.social.shrapnel.component.style.StyleAdapter;
 import com.angrysurfer.social.shrapnel.component.style.preset.ZebraStyleProvider;
 import com.itextpdf.kernel.color.Color;
 import com.itextpdf.kernel.font.PdfFont;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.angrysurfer.social.shrapnel.component.style.PDFFontSource.FONTS_FOLDER;
+import static com.angrysurfer.social.shrapnel.component.style.PdfFontSource.FONTS_FOLDER;
 
 @Getter
 @Setter
+@Slf4j
 public class AvailableFontsExport extends TabularExport {
 
     static List<ColumnSpec> COLUMNS = ColumnSpec.createColumnSpecs(Arrays.asList("path", "name"));
@@ -30,6 +36,7 @@ public class AvailableFontsExport extends TabularExport {
     public AvailableFontsExport() {
         super(NAME, COLUMNS);
         getPdfRowWriter().setStyleProvider(new AvailableFontsStyleProvider());
+        getExcelRowWriter().setStyleProvider(new AvailableFontsStyleProvider());
         getPdfRowWriter().setValueFormatter(new AvailableFontsValueFormatter());
         getExcelRowWriter().setValueFormatter(new AvailableFontsValueFormatter());
     }
@@ -39,6 +46,18 @@ public class AvailableFontsExport extends TabularExport {
         public AvailableFontsStyleProvider() {
             super(Color.PINK);
             getDefaultCellStyleAdapter().setBackgroundColor(Color.ORANGE);
+            setDarkStyleProvider(new CombinedStyleProvider() {
+                @Override
+                public void onWorkbookSet(Workbook workbook) {
+                    getDarkStyleProvider().getCellStyle(workbook).setFillForegroundColor(IndexedColors.PALE_BLUE.getIndex());
+                    getDarkStyleProvider().getCellStyle(workbook).setFillPattern(FillPatternType.SOLID_FOREGROUND);
+                }
+            });
+        }
+
+        @Override
+        public void onWorkbookSet(Workbook workbook) {
+            super.onWorkbookSet(workbook);
         }
 
         @Override
@@ -51,11 +70,13 @@ public class AvailableFontsExport extends TabularExport {
                     StyleAdapter adapter = new StyleAdapter();
                     adapter.absorb(style);
                     String fontName = ((File) item).getName();
-                    PdfFont font = PDFFontSource.getPdfFont2(fontName);
-                    adapter.setFont(font);
+                    if (PdfFontSource.fontFileExists(fontName)) {
+                        PdfFont font = PdfFontSource.getPdfFont2(fontName);
+                        adapter.setFont(font);
+                    }
                     return adapter;
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    log.error(e.getMessage(), e);
                 }
 
             return style;

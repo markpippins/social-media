@@ -12,7 +12,7 @@ import java.util.Objects;
 
 @Getter
 @Setter
-public class PDFStyleProvider implements StyleProvider {
+public class PdfStyleProvider implements StyleProvider {
 
     int firstRow = -1;
     private boolean applyDefaultStyles = true;

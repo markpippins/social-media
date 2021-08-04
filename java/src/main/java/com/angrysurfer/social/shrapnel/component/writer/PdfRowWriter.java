@@ -5,12 +5,9 @@ import com.angrysurfer.social.shrapnel.component.filter.DataFilterList;
 import com.angrysurfer.social.shrapnel.component.format.ValueFormatter;
 import com.angrysurfer.social.shrapnel.component.property.Types;
 import com.angrysurfer.social.shrapnel.component.style.CombinedStyleProvider;
-import com.angrysurfer.social.shrapnel.component.style.PDFStyleProvider;
-import com.itextpdf.kernel.font.PdfFont;
-import com.itextpdf.kernel.font.PdfFontFactory;
+import com.angrysurfer.social.shrapnel.component.style.PdfStyleProvider;
 import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.element.Table;
-import com.itextpdf.layout.property.Property;
 import com.itextpdf.layout.property.UnitValue;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,7 +20,7 @@ import java.util.*;
 @Slf4j
 @Getter
 @Setter
-public class PDFRowWriter extends AbstractRowWriter {
+public class PdfRowWriter extends AbstractRowWriter {
 
     private static final String DEFAULT_FONT_NAME = "Courier";
     private static final float DEFAULT_FONT_SIZE = 7;
@@ -34,15 +31,15 @@ public class PDFRowWriter extends AbstractRowWriter {
 
     private Table table;
 
-    private PDFStyleProvider styleProvider;
+    private CombinedStyleProvider styleProvider;
 
     private DataFilterList filters = new DataFilterList.DataFilterListImpl();
 
-    public PDFRowWriter(List<ColumnSpec> columns) {
+    public PdfRowWriter(List<ColumnSpec> columns) {
         super(columns);
     }
 
-    public PDFRowWriter(List<ColumnSpec> columns, ValueFormatter valueFormatter) {
+    public PdfRowWriter(List<ColumnSpec> columns, ValueFormatter valueFormatter) {
         super(columns, valueFormatter);
     }
 
@@ -78,28 +75,10 @@ public class PDFRowWriter extends AbstractRowWriter {
     }
 
     public Table createTable() {
-
-        Table table = new Table(UnitValue.createPointArray(getTableWidths()));
-
-//        if (getStyleProvider().getCellStyle().hasProperty(Property.FONT))
-//            try {
-//                PdfFont font = getStyleProvider().getCellStyle().getProperty(Property.FONT);
-//                table.setFont(font);
-//            } catch (Exception e) {
-//                log.error(e.getMessage(), e);
-//            }
-//
-//        else try {
-//            PdfFont font = PdfFontFactory.createFont(PDFRowWriter.DEFAULT_FONT_NAME);
-//            table.setFont(font);
-//        } catch (Exception e) {
-//            log.error(e.getMessage(), e);
-//        }
-
-        return table.setFontSize(PDFRowWriter.DEFAULT_FONT_SIZE);
+        return new Table(UnitValue.createPointArray(getTableWidths()));
     }
 
-    public PDFStyleProvider getStyleProvider() {
+    public PdfStyleProvider getStyleProvider() {
         if (Objects.isNull(styleProvider))
             styleProvider = new CombinedStyleProvider();
 

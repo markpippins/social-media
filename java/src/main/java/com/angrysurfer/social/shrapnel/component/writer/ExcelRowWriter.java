@@ -33,7 +33,7 @@ public class ExcelRowWriter extends AbstractRowWriter implements RowWriter {
 
     private DataFilterList filters = new DataFilterList.DataFilterListImpl();
 
-    private ExcelStyleProvider styleProvider;
+    private CombinedStyleProvider styleProvider;
 
     private boolean autoCreateTopLevelHeader = true;
 
@@ -56,7 +56,7 @@ public class ExcelRowWriter extends AbstractRowWriter implements RowWriter {
     protected Cell createHeaderCell(ColumnSpec col, Row header, int index) {
         Cell cell = header.createCell(index);
         cell.setCellStyle(getStyleProvider().getHeaderStyle(getWorkbook(), col));
-        return cell;
+            return cell;
     }
 
     protected int getCurrentRow() {
@@ -93,11 +93,13 @@ public class ExcelRowWriter extends AbstractRowWriter implements RowWriter {
     public void setSheet(Sheet sheet) {
         this.sheet = sheet;
         onSheetSet(sheet);
+        getStyleProvider().onSheetSet(sheet);
     }
 
     public void setWorkbook(Workbook workbook) {
         this.workbook = workbook;
         onWorkbookSet(workbook);
+        getStyleProvider().onWorkbookSet(workbook);
     }
 
     protected void writeCell(ColumnSpec col, Object item, Cell cell) {

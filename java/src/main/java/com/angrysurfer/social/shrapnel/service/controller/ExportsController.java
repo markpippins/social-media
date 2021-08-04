@@ -32,7 +32,7 @@ public class ExportsController {
         ByteArrayResource bytes = null;
 
         try {
-            exportsService.exportByteArrayResource(request);
+            bytes = exportsService.exportByteArrayResource(request);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         }

@@ -2,24 +2,24 @@ package com.angrysurfer.social.shrapnel.component.style;
 
 import com.angrysurfer.social.shrapnel.component.ColumnSpec;
 import com.itextpdf.layout.Style;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.FillPatternType;
-import org.apache.poi.ss.usermodel.IndexedColors;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.awt.*;
+import java.awt.Color;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public class CombinedStyleProvider extends PDFStyleProvider implements ExcelStyleProvider {
+public class CombinedStyleProvider extends PdfStyleProvider implements ExcelStyleProvider {
 
     private static final String DEFAULT_FONT = "Courier";
+
     protected Map<Style, XSSFCellStyle> styleXSSFCellStyleMap = new HashMap<>();
+
     private boolean cellDefaultsAccessed = false;
     private boolean headerDefaultsAccessed = false;
 

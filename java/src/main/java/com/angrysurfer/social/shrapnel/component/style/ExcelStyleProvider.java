@@ -1,6 +1,7 @@
 package com.angrysurfer.social.shrapnel.component.style;
 
 import com.angrysurfer.social.shrapnel.component.ColumnSpec;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 
@@ -18,7 +19,11 @@ public interface ExcelStyleProvider {
 
     XSSFCellStyle getHeaderStyle(Workbook workbook, ColumnSpec col);
 
-   default XSSFCellStyle getHeaderStyle(Workbook workbook) {
+    default XSSFCellStyle getHeaderStyle(Workbook workbook) {
         return getHeaderStyle(workbook);
     }
+
+    default void onWorkbookSet(Workbook workbook) {};
+
+    default void onSheetSet(Sheet sheet) {} ;
 }

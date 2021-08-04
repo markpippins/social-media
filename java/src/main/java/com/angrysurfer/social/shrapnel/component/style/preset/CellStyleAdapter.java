@@ -1,15 +1,11 @@
 package com.angrysurfer.social.shrapnel.component.style.preset;
 
-import com.angrysurfer.social.shrapnel.component.style.PDFFontSource;
 import com.angrysurfer.social.shrapnel.component.style.StyleAdapter;
-import com.itextpdf.io.font.FontConstants;
 import com.itextpdf.kernel.font.PdfFont;
-import com.itextpdf.kernel.font.PdfFontFactory;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.IOException;
 import java.util.Objects;
 
 @Setter
@@ -22,7 +18,7 @@ public class CellStyleAdapter extends StyleAdapter {
         PdfFont pdfFont = null;
 
 //        try {
-//            pdfFont = PDFFontSource.getPdfFont("calibri");
+//            pdfFont = PdfFontSource.getPdfFont("calibri");
 //        } catch (IOException e) {
 //            log.error(e.getMessage(), e);
 //            try {

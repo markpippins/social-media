@@ -2,7 +2,7 @@ package com.angrysurfer.social.shrapnel.service.impl;
 
 import com.angrysurfer.social.shrapnel.component.ColumnSpec;
 import com.angrysurfer.social.shrapnel.component.writer.ExcelRowWriter;
-import com.angrysurfer.social.shrapnel.component.writer.PDFRowWriter;
+import com.angrysurfer.social.shrapnel.component.writer.PdfRowWriter;
 import com.angrysurfer.social.shrapnel.component.writer.SimpleCSVRowWriter;
 import com.angrysurfer.social.shrapnel.service.LightweightExportService;
 import com.angrysurfer.social.shrapnel.util.ExcelUtil;
@@ -67,7 +67,7 @@ public class LightweightExportServiceImpl implements LightweightExportService {
     @Override
     public String writeTabularPdfFile(Collection<Object> items, List<ColumnSpec> columns, String filename) {
         try {
-            PdfUtil.writeTabularFile(items, new PDFRowWriter(columns), filename);
+            PdfUtil.writeTabularFile(items, new PdfRowWriter(columns), filename);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -76,7 +76,7 @@ public class LightweightExportServiceImpl implements LightweightExportService {
     }
 
     @Override
-    public String writeTabularPdfFile(Collection<Object> items, PDFRowWriter pdfRowWriter, String filename) {
+    public String writeTabularPdfFile(Collection<Object> items, PdfRowWriter pdfRowWriter, String filename) {
         try {
             PdfUtil.writeTabularFile(items, pdfRowWriter, filename);
         } catch (IOException e) {

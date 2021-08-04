@@ -3,7 +3,7 @@ package com.angrysurfer.social.shrapnel;
 import com.angrysurfer.social.shrapnel.component.ColumnSpec;
 import com.angrysurfer.social.shrapnel.component.filter.StringStartsWithFilter;
 import com.angrysurfer.social.shrapnel.component.writer.ExcelRowWriter;
-import com.angrysurfer.social.shrapnel.component.writer.PDFRowWriter;
+import com.angrysurfer.social.shrapnel.component.writer.PdfRowWriter;
 import com.itextpdf.kernel.geom.PageSize;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,7 +24,7 @@ public class TabularExport implements Export {
 
     private ExcelRowWriter excelRowWriter;
 
-    private PDFRowWriter pdfRowWriter;
+    private PdfRowWriter pdfRowWriter;
 
     public TabularExport(String name, List<ColumnSpec> columns) {
         setName(name);
@@ -46,9 +46,9 @@ public class TabularExport implements Export {
     }
 
     @Override
-    public PDFRowWriter getPdfRowWriter() {
+    public PdfRowWriter getPdfRowWriter() {
         if (Objects.isNull(pdfRowWriter))
-            pdfRowWriter = new PDFRowWriter(getColumns());
+            pdfRowWriter = new PdfRowWriter(getColumns());
 
         return pdfRowWriter;
     }

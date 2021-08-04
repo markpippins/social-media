@@ -2,7 +2,7 @@ package com.angrysurfer.social.shrapnel;
 
 import com.angrysurfer.social.shrapnel.component.ColumnSpec;
 import com.angrysurfer.social.shrapnel.component.writer.ExcelRowWriter;
-import com.angrysurfer.social.shrapnel.component.writer.PDFRowWriter;
+import com.angrysurfer.social.shrapnel.component.writer.PdfRowWriter;
 import com.itextpdf.kernel.geom.PageSize;
 
 import java.util.List;
@@ -18,7 +18,7 @@ public interface Export {
 
     ExcelRowWriter getExcelRowWriter();
 
-    PDFRowWriter getPdfRowWriter();
+    PdfRowWriter getPdfRowWriter();
 
     PageSize getPageSize();
 }
