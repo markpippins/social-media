@@ -56,11 +56,6 @@ public class AvailableFontsExport extends TabularExport {
         }
 
         @Override
-        public void onWorkbookSet(Workbook workbook) {
-            super.onWorkbookSet(workbook);
-        }
-
-        @Override
         public StyleAdapter getCellStyle(Object item, ColumnSpec col, int row) {
 
             StyleAdapter style = super.getCellStyle(item, col, row);
