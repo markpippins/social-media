@@ -1,24 +1,29 @@
 package com.angrysurfer.social.shrapnel.util;
 
+import com.angrysurfer.social.dto.UserDTO;
 import com.angrysurfer.social.shrapnel.Exporter;
 import com.angrysurfer.social.shrapnel.services.factory.ExporterFactory;
-import com.angrysurfer.social.dto.UserDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ByteArrayResource;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Properties;
 
 @Slf4j
 public class FileUtil {
 
-    public static String FILENAME = "filename";
+    public static final String DEFAULTS = "java/src/main/resources/pdf.properties";
+
+    public static final String FILENAME = "filename";
 
     public static boolean ensureSafety(String filename) throws IOException {
         boolean safe = true;
@@ -91,4 +96,19 @@ public class FileUtil {
     public static String getTabLabel(Exporter exporter) {
         return String.format("%s - %s - %s - %s", exporter.getName(), LocalDate.now().getDayOfMonth(), LocalDate.now().getMonthValue(), LocalDate.now().getYear());
     }
+
+    public static Object getProperty(String propertyFile, String propertyName, Object defaultValue) {
+        return getProperties(propertyFile).getOrDefault(propertyName, defaultValue);
+    }
+
+    public static Properties getProperties(String propertyFile) {
+        Properties properties = new Properties();
+        try (InputStream input = new FileInputStream(propertyFile)) {
+            properties.load(input);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        return properties;
+    }
+
 }

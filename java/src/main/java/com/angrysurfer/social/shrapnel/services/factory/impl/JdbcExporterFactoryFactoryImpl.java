@@ -36,13 +36,15 @@ public class JdbcExporterFactoryFactoryImpl implements ExporterFactoryFactory {
 
     @Override
     public boolean hasFactory(ExportRequest request) {
-        return Objects.nonNull(exportModelRepository.findByName(request.getExport()));
+        ExportModel export = exportModelRepository.findByName(request.getExport());
+        return Objects.nonNull(export) && ExportModel.isInitialized(export);
     }
 
     @Override
     public ExporterFactory newInstance(ExportRequest request) {
         final ExportModel export = exportModelRepository.findByName(request.getExport());
         final DataSourceModel dataSource = dataSourceModelRepository.findByName(request.getExport());
+
         return new JdbcTableExporterFactory(request, export) {
             @Override
             public Collection getData() {
