@@ -25,32 +25,28 @@ public class CellStyleAdapter extends StyleAdapter {
 
     static final String DEFAULTS = "java/src/main/resources/pdf.properties";
 
-    static int fontSize = 7;
-    static int padding = 1;
-    static int margin = 1;
+    private static final String FONT_SIZE = "font.size";
+    private static final String MARGIN = "cell.margin";
+    private static final String PADDING = "cell.padding";
+
+    static int DEFAULT_FONT_SIZE = 7;
+    static int DEFAULT_MARGIN = 1;
+    static int DEFAULT_PADDING = 1;
 
     static String defaultFont = "comic.ttf";
 
     public CellStyleAdapter() {
         PdfFont pdfFont = null;
-        String fontName = defaultFont;
 
         try (InputStream input = new FileInputStream(DEFAULTS)) {
             Properties properties = new Properties();
             properties.load(input);
 
-            setPadding(properties.containsKey("cell.padding") ?
-                    Integer.parseInt(properties.getProperty("cell.padding")) : padding);
+            setFontSize(properties.containsKey(FONT_SIZE) ? Integer.parseInt(properties.getProperty(FONT_SIZE)) : DEFAULT_FONT_SIZE);
+            setMargin(properties.containsKey(MARGIN) ? Integer.parseInt(properties.getProperty(MARGIN)) : DEFAULT_MARGIN);
+            setPadding(properties.containsKey(PADDING) ? Integer.parseInt(properties.getProperty(PADDING)) : DEFAULT_PADDING);
 
-            setMargin(properties.containsKey("cell.margin") ?
-                    Integer.parseInt(properties.getProperty("cell.margin")) : margin);
-
-            setFontSize(properties.containsKey("font.size") ?
-                    Integer.parseInt(properties.getProperty("font.size")) : fontSize);
-
-            if (properties.containsKey("font.name"))
-                fontName = properties.getProperty("font.name");
-
+            String fontName = properties.containsKey("font.name") ? properties.getProperty("font.name") : defaultFont;
             String fontFileName = FONTS_FOLDER + fontName;
             FontProgram fontProgram = FontProgramFactory.createFont(fontFileName);
             pdfFont = PdfFontFactory.createFont(fontProgram, PdfEncodings.WINANSI, true);
