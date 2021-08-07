@@ -47,7 +47,7 @@ public interface ExportsService {
         switch (request.getFileType().toLowerCase(Locale.ROOT)) {
             case CSV_FILE:
                 Collection data = factory.getData();
-                CSVRowWriter writer = new CSVRowWriter(exporter.getColumns());
+                CSVRowWriter writer = new CSVRowWriter(exporter.getFields());
                 if (factory instanceof JdbcTableExporterFactory)
                     writer.setPropertyAccessor((new HashMapPropertyAccessor()));
                 filename = FileUtil.makeFileName(request.getUser(), factory);

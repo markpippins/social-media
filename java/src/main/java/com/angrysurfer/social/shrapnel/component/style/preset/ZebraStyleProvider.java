@@ -1,6 +1,6 @@
 package com.angrysurfer.social.shrapnel.component.style.preset;
 
-import com.angrysurfer.social.shrapnel.component.ColumnSpec;
+import com.angrysurfer.social.shrapnel.component.FieldSpec;
 import com.angrysurfer.social.shrapnel.component.style.CombinedStyleProvider;
 import com.angrysurfer.social.shrapnel.component.style.StyleAdapter;
 import com.itextpdf.kernel.color.Color;
@@ -48,13 +48,13 @@ public class ZebraStyleProvider extends CombinedStyleProvider {
     }
 
     @Override
-    public StyleAdapter getCellStyle(Object item, ColumnSpec col, int row) {
+    public StyleAdapter getCellStyle(Object item, FieldSpec col, int row) {
         return row % 2 == 0 ? getDarkStyleProvider().getCellStyle(item, col, row) :
                 super.getCellStyle(item, col, row);
     }
 
     @Override
-    public XSSFCellStyle getCellStyle(Object item, Workbook workbook, ColumnSpec col, int row) {
+    public XSSFCellStyle getCellStyle(Object item, Workbook workbook, FieldSpec col, int row) {
         return row % 2 == 0 ? getDarkStyleProvider().getCellStyle(item, workbook, col, row) :
                 super.getCellStyle(item, workbook, col, row);
     }

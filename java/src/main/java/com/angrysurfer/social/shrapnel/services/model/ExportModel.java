@@ -12,17 +12,29 @@ import java.util.Set;
 @Setter
 @Entity
 public class ExportModel {
+    //
+    // data source
+    //
     @ManyToOne
     @JoinColumn(name = "data_source_id")
     public DataSourceModel dataSource;
+    //
+    // id
+    //
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     private Long id;
+    //
+    // name
+    //
     @Column(name = "name", nullable = false)
     private String name;
+    //
+    // columns
+    //
     @OneToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "model_column", joinColumns = {@JoinColumn(name = "model_id")}, inverseJoinColumns = {
+    @JoinTable(name = "export_model_column", joinColumns = {@JoinColumn(name = "export_model_id")}, inverseJoinColumns = {
             @JoinColumn(name = "column_id")})
     @Getter
     private Set<ColumnSpecModel> columnSpecs = new HashSet<>();

@@ -1,6 +1,6 @@
 package com.angrysurfer.social.shrapnel.component.style;
 
-import com.angrysurfer.social.shrapnel.component.ColumnSpec;
+import com.angrysurfer.social.shrapnel.component.FieldSpec;
 import com.itextpdf.layout.Style;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.FillPatternType;
@@ -38,7 +38,7 @@ public class CombinedStyleProvider extends PdfStyleProvider implements ExcelStyl
     }
 
     @Override
-    public XSSFCellStyle getCellStyle(Object item, Workbook workbook, ColumnSpec col, int row) {
+    public XSSFCellStyle getCellStyle(Object item, Workbook workbook, FieldSpec col, int row) {
         if (Objects.isNull(workbook))
             throw new NullPointerException("CellStyle instance cannot be accessed without a Workbook");
 
@@ -63,7 +63,7 @@ public class CombinedStyleProvider extends PdfStyleProvider implements ExcelStyl
     }
 
     @Override
-    public XSSFCellStyle getHeaderStyle(Workbook workbook, ColumnSpec col) {
+    public XSSFCellStyle getHeaderStyle(Workbook workbook, FieldSpec col) {
         if (Objects.isNull(workbook))
             throw new NullPointerException("CellStyle instance cannot be accessed without a Workbook");
 

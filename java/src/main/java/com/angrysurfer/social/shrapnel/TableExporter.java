@@ -1,6 +1,6 @@
 package com.angrysurfer.social.shrapnel;
 
-import com.angrysurfer.social.shrapnel.component.ColumnSpec;
+import com.angrysurfer.social.shrapnel.component.FieldSpec;
 import com.angrysurfer.social.shrapnel.component.filter.StringStartsWithFilter;
 import com.angrysurfer.social.shrapnel.component.format.ValueFormatter;
 import com.angrysurfer.social.shrapnel.component.property.PropertyAccessor;
@@ -21,7 +21,7 @@ import java.util.Objects;
 @Setter
 public class TableExporter implements Exporter {
 
-    private List<ColumnSpec> columns;
+    private List<FieldSpec> fields;
 
     private String name;
 
@@ -29,9 +29,9 @@ public class TableExporter implements Exporter {
 
     private PdfRowWriter pdfRowWriter;
 
-    public TableExporter(String name, List<ColumnSpec> columns) {
+    public TableExporter(String name, List<FieldSpec> fields) {
         setName(name);
-        setColumns(columns);
+        setFields(fields);
     }
 
     @Override
@@ -43,7 +43,7 @@ public class TableExporter implements Exporter {
     @Override
     public ExcelRowWriter getExcelRowWriter() {
         if (Objects.isNull(excelRowWriter))
-            excelRowWriter = new ExcelRowWriter(getColumns());
+            excelRowWriter = new ExcelRowWriter(getFields());
 
         return excelRowWriter;
     }
@@ -51,7 +51,7 @@ public class TableExporter implements Exporter {
     @Override
     public PdfRowWriter getPdfRowWriter() {
         if (Objects.isNull(pdfRowWriter))
-            pdfRowWriter = new PdfRowWriter(getColumns());
+            pdfRowWriter = new PdfRowWriter(getFields());
 
         return pdfRowWriter;
     }

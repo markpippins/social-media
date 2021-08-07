@@ -1,6 +1,6 @@
 package com.angrysurfer.social.shrapnel.component.writer;
 
-import com.angrysurfer.social.shrapnel.component.ColumnSpec;
+import com.angrysurfer.social.shrapnel.component.FieldSpec;
 import com.angrysurfer.social.shrapnel.component.filter.DataFilterList;
 import com.angrysurfer.social.shrapnel.component.format.ValueFormatter;
 import com.angrysurfer.social.shrapnel.component.style.CombinedStyleProvider;
@@ -18,7 +18,7 @@ import java.util.*;
 @Slf4j
 @Getter
 @Setter
-public class ExcelRowWriter extends AbstractRowWriter implements RowWriter {
+public class ExcelRowWriter extends RowWriter implements DataWriter {
 
     public static final String WORKBOOK = "workbook";
 
@@ -36,15 +36,15 @@ public class ExcelRowWriter extends AbstractRowWriter implements RowWriter {
 
     private boolean autoCreateTopLevelHeader = true;
 
-    public ExcelRowWriter(List<ColumnSpec> columns) {
+    public ExcelRowWriter(List<FieldSpec> columns) {
         super(columns);
     }
 
-    public ExcelRowWriter(List<ColumnSpec> columns, ValueFormatter valueFormatter) {
+    public ExcelRowWriter(List<FieldSpec> columns, ValueFormatter valueFormatter) {
         super(columns, valueFormatter);
     }
 
-    public ExcelRowWriter(List<ColumnSpec> columns, ValueFormatter valueFormatter, CombinedStyleProvider styleProvider) {
+    public ExcelRowWriter(List<FieldSpec> columns, ValueFormatter valueFormatter, CombinedStyleProvider styleProvider) {
         super(columns, valueFormatter);
         setStyleProvider(styleProvider);
     }
@@ -52,9 +52,9 @@ public class ExcelRowWriter extends AbstractRowWriter implements RowWriter {
     protected void beforeRow(Object item) {
     }
 
-    protected Cell createHeaderCell(ColumnSpec col, Row header, int index) {
+    protected Cell createHeaderCell(FieldSpec field, Row header, int index) {
         Cell cell = header.createCell(index);
-        cell.setCellStyle(getStyleProvider().getHeaderStyle(getWorkbook(), col));
+        cell.setCellStyle(getStyleProvider().getHeaderStyle(getWorkbook(), field));
         return cell;
     }
 
@@ -111,9 +111,9 @@ public class ExcelRowWriter extends AbstractRowWriter implements RowWriter {
         getStyleProvider().onWorkbookSet(workbook);
     }
 
-    protected void writeCell(ColumnSpec col, Object item, Cell cell) {
-        if (accessorExists(item, col.getPropertyName()))
-            cell.setCellValue(getValueFormatter().hasFormatFor(col) ? getFormattedValue(item, col) : getValue(item, col));
+    protected void writeCell(FieldSpec field, Object item, Cell cell) {
+        if (accessorExists(item, field.getPropertyName()))
+            cell.setCellValue(getValueFormatter().hasFormatFor(field) ? getFormattedValue(item, field) : getValue(item, field));
     }
 
     protected void writeDisclaimer() {
@@ -122,11 +122,11 @@ public class ExcelRowWriter extends AbstractRowWriter implements RowWriter {
 
     protected void writeDataRow(Object item, Row row) {
         final int[] colNum = {getCellOffSet(item)};
-        getColumns().forEach(col -> {
-            if (!shouldSkip(col, item) && shouldWrite(col, item)) {
+        getFields().forEach(field -> {
+            if (!shouldSkip(field, item) && shouldWrite(field, item)) {
                 Cell cell = row.createCell(colNum[0]);
-                cell.setCellStyle(getStyleProvider().getCellStyle(item, getWorkbook(), col, getCurrentRow()));
-                writeCell(col, item, cell);
+                cell.setCellStyle(getStyleProvider().getCellStyle(item, getWorkbook(), field, getCurrentRow()));
+                writeCell(field, item, cell);
                 colNum[0]++;
             }
         });
@@ -136,13 +136,13 @@ public class ExcelRowWriter extends AbstractRowWriter implements RowWriter {
     protected void writerHeaderRow() {
         final int[] index = {0};
         Row header = getSheet().createRow(getCurrentRow());
-        getColumns().forEach(col -> createHeaderCell(col, header, index[0]++).setCellValue(Objects.nonNull(col.getHeaderLabel()) ?
-                col.getHeaderLabel() : col.getPropertyName().toUpperCase(Locale.ROOT)));
+        getFields().forEach(field -> createHeaderCell(field, header, index[0]++).setCellValue(Objects.nonNull(field.getHeaderLabel()) ?
+                field.getHeaderLabel() : field.getPropertyName().toUpperCase(Locale.ROOT)));
         incrementRow();
     }
 
     @Override
-    public void writeValues(Map<String, Object> outputConfig, Collection<Object> items) {
+    public void run(Map<String, Object> outputConfig, Collection<Object> items) {
         setup(outputConfig, items);
         writeDisclaimer();
 

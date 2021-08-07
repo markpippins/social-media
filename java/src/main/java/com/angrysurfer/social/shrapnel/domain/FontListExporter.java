@@ -1,7 +1,7 @@
 package com.angrysurfer.social.shrapnel.domain;
 
 import com.angrysurfer.social.shrapnel.TableExporter;
-import com.angrysurfer.social.shrapnel.component.ColumnSpec;
+import com.angrysurfer.social.shrapnel.component.FieldSpec;
 import com.angrysurfer.social.shrapnel.component.format.AbstractValueFormatter;
 import com.angrysurfer.social.shrapnel.component.style.PdfFontSource;
 import com.angrysurfer.social.shrapnel.component.style.StyleAdapter;
@@ -27,7 +27,7 @@ import static com.angrysurfer.social.shrapnel.component.style.PdfFontSource.FONT
 @Slf4j
 public class FontListExporter extends TableExporter {
 
-    static List<ColumnSpec> COLUMNS = ColumnSpec.createColumnSpecs(Arrays.asList("path", "name"));
+    static List<FieldSpec> COLUMNS = FieldSpec.createColumnSpecs(Arrays.asList("path", "name"));
 
     static String NAME = "font-list";
 
@@ -51,7 +51,7 @@ public class FontListExporter extends TableExporter {
 //        }
 
         @Override
-        public StyleAdapter getCellStyle(Object item, ColumnSpec col, int row) {
+        public StyleAdapter getCellStyle(Object item, FieldSpec col, int row) {
 
             StyleAdapter style = super.getCellStyle(item, col, row);
 
@@ -76,7 +76,7 @@ public class FontListExporter extends TableExporter {
     static class FontListValueFormatter extends AbstractValueFormatter {
 
         @Override
-        public String format(ColumnSpec col, String value) {
+        public String format(FieldSpec col, String value) {
             if (col.getPropertyName().equals("name"))
                 try {
                     PdfFont font = PdfFontSource.getPdfFont2(value.toString());
@@ -92,7 +92,7 @@ public class FontListExporter extends TableExporter {
         }
 
         @Override
-        public boolean hasFormatFor(ColumnSpec col) {
+        public boolean hasFormatFor(FieldSpec col) {
             return Arrays.asList("path", "name").contains(col.getPropertyName());
         }
     }

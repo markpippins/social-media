@@ -1,14 +1,14 @@
 package com.angrysurfer.social.shrapnel.component.filter;
 
 import com.angrysurfer.social.shrapnel.component.property.PropertyAccessor;
-import com.angrysurfer.social.shrapnel.component.writer.RowWriter;
+import com.angrysurfer.social.shrapnel.component.writer.DataWriter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public interface DataFilterList extends List<DataFilter> {
 
-    default boolean allow(Object item, RowWriter writer, PropertyAccessor propertyAccessor) {
+    default boolean allow(Object item, DataWriter writer, PropertyAccessor propertyAccessor) {
         final boolean[] result = {true};
 
         forEach(filter -> {

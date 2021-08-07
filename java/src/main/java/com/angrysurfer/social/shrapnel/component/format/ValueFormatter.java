@@ -1,6 +1,6 @@
 package com.angrysurfer.social.shrapnel.component.format;
 
-import com.angrysurfer.social.shrapnel.component.ColumnSpec;
+import com.angrysurfer.social.shrapnel.component.FieldSpec;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -9,14 +9,14 @@ import java.util.Date;
 
 public interface ValueFormatter {
 
-    String format(ColumnSpec col, Boolean value);
-    String format(ColumnSpec col, Double value);
-    String format(ColumnSpec col, Calendar value);
-    String format(ColumnSpec col, Date value);
-    String format(ColumnSpec col, LocalDate value);
-    String format(ColumnSpec col, LocalDateTime value);
+    String format(FieldSpec col, Boolean value);
+    String format(FieldSpec col, Double value);
+    String format(FieldSpec col, Calendar value);
+    String format(FieldSpec col, Date value);
+    String format(FieldSpec col, LocalDate value);
+    String format(FieldSpec col, LocalDateTime value);
 //    String format(ColumnSpecModel col, Richtext value);
-    String format(ColumnSpec col, String value);
+    String format(FieldSpec col, String value);
 
-    boolean hasFormatFor(ColumnSpec col);
+    boolean hasFormatFor(FieldSpec col);
 }

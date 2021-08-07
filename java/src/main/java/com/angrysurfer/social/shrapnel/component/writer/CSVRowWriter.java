@@ -1,6 +1,6 @@
 package com.angrysurfer.social.shrapnel.component.writer;
 
-import com.angrysurfer.social.shrapnel.component.ColumnSpec;
+import com.angrysurfer.social.shrapnel.component.FieldSpec;
 import com.angrysurfer.social.shrapnel.component.filter.DataFilterList;
 import com.angrysurfer.social.shrapnel.component.property.PropertyAccessor;
 import com.angrysurfer.social.shrapnel.component.property.PropertyUtilsPropertyAccessor;
@@ -18,7 +18,7 @@ import java.util.Map;
 @Getter
 @Setter
 @Slf4j
-public class CSVRowWriter extends AbstractRowWriter implements RowWriter {
+public class CSVRowWriter extends RowWriter implements DataWriter {
 
     private static final String SPACE = " ";
 
@@ -28,16 +28,16 @@ public class CSVRowWriter extends AbstractRowWriter implements RowWriter {
 
     private PropertyAccessor propertyAccessor = new PropertyUtilsPropertyAccessor();
 
-    private List<ColumnSpec> columns;
+    private List<FieldSpec> columns;
 
     private DataFilterList filters = new DataFilterList.DataFilterListImpl();
 
-    public CSVRowWriter(List<ColumnSpec> columns) {
+    public CSVRowWriter(List<FieldSpec> columns) {
         super(columns);
     }
 
     @Override
-    public void writeValues(Map<String, Object> outputConfig, Collection<Object> items) {
+    public void run(Map<String, Object> outputConfig, Collection<Object> items) {
         String filename = outputConfig.get(FileUtil.FILENAME).toString();
         writeValues(items, filename);
     }
@@ -47,9 +47,9 @@ public class CSVRowWriter extends AbstractRowWriter implements RowWriter {
             FileWriter fileWriter = new FileWriter(filename);
             items.stream().filter(item -> filters.allow(item, this, this.getPropertyAccessor())).forEach(item -> {
                 StringBuffer line = new StringBuffer();
-                getColumns().forEach(col -> {
+                getFields().forEach(col -> {
                     line.append(getValue(item, col));
-                    if (getColumns().indexOf(col) < getColumns().size() - 1)
+                    if (getFields().indexOf(col) < getFields().size() - 1)
                         line.append(spaceAfterDelim ? getDelimiter() + SPACE : getDelimiter());
                 });
                 try {

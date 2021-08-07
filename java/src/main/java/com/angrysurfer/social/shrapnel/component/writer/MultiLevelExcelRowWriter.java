@@ -1,7 +1,7 @@
 package com.angrysurfer.social.shrapnel.component.writer;
 
 import com.angrysurfer.social.shrapnel.component.format.ValueFormatter;
-import com.angrysurfer.social.shrapnel.component.ColumnSpec;
+import com.angrysurfer.social.shrapnel.component.FieldSpec;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -20,8 +20,8 @@ public abstract class MultiLevelExcelRowWriter extends ExcelRowWriter implements
 
     private String levelPropertyName;
 
-    public MultiLevelExcelRowWriter(String levelPropertyName, List<ColumnSpec> columns, ValueFormatter valueFormatter) {
-        super(columns, valueFormatter);
+    public MultiLevelExcelRowWriter(String levelPropertyName, List<FieldSpec> fields, ValueFormatter valueFormatter) {
+        super(fields, valueFormatter);
         setAutoCreateTopLevelHeader(false);
         setLevelPropertyName(levelPropertyName);
     }
@@ -37,13 +37,13 @@ public abstract class MultiLevelExcelRowWriter extends ExcelRowWriter implements
     }
 
     @Override
-    public boolean shouldSkip(ColumnSpec col, Object item) {
-        return super.shouldSkip(col, item) || shouldSkip(this, col, item, this);
+    public boolean shouldSkip(FieldSpec field, Object item) {
+        return super.shouldSkip(field, item) || shouldSkip(this, field, item, this);
     }
 
     @Override
-    public boolean shouldWrite(ColumnSpec col, Object item) {
-        return super.shouldWrite(col, item) || shouldSkip(this, col, item, this);
+    public boolean shouldWrite(FieldSpec field, Object item) {
+        return super.shouldWrite(field, item) || shouldSkip(this, field, item, this);
     }
 
     @Override
@@ -54,7 +54,7 @@ public abstract class MultiLevelExcelRowWriter extends ExcelRowWriter implements
         for (int i = 0; i < getLevel() - 1; i++) {
             Cell cell = header.createCell(i);
             cell.setCellStyle(headerStyle);
-            cell.setCellValue(ColumnSpec.HEADER_PADDING_LEFT.getHeaderLabel());
+            cell.setCellValue(FieldSpec.HEADER_PADDING_LEFT.getHeaderLabel());
         }
     }
 

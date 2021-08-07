@@ -1,6 +1,6 @@
 package com.angrysurfer.social.shrapnel.component.style;
 
-import com.angrysurfer.social.shrapnel.component.ColumnSpec;
+import com.angrysurfer.social.shrapnel.component.FieldSpec;
 import com.angrysurfer.social.shrapnel.component.style.preset.CellStyleAdapter;
 import com.angrysurfer.social.shrapnel.component.style.preset.HeaderStyleAdapter;
 import lombok.Getter;
@@ -19,11 +19,11 @@ public class PdfStyleProvider implements StyleProvider {
     private StyleAdapter defaultCellStyleAdapter;
     private StyleAdapter defaultHeaderStyleAdapter;
 
-    private Map<ColumnSpec, StyleAdapter> cellStyles = new HashMap<>();
-    private Map<ColumnSpec, StyleAdapter> headerStyles = new HashMap<>();
+    private Map<FieldSpec, StyleAdapter> cellStyles = new HashMap<>();
+    private Map<FieldSpec, StyleAdapter> headerStyles = new HashMap<>();
 
     @Override
-    public StyleAdapter getCellStyle(Object item, ColumnSpec col, int row) {
+    public StyleAdapter getCellStyle(Object item, FieldSpec col, int row) {
         if (Objects.nonNull(col) && cellStyles.containsKey(col))
             return cellStyles.get(col);
 
@@ -58,7 +58,7 @@ public class PdfStyleProvider implements StyleProvider {
     }
 
     @Override
-    public StyleAdapter getHeaderStyle(ColumnSpec col) {
+    public StyleAdapter getHeaderStyle(FieldSpec col) {
         if (Objects.nonNull(col) && headerStyles.containsKey(col))
             return headerStyles.get(col);
 

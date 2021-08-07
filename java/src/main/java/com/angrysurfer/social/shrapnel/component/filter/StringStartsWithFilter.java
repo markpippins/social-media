@@ -1,9 +1,8 @@
 package com.angrysurfer.social.shrapnel.component.filter;
 
-import com.angrysurfer.social.shrapnel.component.property.Types;
-import com.angrysurfer.social.shrapnel.component.ColumnSpec;
 import com.angrysurfer.social.shrapnel.component.property.PropertyAccessor;
-import com.angrysurfer.social.shrapnel.component.writer.RowWriter;
+import com.angrysurfer.social.shrapnel.component.property.Types;
+import com.angrysurfer.social.shrapnel.component.writer.DataWriter;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -28,20 +27,23 @@ public class StringStartsWithFilter implements DataFilter {
     }
 
     @Override
-    public boolean allows(Object item, RowWriter writer, PropertyAccessor accessor) {
+    public boolean allows(Object item, DataWriter writer, PropertyAccessor accessor) {
         boolean[] result = {true};
 
         getFilterCriteria().forEach((propertyName, criteriaValue) -> {
-            if (Objects.isNull(criteriaValue) || Objects.isNull(writer.getColumn(propertyName)))
+            if (Objects.isNull(criteriaValue) || Objects.isNull(writer.getField(propertyName)))
                 throw new NullPointerException();
 
-            ColumnSpec col = writer.getColumn(propertyName);
-            switch (col.getType()) {
+            String propertyValue = null;
+
+            switch (writer.getField(propertyName).getType()) {
                 case Types.STRING:
-                    String propertyValue = accessor.getString(item, propertyName);
-                    if (Objects.isNull(propertyValue) || !propertyValue.toUpperCase(Locale.ROOT).startsWith(criteriaValue.toString().toUpperCase(Locale.ROOT)))
-                        result[0] = false;
+                    propertyValue = accessor.getString(item, propertyName);
             }
+
+            if (Objects.isNull(propertyValue) ||
+                    !propertyValue.toLowerCase(Locale.ROOT).startsWith(criteriaValue.toString().toLowerCase(Locale.ROOT)))
+                result[0] = false;
 
             log.info("allow({} returning {}", propertyName, result[0]);
         });

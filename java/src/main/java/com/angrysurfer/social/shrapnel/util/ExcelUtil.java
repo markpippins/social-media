@@ -19,14 +19,14 @@ public class ExcelUtil {
 
     public static void addSpreadSheet(Workbook workbook, String sheetName, Collection<Object> items, ExcelRowWriter writer) {
         Sheet sheet = workbook.createSheet(sheetName);
-        for (int i = 0; i < writer.getColumns().size(); i++)
+        for (int i = 0; i < writer.getFields().size(); i++)
             sheet.setColumnWidth(i, 6000);
 
         Map<String, Object> config = new HashMap<>();
         config.put(ExcelRowWriter.WORKBOOK, workbook);
         config.put(ExcelRowWriter.SHEET, sheet);
 
-        writer.writeValues(config, items);
+        writer.run(config, items);
     }
 
     public static ByteArrayOutputStream generateByteArrayOutputStream(Collection<Object> data, Exporter exporter, String tabLabel) throws IOException {

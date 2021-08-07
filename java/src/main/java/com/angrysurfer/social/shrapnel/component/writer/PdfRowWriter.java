@@ -1,6 +1,6 @@
 package com.angrysurfer.social.shrapnel.component.writer;
 
-import com.angrysurfer.social.shrapnel.component.ColumnSpec;
+import com.angrysurfer.social.shrapnel.component.FieldSpec;
 import com.angrysurfer.social.shrapnel.component.filter.DataFilterList;
 import com.angrysurfer.social.shrapnel.component.format.ValueFormatter;
 import com.angrysurfer.social.shrapnel.component.style.CombinedStyleProvider;
@@ -17,7 +17,7 @@ import java.util.*;
 @Slf4j
 @Getter
 @Setter
-public class PdfRowWriter extends AbstractRowWriter {
+public class PdfRowWriter extends RowWriter {
 
     private static final String DEFAULT_FONT_NAME = "Courier";
     private static final float DEFAULT_FONT_SIZE = 7;
@@ -32,40 +32,40 @@ public class PdfRowWriter extends AbstractRowWriter {
 
     private DataFilterList filters = new DataFilterList.DataFilterListImpl();
 
-    public PdfRowWriter(List<ColumnSpec> columns) {
-        super(columns);
+    public PdfRowWriter(List<FieldSpec> fields) {
+        super(fields);
     }
 
-    public PdfRowWriter(List<ColumnSpec> columns, ValueFormatter valueFormatter) {
-        super(columns, valueFormatter);
+    public PdfRowWriter(List<FieldSpec> fields, ValueFormatter valueFormatter) {
+        super(fields, valueFormatter);
     }
 
     protected void beforeRow(Object item) {
 
     }
 
-    protected Cell createCell(Object item, ColumnSpec col, int row) {
+    protected Cell createCell(Object item, FieldSpec field, int row) {
         Cell cell = new Cell();
 
-        if (Objects.nonNull(getStyleProvider().getCellStyle(item, col, row)))
-            getStyleProvider().getCellStyle(item, col, row).apply(cell);
+        if (Objects.nonNull(getStyleProvider().getCellStyle(item, field, row)))
+            getStyleProvider().getCellStyle(item, field, row).apply(cell);
 
-        if (Objects.nonNull(col))
-            if (ColumnSpec.PADDING_COLUMNS.contains(col))
-                cell.add(col.getHeaderLabel());
+        if (Objects.nonNull(field))
+            if (FieldSpec.PADDING_COLUMNS.contains(field))
+                cell.add(field.getHeaderLabel());
 
-            else cell.add(getValueFormatter().hasFormatFor(col) ? getFormattedValue(item, col) : getValue(item, col));
+            else cell.add(getValueFormatter().hasFormatFor(field) ? getFormattedValue(item, field) : getValue(item, field));
 
         return cell;
     }
 
-    protected Cell createHeaderCell(ColumnSpec col) {
+    protected Cell createHeaderCell(FieldSpec field) {
         Cell cell = new Cell();
 
-        if (Objects.nonNull(getStyleProvider().getHeaderStyle(col)))
-            getStyleProvider().getHeaderStyle(col).apply(cell);
+        if (Objects.nonNull(getStyleProvider().getHeaderStyle(field)))
+            getStyleProvider().getHeaderStyle(field).apply(cell);
 
-        return cell.add(col.getHeaderLabel());
+        return cell.add(field.getHeaderLabel());
     }
 
     public Table createTable() {
@@ -80,16 +80,16 @@ public class PdfRowWriter extends AbstractRowWriter {
     }
 
     private float[] getTableWidths() {
-        float[] widths = new float[getColumnCount()];
+        float[] widths = new float[getFieldCount()];
         for (int i = 0; i < widths.length - 1; i++)
-            widths[i] = 100 / getColumnCount();
+            widths[i] = 100 / getFieldCount();
         return widths;
     }
 
     private List<Cell> rightPadDataRow(List<Cell> row, int rowNum) {
         List<Cell> result = new ArrayList<>(row);
-        while (result.size() < getColumnCount())
-            result.add(createCell(null, ColumnSpec.DATA_PADDING_RIGHT, rowNum));
+        while (result.size() < getFieldCount())
+            result.add(createCell(null, FieldSpec.DATA_PADDING_RIGHT, rowNum));
         return result;
     }
 
@@ -108,22 +108,22 @@ public class PdfRowWriter extends AbstractRowWriter {
         List<Cell> row = new ArrayList<>();
         final int[] index = {0};
 
-        getColumns().forEach(col -> {
+        getFields().forEach(field -> {
             if (index[0]++ < getCellOffSet(item))
-                row.add(createCell(item, ColumnSpec.DATA_PADDING_LEFT, rowNum));
-            else if (shouldWrite(col, item) && !shouldSkip(col, item))
-                row.add(createCell(item, accessorExists(item, col.getPropertyName()) ? col : ColumnSpec.DATA_NULL_VALUE, rowNum));
+                row.add(createCell(item, FieldSpec.DATA_PADDING_LEFT, rowNum));
+            else if (shouldWrite(field, item) && !shouldSkip(field, item))
+                row.add(createCell(item, accessorExists(item, field.getPropertyName()) ? field : FieldSpec.DATA_NULL_VALUE, rowNum));
         });
 
         return rightPadDataRow(row, rowNum);
     }
 
     public void writeHeaderRow() {
-        getColumns().forEach(col -> getTable().addHeaderCell(createHeaderCell(col)));
+        getFields().forEach(field -> getTable().addHeaderCell(createHeaderCell(field)));
     }
 
     @Override
-    public void writeValues(Map<String, Object> outputConfig, Collection<Object> items) {
+    public void run(Map<String, Object> outputConfig, Collection<Object> items) {
         setup(outputConfig, items);
         writeDisclaimer();
         if (autoCreateTopLevelHeader)

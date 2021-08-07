@@ -1,6 +1,6 @@
 package com.angrysurfer.social.shrapnel;
 
-import com.angrysurfer.social.shrapnel.component.ColumnSpec;
+import com.angrysurfer.social.shrapnel.component.FieldSpec;
 import com.angrysurfer.social.shrapnel.component.property.PropertyAccessor;
 import com.angrysurfer.social.shrapnel.component.writer.ExcelRowWriter;
 import com.angrysurfer.social.shrapnel.component.writer.PdfRowWriter;
@@ -13,7 +13,7 @@ public interface Exporter {
 
     void addFilter(Map<String, Object> filterCriteria);
 
-    List<ColumnSpec> getColumns();
+    List<FieldSpec> getFields();
 
     String getName();
 
