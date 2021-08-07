@@ -1,1 +1,1 @@
-select * from user;
+select * from user where id;

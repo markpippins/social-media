@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
-import java.util.Objects;
 
 @Slf4j
 @Getter
@@ -18,14 +17,23 @@ import java.util.Objects;
 public class ExportServiceImpl implements ExportsService {
 
     @Resource
-    ExporterFactoryFactory exportsRegistry;
+    List<ExporterFactoryFactory> exporterFactoryFactories;
 
     @Resource
-    private List<ExporterFactory> exportFactories;
+    List<ExporterFactory> exporterFactories;
 
     public ExporterFactory getFactory(ExportRequest request) {
-        return getExportFactories().stream().filter(fac -> fac.getExportName().equalsIgnoreCase(request.getExport())).findFirst()
-                .orElseGet(() -> Objects.nonNull(exportsRegistry) && exportsRegistry.hasFactory(request) ? exportsRegistry.newInstance(request) : null);
+        return getExporterFactories().stream().filter(fac -> fac.getExportName().equalsIgnoreCase(request.getExport())).findFirst()
+                .orElseGet(() -> factoryRegistered(request) ? getRegisteredFactory(request).newInstance(request) : null);
     }
+
+    private ExporterFactoryFactory getRegisteredFactory(ExportRequest request) {
+        return exporterFactoryFactories.stream().filter(fac -> fac.hasFactory(request)).findFirst().orElseGet(() -> null);
+    }
+
+    private boolean factoryRegistered(ExportRequest request) {
+        return exporterFactoryFactories.stream().filter(fac -> fac.hasFactory(request)).findAny().isPresent();
+    }
+
 
 }

@@ -1,8 +1,11 @@
 package com.angrysurfer.social.shrapnel.services.service;
 
 import com.angrysurfer.social.shrapnel.Exporter;
+import com.angrysurfer.social.shrapnel.component.property.HashMapPropertyAccessor;
+import com.angrysurfer.social.shrapnel.component.writer.CSVRowWriter;
 import com.angrysurfer.social.shrapnel.services.ExportRequest;
 import com.angrysurfer.social.shrapnel.services.factory.ExporterFactory;
+import com.angrysurfer.social.shrapnel.services.factory.impl.JdbcTableExporterFactory;
 import com.angrysurfer.social.shrapnel.util.ExcelUtil;
 import com.angrysurfer.social.shrapnel.util.FileUtil;
 import com.angrysurfer.social.shrapnel.util.PdfUtil;
@@ -11,6 +14,7 @@ import org.springframework.core.io.ByteArrayResource;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Collection;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -41,6 +45,15 @@ public interface ExportsService {
         String filename = null;
 
         switch (request.getFileType().toLowerCase(Locale.ROOT)) {
+            case CSV_FILE:
+                Collection data = factory.getData();
+                CSVRowWriter writer = new CSVRowWriter(exporter.getColumns());
+                if (factory instanceof JdbcTableExporterFactory)
+                    writer.setPropertyAccessor((new HashMapPropertyAccessor()));
+                filename = FileUtil.makeFileName(request.getUser(), factory);
+                writer.writeValues(data, filename);
+                break;
+
             case PDF_FILE:
                 filename = PdfUtil.writeTabularFile(factory.getData(), exporter.getPdfRowWriter(), tempFileName);
                 break;

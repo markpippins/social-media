@@ -1,9 +1,9 @@
 package com.angrysurfer.social.shrapnel.services.service.impl;
 
 import com.angrysurfer.social.shrapnel.component.ColumnSpec;
+import com.angrysurfer.social.shrapnel.component.writer.CSVRowWriter;
 import com.angrysurfer.social.shrapnel.component.writer.ExcelRowWriter;
 import com.angrysurfer.social.shrapnel.component.writer.PdfRowWriter;
-import com.angrysurfer.social.shrapnel.component.writer.SimpleCSVRowWriter;
 import com.angrysurfer.social.shrapnel.services.service.LightweightExportsService;
 import com.angrysurfer.social.shrapnel.util.ExcelUtil;
 import com.angrysurfer.social.shrapnel.util.FileUtil;
@@ -25,7 +25,7 @@ public class LightweightExportsServiceImpl implements LightweightExportsService 
     public String writeCSVFile(Collection<Object> items, List<ColumnSpec> columns, String filename) {
         try {
             FileUtil.ensureSafety(filename);
-            SimpleCSVRowWriter writer = new SimpleCSVRowWriter(columns);
+            CSVRowWriter writer = new CSVRowWriter(columns);
             writer.writeValues(items, filename);
         } catch (IOException e) {
             log.error(e.getMessage(), e);
@@ -52,7 +52,7 @@ public class LightweightExportsServiceImpl implements LightweightExportsService 
     @Override
     public String writeExcelFile(Collection<Object> items, ExcelRowWriter writer, String sheetName, String filename) {
         LocalDateTime now = LocalDateTime.now();
-        String name = String.format("%s - %s - %s - %s", sheetName, LocalDate.now().getDayOfMonth(), LocalDate.now().getMonthValue(), LocalDate.now().getYear());
+        String name = String.format("%s - %s - %s - %s", sheetName, now.getDayOfMonth(), now.getMonthValue(), now.getYear());
         Workbook workbook = new XSSFWorkbook();
         ExcelUtil.addSpreadSheet(workbook, name, items, writer);
         try {

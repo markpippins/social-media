@@ -9,7 +9,7 @@ import com.angrysurfer.social.shrapnel.services.repository.DataSourceModelReposi
 import com.angrysurfer.social.shrapnel.services.repository.ExportModelRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.io.IOException;
@@ -20,7 +20,7 @@ import java.util.Collections;
 import java.util.Objects;
 
 @Slf4j
-@Service
+@Component
 public class JdbcExporterFactoryFactoryImpl implements ExporterFactoryFactory {
 
     public final static String SQL_FOLDER = "java/src/main/resources/sql/";
@@ -43,12 +43,12 @@ public class JdbcExporterFactoryFactoryImpl implements ExporterFactoryFactory {
     public ExporterFactory newInstance(ExportRequest request) {
         final ExportModel export = exportModelRepository.findByName(request.getExport());
         final DataSourceModel dataSource = dataSourceModelRepository.findByName(request.getExport());
-        return new JdbcExporterFactory(request, export) {
+        return new JdbcTableExporterFactory(request, export) {
             @Override
             public Collection getData() {
                 String sql = getSQL(dataSource);
                 return Objects.nonNull(sql) ?
-                        (Collection) jdbcTemplate.query(sql, new JdbcExporterFactoryResultSetExtractor(export)) :
+                        (Collection) jdbcTemplate.query(sql, new JdbcExporterResultSetExtractor(export)) :
                         Collections.EMPTY_LIST;
             }
         };

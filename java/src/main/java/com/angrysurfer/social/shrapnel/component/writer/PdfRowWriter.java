@@ -109,13 +109,11 @@ public class PdfRowWriter extends AbstractRowWriter {
         final int[] index = {0};
 
         getColumns().forEach(col -> {
-            if (index[0] < getCellOffSet(item))
+            if (index[0]++ < getCellOffSet(item))
                 row.add(createCell(item, ColumnSpec.DATA_PADDING_LEFT, rowNum));
             else if (shouldWrite(col, item) && !shouldSkip(col, item))
                 row.add(createCell(item, accessorExists(item, col.getPropertyName()) ? col : ColumnSpec.DATA_NULL_VALUE, rowNum));
         });
-
-        index[0]++;
 
         return rightPadDataRow(row, rowNum);
     }
