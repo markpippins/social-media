@@ -15,7 +15,9 @@ import java.util.stream.Collectors;
 
 @Getter
 public abstract class JdbcExporterFactory implements ExporterFactory {
+
     private ExportRequest request;
+
     private ExportModel exportModel;
 
     public JdbcExporterFactory(ExportRequest request, ExportModel exportModel) {
@@ -25,12 +27,7 @@ public abstract class JdbcExporterFactory implements ExporterFactory {
 
     @Override
     public String getExportName() {
-        return request.getExportName();
-    }
-
-    @Override
-    public Class getExportClass() {
-        return TableExporter.class;
+        return request.getExport();
     }
 
     @Override

@@ -44,13 +44,13 @@ class Config implements CommandLineRunner {
         nameSpec = columnSpecModelRepository.save(nameSpec);
 
         ExportModel export = new ExportModel();
-        export.setName("test-export");
+        export.setName("forum-list");
         export.getColumnSpecs().add(idSpec);
         export.getColumnSpecs().add(nameSpec);
         exportModelRepository.save(export);
 
         DataSourceModel dataSourceModel = new DataSourceModel();
-        dataSourceModel.setQuery("select * from forum;");
+        dataSourceModel.setQuery("get-forums");
         dataSourceModel.setName("forum-list");
         dataSourceModelRepository.save(dataSourceModel);
 
@@ -83,7 +83,7 @@ class Config implements CommandLineRunner {
         exportModelRepository.save(export2);
 
         DataSourceModel dataSourceModel2 = new DataSourceModel();
-        dataSourceModel2.setQuery("select * from user;");
+        dataSourceModel2.setQuery("get-users;");
         dataSourceModel2.setName("user-list");
         dataSourceModelRepository.save(dataSourceModel2);
     }

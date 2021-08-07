@@ -39,7 +39,7 @@ public class ExportsController {
 
         if (isValid(request)) {
             request.setUser(user);
-            headers.add(HttpHeaders.CONTENT_DISPOSITION, String.format("attachment;filename=%s.%s", request.getExportName(), request.getFileType()));
+            headers.add(HttpHeaders.CONTENT_DISPOSITION, String.format("attachment;filename=%s.%s", request.getExport(), request.getFileType()));
 
             try {
                 bytes = exportsService.exportByteArrayResource(request);
@@ -59,12 +59,12 @@ public class ExportsController {
 
     @PostMapping(value = "/streamExport")
     public ResponseEntity exportStream(@RequestBody ExportRequest request) {
-
         HttpHeaders headers = new HttpHeaders();
         ByteArrayOutputStream stream = null;
+
         if (isValid(request)) {
             request.setUser(user);
-            headers.add(HttpHeaders.CONTENT_DISPOSITION, String.format("attachment;filename=%s.%s", request.getExportName(), request.getFileType()));
+            headers.add(HttpHeaders.CONTENT_DISPOSITION, String.format("attachment;filename=%s.%s", request.getExport(), request.getFileType()));
 
             try {
                 stream = exportsService.exportByteArrayOutputStream(request);

@@ -2,18 +2,20 @@ package com.angrysurfer.social.shrapnel.services.factory.impl;
 
 import com.angrysurfer.social.shrapnel.component.property.Types;
 import com.angrysurfer.social.shrapnel.services.model.ExportModel;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
+import java.util.*;
 
+@Slf4j
 class JdbcExporterFactoryResultSetExtractor implements ResultSetExtractor {
 
     private final ExportModel export;
+
+    boolean useTimeStampForLocalDate = true;
 
     public JdbcExporterFactoryResultSetExtractor(ExportModel export) {
         this.export = export;
@@ -21,50 +23,68 @@ class JdbcExporterFactoryResultSetExtractor implements ResultSetExtractor {
 
     @Override
     public Collection extractData(ResultSet rs) throws SQLException, DataAccessException {
+
         Collection<HashMap<String, Object>> results = new ArrayList();
         while (rs.next()) {
             HashMap<String, Object> values = new HashMap();
+
             export.getColumnSpecs().forEach(col -> {
                 try {
                     switch (col.getType()) {
                         case Types.BOOLEAN:
-                            values.put(col.getPropertyName(), rs.getBoolean(col.getPropertyName()));
+                            if (Objects.nonNull(rs.getString(col.getPropertyName())))
+                                values.put(col.getPropertyName(), rs.getBoolean(col.getPropertyName()));
                             break;
 
-//                        case Types.CALENDAR:
-//                            values.put(col.getPropertyName(), rs.getDouble(col.getPropertyName()));
-//                            break;
+                        case Types.CALENDAR:
+                            if (Objects.nonNull(rs.getString(col.getPropertyName()))) {
+                                Calendar cal = new GregorianCalendar();
+                                cal.setTime(rs.getDate(col.getPropertyName()));
+                                values.put(col.getPropertyName(), cal);
+                            }
+                            break;
 
                         case Types.DATE:
-                            values.put(col.getPropertyName(), rs.getDate(col.getPropertyName()));
+                            if (Objects.nonNull(rs.getString(col.getPropertyName())))
+                                values.put(col.getPropertyName(), new Date(rs.getDate(col.getPropertyName()).getTime()));
                             break;
 
                         case Types.DOUBLE:
-                            values.put(col.getPropertyName(), rs.getDouble(col.getPropertyName()));
+                            if (Objects.nonNull(rs.getString(col.getPropertyName())))
+                                values.put(col.getPropertyName(), rs.getDouble(col.getPropertyName()));
                             break;
 
-//                        case Types.LOCALDATE:
-//                            values.put(col.getPropertyName(), rs.getDouble(col.getPropertyName()));
-//                            break;
-//
-//                        case Types.LOCALDATETIME:
-//                            values.put(col.getPropertyName(), rs.getDouble(col.getPropertyName()));
-//                            break;
-//
-//                        case Types.RICHTEXT:
-//                            values.put(col.getPropertyName(), rs.getDouble(col.getPropertyName()));
-//                            break;
+                        case Types.LOCALDATE:
+                            if (Objects.nonNull(rs.getString(col.getPropertyName())))
+                                values.put(col.getPropertyName(), rs.getDate(col.getPropertyName()).toLocalDate());
+                            break;
+
+                        case Types.LOCALDATETIME:
+                            if (Objects.nonNull(rs.getString(col.getPropertyName())))
+                                if (useTimeStampForLocalDate)
+                                    values.put(col.getPropertyName(), rs.getTimestamp(col.getPropertyName()).toLocalDateTime());
+                                else
+                                    values.put(col.getPropertyName(), rs.getDate(col.getPropertyName()).getTime());
+                            break;
+
+                        case Types.RICHTEXT:
+                            if (Objects.nonNull(rs.getString(col.getPropertyName())))
+                                values.put(col.getPropertyName(), rs.getString(col.getPropertyName()));
+                            break;
 
                         case Types.STRING:
-                            values.put(col.getPropertyName(), rs.getString(col.getPropertyName()));
+                            if (Objects.nonNull(rs.getString(col.getPropertyName())))
+                                values.put(col.getPropertyName(), rs.getString(col.getPropertyName()));
                             break;
                     }
                 } catch (SQLException e) {
-                    e.printStackTrace();
+                    log.error(e.getMessage(), e);
                 }
             });
+
             results.add(values);
         }
+
         return results;
     }
 }

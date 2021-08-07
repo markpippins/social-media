@@ -71,6 +71,7 @@ public class TableExporter implements Exporter {
         getPdfRowWriter().setValueFormatter(valueFormatter);
     }
 
+    @Override
     public void setPropertyAccessor(PropertyAccessor propertyAccessor) {
         getExcelRowWriter().setPropertyAccessor(propertyAccessor);
         getPdfRowWriter().setPropertyAccessor(propertyAccessor);

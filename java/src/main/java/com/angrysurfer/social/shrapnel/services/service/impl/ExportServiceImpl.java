@@ -2,7 +2,7 @@ package com.angrysurfer.social.shrapnel.services.service.impl;
 
 import com.angrysurfer.social.shrapnel.services.ExportRequest;
 import com.angrysurfer.social.shrapnel.services.factory.ExporterFactory;
-import com.angrysurfer.social.shrapnel.services.factory.JdbcExporterFactoryFactory;
+import com.angrysurfer.social.shrapnel.services.factory.ExporterFactoryFactory;
 import com.angrysurfer.social.shrapnel.services.service.ExportsService;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -18,13 +18,13 @@ import java.util.Objects;
 public class ExportServiceImpl implements ExportsService {
 
     @Resource
-    JdbcExporterFactoryFactory exportsRegistry;
+    ExporterFactoryFactory exportsRegistry;
 
     @Resource
     private List<ExporterFactory> exportFactories;
 
     public ExporterFactory getFactory(ExportRequest request) {
-        return getExportFactories().stream().filter(fac -> fac.getExportName().equalsIgnoreCase(request.getExportName())).findFirst()
+        return getExportFactories().stream().filter(fac -> fac.getExportName().equalsIgnoreCase(request.getExport())).findFirst()
                 .orElseGet(() -> Objects.nonNull(exportsRegistry) && exportsRegistry.hasFactory(request) ? exportsRegistry.newInstance(request) : null);
     }
 

@@ -1,6 +1,7 @@
 package com.angrysurfer.social.shrapnel.services.factory;
 
 import com.angrysurfer.social.shrapnel.Exporter;
+import com.angrysurfer.social.shrapnel.TableExporter;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -12,7 +13,9 @@ public interface ExporterFactory {
 
     String getExportName();
 
-    Class<Exporter> getExportClass();
+    default Class getExportClass() {
+        return TableExporter.class;
+    }
 
     default Exporter newInstance() throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         Class<?> clazz = Class.forName(getExportClass().getCanonicalName());

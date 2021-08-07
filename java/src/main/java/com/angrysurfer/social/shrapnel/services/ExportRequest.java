@@ -9,8 +9,8 @@ import java.util.Map;
 @Getter
 @Setter
 public class ExportRequest {
-    private String exportName;
-    private String fileType;
     Map<String, Object> filterCriteria;
+    private String export;
+    private String fileType;
     private UserDTO user;
 }
