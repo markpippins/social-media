@@ -56,7 +56,7 @@ public class ExcelRowWriter extends AbstractRowWriter implements RowWriter {
     protected Cell createHeaderCell(ColumnSpec col, Row header, int index) {
         Cell cell = header.createCell(index);
         cell.setCellStyle(getStyleProvider().getHeaderStyle(getWorkbook(), col));
-            return cell;
+        return cell;
     }
 
     protected int getCurrentRow() {
@@ -88,6 +88,16 @@ public class ExcelRowWriter extends AbstractRowWriter implements RowWriter {
             styleProvider = new CombinedStyleProvider();
 
         return styleProvider;
+    }
+
+    protected void setup(Map<String, Object> outputConfig, Collection<Object> items) {
+        if (!outputConfig.containsKey(WORKBOOK) || !outputConfig.containsKey(SHEET)
+                || !(outputConfig.get(WORKBOOK) instanceof Workbook || !(outputConfig.get(SHEET) instanceof Sheet))
+                || Objects.isNull(items))
+            throw new IllegalArgumentException();
+
+        setWorkbook((Workbook) outputConfig.get(WORKBOOK));
+        setSheet((Sheet) outputConfig.get(SHEET));
     }
 
     public void setSheet(Sheet sheet) {
@@ -137,13 +147,7 @@ public class ExcelRowWriter extends AbstractRowWriter implements RowWriter {
 
     @Override
     public void writeValues(Map<String, Object> outputConfig, Collection<Object> items) {
-        if (!outputConfig.containsKey(WORKBOOK) || !outputConfig.containsKey(SHEET)
-                || !(outputConfig.get(WORKBOOK) instanceof Workbook || !(outputConfig.get(SHEET) instanceof Sheet))
-                || Objects.isNull(items))
-            return;
-
-        setWorkbook((Workbook) outputConfig.get(WORKBOOK));
-        setSheet((Sheet) outputConfig.get(SHEET));
+        setup(outputConfig, items);
         writeDisclaimer();
 
         if (autoCreateTopLevelHeader)

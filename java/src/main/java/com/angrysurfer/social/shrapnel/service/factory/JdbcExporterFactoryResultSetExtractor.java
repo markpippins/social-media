@@ -31,6 +31,10 @@ class JdbcExporterFactoryResultSetExtractor implements ResultSetExtractor {
                             values.put(col.getPropertyName(), rs.getBoolean(col.getPropertyName()));
                             break;
 
+//                        case Types.CALENDAR:
+//                            values.put(col.getPropertyName(), rs.getDouble(col.getPropertyName()));
+//                            break;
+
                         case Types.DATE:
                             values.put(col.getPropertyName(), rs.getDate(col.getPropertyName()));
                             break;
@@ -38,6 +42,18 @@ class JdbcExporterFactoryResultSetExtractor implements ResultSetExtractor {
                         case Types.DOUBLE:
                             values.put(col.getPropertyName(), rs.getDouble(col.getPropertyName()));
                             break;
+
+//                        case Types.LOCALDATE:
+//                            values.put(col.getPropertyName(), rs.getDouble(col.getPropertyName()));
+//                            break;
+//
+//                        case Types.LOCALDATETIME:
+//                            values.put(col.getPropertyName(), rs.getDouble(col.getPropertyName()));
+//                            break;
+//
+//                        case Types.RICHTEXT:
+//                            values.put(col.getPropertyName(), rs.getDouble(col.getPropertyName()));
+//                            break;
 
                         case Types.STRING:
                             values.put(col.getPropertyName(), rs.getString(col.getPropertyName()));

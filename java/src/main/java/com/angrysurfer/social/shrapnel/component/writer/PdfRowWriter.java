@@ -99,6 +99,12 @@ public class PdfRowWriter extends AbstractRowWriter {
         return result;
     }
 
+    protected void setup(Map<String, Object> outputConfig, Collection<Object> items) {
+        if (!outputConfig.containsKey(TABLE) || !(outputConfig.get(TABLE) instanceof Table || Objects.isNull(items)))
+            throw new IllegalArgumentException();
+
+        setTable((Table) outputConfig.get(TABLE));
+    }
 
     public void writeDisclaimer() {
 
@@ -126,10 +132,7 @@ public class PdfRowWriter extends AbstractRowWriter {
 
     @Override
     public void writeValues(Map<String, Object> outputConfig, Collection<Object> items) {
-        if (!outputConfig.containsKey(TABLE) || !(outputConfig.get(TABLE) instanceof Table || Objects.isNull(items)))
-            return;
-
-        setTable((Table) outputConfig.get(TABLE));
+        setup(outputConfig, items);
         writeDisclaimer();
         if (autoCreateTopLevelHeader)
             writeHeaderRow();
