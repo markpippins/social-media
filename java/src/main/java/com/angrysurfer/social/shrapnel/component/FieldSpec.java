@@ -25,6 +25,7 @@ public class FieldSpec {
     private String headerLabel;
     private String type;
     private int index;
+    private boolean calculated = false;
 
     public FieldSpec() {
     }

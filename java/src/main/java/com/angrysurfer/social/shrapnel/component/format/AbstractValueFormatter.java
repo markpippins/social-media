@@ -51,4 +51,5 @@ public abstract class AbstractValueFormatter implements ValueFormatter {
     private String nonNullString(Object value) {
         return Objects.isNull(value) ? "" : value.toString();
     }
+
 }

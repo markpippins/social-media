@@ -19,4 +19,8 @@ public interface ValueFormatter {
     String format(FieldSpec col, String value);
 
     boolean hasFormatFor(FieldSpec col);
+
+    String calculateValue(FieldSpec field, Object item);
+
+    String formatCalculatedValue(FieldSpec field, Object value);
 }

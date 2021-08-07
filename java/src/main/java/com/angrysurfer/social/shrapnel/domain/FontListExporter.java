@@ -3,6 +3,7 @@ package com.angrysurfer.social.shrapnel.domain;
 import com.angrysurfer.social.shrapnel.TableExporter;
 import com.angrysurfer.social.shrapnel.component.FieldSpec;
 import com.angrysurfer.social.shrapnel.component.format.AbstractValueFormatter;
+import com.angrysurfer.social.shrapnel.component.property.Types;
 import com.angrysurfer.social.shrapnel.component.style.PdfFontSource;
 import com.angrysurfer.social.shrapnel.component.style.StyleAdapter;
 import com.angrysurfer.social.shrapnel.component.style.preset.ZebraStyleProvider;
@@ -27,9 +28,15 @@ import static com.angrysurfer.social.shrapnel.component.style.PdfFontSource.FONT
 @Slf4j
 public class FontListExporter extends TableExporter {
 
-    static List<FieldSpec> COLUMNS = FieldSpec.createColumnSpecs(Arrays.asList("path", "name"));
 
+    static List<FieldSpec> COLUMNS = FieldSpec.createColumnSpecs(Arrays.asList("path", "name"));
+    static FieldSpec calculated = new FieldSpec("fontname", "fontname", Types.STRING);
     static String NAME = "font-list";
+
+    static {
+        calculated.setCalculated(true);
+        COLUMNS.add(calculated);
+    }
 
     public FontListExporter() {
         super(NAME, COLUMNS);
@@ -85,15 +92,39 @@ public class FontListExporter extends TableExporter {
                     log.error(e.getMessage(), e);
                 }
 
-            // else if (col.getPropertyName().equals("path"))
-            File f = new File(".");
-            String path = f.getAbsolutePath().substring(0, f.getAbsolutePath().length() - 1);
-            return value.replace(path, "");
+            else if (col.getPropertyName().equals("path")) {
+                File f = new File(".");
+                String path = f.getAbsolutePath().substring(0, f.getAbsolutePath().length() - 1);
+                return value.replace(path, "");
+            }
+
+            return value;
         }
 
         @Override
         public boolean hasFormatFor(FieldSpec col) {
             return Arrays.asList("path", "name").contains(col.getPropertyName());
+        }
+
+        @Override
+        public String calculateValue(FieldSpec field, Object item) {
+            if (field.getPropertyName().equalsIgnoreCase("fontname")) {
+                String fontName = ((File) item).getName();
+                try {
+                    if (PdfFontSource.fontFileExists(fontName)) {
+                        PdfFont font = PdfFontSource.getPdfFont2(fontName);
+                        return font.getFontProgram().getFontNames().getFontName();
+                    }
+                } catch (IOException e) {
+                    log.error(e.getMessage(), e);
+                }
+            }
+            return null;
+        }
+
+        @Override
+        public String formatCalculatedValue(FieldSpec field, Object calculateValue) {
+            return null;
         }
     }
 

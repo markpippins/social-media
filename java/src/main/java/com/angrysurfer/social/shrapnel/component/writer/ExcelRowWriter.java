@@ -113,7 +113,8 @@ public class ExcelRowWriter extends RowWriter implements DataWriter {
 
     protected void writeCell(FieldSpec field, Object item, Cell cell) {
         if (accessorExists(item, field.getPropertyName()))
-            cell.setCellValue(getValueFormatter().hasFormatFor(field) ? getFormattedValue(item, field) : getValue(item, field));
+            cell.setCellValue(getValue(item, field));
+//            cell.setCellValue(getValueFormatter().hasFormatFor(field) ? getFormattedValue(item, field) : getValue(item, field));
     }
 
     protected void writeDisclaimer() {

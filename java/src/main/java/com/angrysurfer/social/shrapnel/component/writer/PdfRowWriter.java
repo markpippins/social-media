@@ -53,8 +53,8 @@ public class PdfRowWriter extends RowWriter {
         if (Objects.nonNull(field))
             if (FieldSpec.PADDING_COLUMNS.contains(field))
                 cell.add(field.getHeaderLabel());
-
-            else cell.add(getValueFormatter().hasFormatFor(field) ? getFormattedValue(item, field) : getValue(item, field));
+            else cell.add(getValue(item, field));
+//            else cell.add(getValueFormatter().hasFormatFor(field) ? getFormattedValue(item, field) : getValue(item, field));
 
         return cell;
     }
@@ -112,7 +112,7 @@ public class PdfRowWriter extends RowWriter {
             if (index[0]++ < getCellOffSet(item))
                 row.add(createCell(item, FieldSpec.DATA_PADDING_LEFT, rowNum));
             else if (shouldWrite(field, item) && !shouldSkip(field, item))
-                row.add(createCell(item, accessorExists(item, field.getPropertyName()) ? field : FieldSpec.DATA_NULL_VALUE, rowNum));
+                row.add(createCell(item, accessorExists(item, field.getPropertyName()) || field.isCalculated() ? field : FieldSpec.DATA_NULL_VALUE, rowNum));
         });
 
         return rightPadDataRow(row, rowNum);

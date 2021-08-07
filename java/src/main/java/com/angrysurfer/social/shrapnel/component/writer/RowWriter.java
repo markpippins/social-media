@@ -56,65 +56,65 @@ public abstract class RowWriter extends ProxyPropertyAccessorImpl implements Dat
             valueFormatter = new AbstractValueFormatter() {
 
                 @Override
-                public boolean hasFormatFor(FieldSpec col) {
+                public boolean hasFormatFor(FieldSpec field) {
                     return false;
+                }
+
+                @Override
+                public String calculateValue(FieldSpec field, Object item) {
+                    return EMPTY_STRING;
+                }
+
+                @Override
+                public String formatCalculatedValue(FieldSpec field, Object value) {
+                    return EMPTY_STRING;
                 }
             };
 
         return valueFormatter;
     }
 
-    public String getFormattedValue(Object item, FieldSpec col) {
-        if (accessorExists(item, col.getPropertyName()))
+    public String getValue(Object item, FieldSpec field) {
+        if (accessorExists(item, field.getPropertyName()) || field.isCalculated())
             try {
-                switch (col.getType()) {
+                switch (field.getType()) {
                     case Types.BOOLEAN:
-                        Boolean bool = getBoolean(item, col.getPropertyName());
-                        if (Objects.nonNull(bool))
-                            return getValueFormatter().format(col, bool);
-                        break;
+                        Boolean bool = getBoolean(item, field.getPropertyName());
+                        return !field.isCalculated() && getValueFormatter().hasFormatFor(field) ?
+                                getValueFormatter().format(field, bool) : subGetValue(item, field, bool);
 
                     case Types.CALENDAR:
-                        Calendar calendar = getCalendar(item, col.getPropertyName());
-                        if (Objects.nonNull(calendar))
-                            return getValueFormatter().format(col, calendar);
-                        break;
+                        Calendar calendar = getCalendar(item, field.getPropertyName());
+                        return !field.isCalculated() && getValueFormatter().hasFormatFor(field) ?
+                                getValueFormatter().format(field, calendar) : subGetValue(item, field, calendar);
 
                     case Types.DATE:
-                        Date date = getDate(item, col.getPropertyName());
-                        if (Objects.nonNull(date))
-                            return getValueFormatter().format(col, date);
-                        break;
+                        Date date = getDate(item, field.getPropertyName());
+                        return !field.isCalculated() && getValueFormatter().hasFormatFor(field) ?
+                                getValueFormatter().format(field, date) : subGetValue(item, field, date);
 
                     case Types.DOUBLE:
-                        Double dbl = getDouble(item, col.getPropertyName());
-                        if (Objects.nonNull(dbl))
-                            return getValueFormatter().format(col, dbl);
-                        break;
+                        Double dbl = getDouble(item, field.getPropertyName());
+                        return !field.isCalculated() && getValueFormatter().hasFormatFor(field) ?
+                                getValueFormatter().format(field, dbl) : subGetValue(item, field, dbl);
 
                     case Types.LOCALDATE:
-                        LocalDate localDate = getLocalDate(item, col.getPropertyName());
-                        if (Objects.nonNull(localDate))
-                            return getValueFormatter().format(col, localDate);
-                        break;
+                        LocalDate localDate = getLocalDate(item, field.getPropertyName());
+                        return !field.isCalculated() && getValueFormatter().hasFormatFor(field) ?
+                                getValueFormatter().format(field, localDate) : subGetValue(item, field, localDate);
 
                     case Types.LOCALDATETIME:
-                        LocalDateTime localDateTime = getLocalDateTime(item, col.getPropertyName());
-                        if (Objects.nonNull(localDateTime))
-                            return getValueFormatter().format(col, localDateTime);
-                        break;
+                        LocalDateTime localDateTime = getLocalDateTime(item, field.getPropertyName());
+                        return !field.isCalculated() && getValueFormatter().hasFormatFor(field) ?
+                                getValueFormatter().format(field, localDateTime) : subGetValue(item, field, localDateTime);
 
                     case Types.RICHTEXT:
-//                        Boolean value = getBooleanValue(item, col.getPropertyName();
-//                        if (Objects.nonNull(value))
-//                            return getValueFormatter().format(col, value.toString();
                         break;
 
                     case Types.STRING:
-                        String value = getString(item, col.getPropertyName());
-                        if (Objects.nonNull(value))
-                            return getValueFormatter().format(col, value);
-                        break;
+                        String string = getString(item, field.getPropertyName());
+                        return !field.isCalculated() && getValueFormatter().hasFormatFor(field) ?
+                                getValueFormatter().format(field, string) : subGetValue(item, field, string);
                 }
             } catch (Exception e) {
                 log.error(e.getMessage(), e);
@@ -123,70 +123,17 @@ public abstract class RowWriter extends ProxyPropertyAccessorImpl implements Dat
         return EMPTY_STRING;
     }
 
-    public String getValue(Object item, FieldSpec col) {
-        if (accessorExists(item, col.getPropertyName()))
-            try {
-                switch (col.getType()) {
-                    case Types.BOOLEAN:
-                        Boolean bool = getBoolean(item, col.getPropertyName());
-                        if (Objects.nonNull(bool))
-                            return bool.toString();
-                        break;
-
-                    case Types.CALENDAR:
-                        Calendar calendar = getCalendar(item, col.getPropertyName());
-                        if (Objects.nonNull(calendar))
-                            return calendar.toString();
-                        break;
-
-                    case Types.DATE:
-                        Date date = getDate(item, col.getPropertyName());
-                        if (Objects.nonNull(date))
-                            return date.toString();
-                        break;
-
-                    case Types.DOUBLE:
-                        Double dbl = getDouble(item, col.getPropertyName());
-                        if (Objects.nonNull(dbl))
-                            return dbl.toString();
-                        break;
-
-                    case Types.LOCALDATE:
-                        LocalDate localDate = getLocalDate(item, col.getPropertyName());
-                        if (Objects.nonNull(localDate))
-                            return localDate.toString();
-                        break;
-
-                    case Types.LOCALDATETIME:
-                        LocalDateTime localDateTime = getLocalDateTime(item, col.getPropertyName());
-                        if (Objects.nonNull(localDateTime))
-                            return localDateTime.toString();
-                        break;
-
-                    case Types.RICHTEXT:
-//                        Boolean value = getBooleanValue(item, col.getPropertyName());
-//                        if (Objects.nonNull(value))
-//                            return value.toString());
-                        break;
-
-                    case Types.STRING:
-                        String value = getString(item, col.getPropertyName());
-                        if (Objects.nonNull(value))
-                            return value.toString();
-                        break;
-                }
-            } catch (Exception e) {
-                log.error(e.getMessage(), e);
-            }
-
-        return EMPTY_STRING;
+    private String subGetValue(Object item, FieldSpec field, Object value) {
+        return !getValueFormatter().hasFormatFor(field) && field.isCalculated() ? getValueFormatter().calculateValue(field, item) :
+                getValueFormatter().hasFormatFor(field) && field.isCalculated() ? getValueFormatter().formatCalculatedValue(field, getValueFormatter().calculateValue(field, item)) :
+                        Objects.isNull(value) ? EMPTY_STRING : value.toString();
     }
 
-    public boolean shouldSkip(FieldSpec col, Object item) {
-        return Objects.isNull(col.getPropertyName());
+    public boolean shouldSkip(FieldSpec field, Object item) {
+        return Objects.isNull(field.getPropertyName());
     }
 
-    public boolean shouldWrite(FieldSpec col, Object item) {
-        return Objects.nonNull(col.getPropertyName());
+    public boolean shouldWrite(FieldSpec field, Object item) {
+        return Objects.nonNull(field.getPropertyName());
     }
 }

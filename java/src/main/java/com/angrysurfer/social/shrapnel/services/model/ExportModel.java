@@ -40,9 +40,10 @@ public class ExportModel {
     private Set<ColumnSpecModel> columnSpecs = new HashSet<>();
 
     public static boolean isInitialized(ExportModel model) {
-        return Objects.nonNull(model.name)
-                && model.getColumnSpecs().size() > 0
-                && Objects.nonNull(model.getDataSource())
-                && Objects.nonNull(model.getDataSource().getQuery());
+        return true;
+//        return Objects.nonNull(model.name)
+//                && model.getColumnSpecs().size() > 0
+//                && Objects.nonNull(model.getDataSource())
+//                && Objects.nonNull(model.getDataSource().getQuery());
     }
 }
