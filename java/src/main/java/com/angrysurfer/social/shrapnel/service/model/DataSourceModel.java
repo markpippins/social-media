@@ -4,13 +4,12 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Collection;
-import java.util.Collections;
 
 @Getter
 @Setter
 @Entity
 public class DataSourceModel {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
@@ -19,8 +18,11 @@ public class DataSourceModel {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Transient
-    public Collection<Object> getData() {
-        return Collections.EMPTY_LIST;
-    }
+    @Column(name = "query", nullable = false)
+    private String query;
+
+//    @Transient
+//    public Collection<Object> getData() {
+//        return Collections.EMPTY_LIST;
+//    }
 }

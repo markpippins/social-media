@@ -1,7 +1,7 @@
 package com.angrysurfer.social.shrapnel.util;
 
 import com.angrysurfer.social.shrapnel.Exporter;
-import com.angrysurfer.social.shrapnel.service.ExporterFactory;
+import com.angrysurfer.social.shrapnel.service.factory.ExporterFactory;
 import com.angrysurfer.social.dto.UserDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ByteArrayResource;

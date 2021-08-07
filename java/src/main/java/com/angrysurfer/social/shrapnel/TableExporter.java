@@ -3,6 +3,7 @@ package com.angrysurfer.social.shrapnel;
 import com.angrysurfer.social.shrapnel.component.ColumnSpec;
 import com.angrysurfer.social.shrapnel.component.filter.StringStartsWithFilter;
 import com.angrysurfer.social.shrapnel.component.format.ValueFormatter;
+import com.angrysurfer.social.shrapnel.component.property.PropertyAccessor;
 import com.angrysurfer.social.shrapnel.component.style.CombinedStyleProvider;
 import com.angrysurfer.social.shrapnel.component.writer.ExcelRowWriter;
 import com.angrysurfer.social.shrapnel.component.writer.PdfRowWriter;
@@ -70,4 +71,8 @@ public class TableExporter implements Exporter {
         getPdfRowWriter().setValueFormatter(valueFormatter);
     }
 
+    public void setPropertyAccessor(PropertyAccessor propertyAccessor) {
+        getExcelRowWriter().setPropertyAccessor(propertyAccessor);
+        getPdfRowWriter().setPropertyAccessor(propertyAccessor);
+    }
 }

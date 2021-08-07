@@ -2,6 +2,7 @@ package com.angrysurfer.social.shrapnel;
 
 import com.angrysurfer.social.shrapnel.component.property.Types;
 import com.angrysurfer.social.shrapnel.service.model.ColumnSpecModel;
+import com.angrysurfer.social.shrapnel.service.model.DataSourceModel;
 import com.angrysurfer.social.shrapnel.service.model.ExportModel;
 import com.angrysurfer.social.shrapnel.service.repository.ColumnSpecModelRepository;
 import com.angrysurfer.social.shrapnel.service.repository.DataSourceModelRepository;
@@ -28,25 +29,29 @@ class Config implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        ColumnSpecModel pathSpec = new ColumnSpecModel();
-        pathSpec.setName("path");
-        pathSpec.setType(Types.STRING);
-        pathSpec.setPropertyName("path");
-        pathSpec.setHeaderLabel("File path");
-        pathSpec = columnSpecModelRepository.save(pathSpec);
+        ColumnSpecModel idSpec = new ColumnSpecModel();
+        idSpec.setName("id");
+        idSpec.setType(Types.STRING);
+        idSpec.setPropertyName("id");
+        idSpec.setHeaderLabel("id");
+        idSpec = columnSpecModelRepository.save(idSpec);
 
         ColumnSpecModel nameSpec = new ColumnSpecModel();
         nameSpec.setName("name");
         nameSpec.setType(Types.STRING);
         nameSpec.setPropertyName("name");
-        nameSpec.setHeaderLabel("File Name");
+        nameSpec.setHeaderLabel("name");
         nameSpec = columnSpecModelRepository.save(nameSpec);
 
         ExportModel export = new ExportModel();
         export.setName("test-export");
-        export.getColumnSpecs().add(pathSpec);
+        export.getColumnSpecs().add(idSpec);
         export.getColumnSpecs().add(nameSpec);
-
         exportModelRepository.save(export);
+
+        DataSourceModel dataSourceModel = new DataSourceModel();
+        dataSourceModel.setQuery("select * from forum;");
+        dataSourceModel.setName("test-export");
+        dataSourceModelRepository.save(dataSourceModel);
     }
 }

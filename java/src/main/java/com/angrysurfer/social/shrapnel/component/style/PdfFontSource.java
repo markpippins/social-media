@@ -44,5 +44,4 @@ public class PdfFontSource {
         FontProgram fontProgram = FontProgramFactory.createFont(fontFileName);
         return PdfFontFactory.createFont(fontProgram, PdfEncodings.WINANSI, true);
     }
-
 }

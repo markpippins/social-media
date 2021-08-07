@@ -6,7 +6,7 @@ import com.angrysurfer.social.shrapnel.component.format.AbstractValueFormatter;
 import com.angrysurfer.social.shrapnel.component.style.PdfFontSource;
 import com.angrysurfer.social.shrapnel.component.style.StyleAdapter;
 import com.angrysurfer.social.shrapnel.component.style.preset.ZebraStyleProvider;
-import com.angrysurfer.social.shrapnel.service.ExporterFactory;
+import com.angrysurfer.social.shrapnel.service.factory.ExporterFactory;
 import com.itextpdf.kernel.color.Color;
 import com.itextpdf.kernel.font.PdfFont;
 import lombok.Getter;

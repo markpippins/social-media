@@ -1,36 +1,26 @@
-package com.angrysurfer.social.shrapnel.service.impl;
+package com.angrysurfer.social.shrapnel.service.factory;
 
 import com.angrysurfer.social.shrapnel.Exporter;
 import com.angrysurfer.social.shrapnel.TableExporter;
 import com.angrysurfer.social.shrapnel.component.ColumnSpec;
+import com.angrysurfer.social.shrapnel.component.property.HashMapPropertyAccessor;
 import com.angrysurfer.social.shrapnel.service.ExportRequest;
-import com.angrysurfer.social.shrapnel.service.ExporterFactory;
+import com.angrysurfer.social.shrapnel.service.factory.ExporterFactory;
 import com.angrysurfer.social.shrapnel.service.mapping.ColumnSpecMapper;
-import com.angrysurfer.social.shrapnel.service.model.DataSourceModel;
 import com.angrysurfer.social.shrapnel.service.model.ExportModel;
 import lombok.Getter;
 
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Getter
-class JdbcTemplateExporterFactoryImpl implements ExporterFactory {
-    private DataSourceModel dataSource;
+public abstract class JdbcExporterFactory implements ExporterFactory {
     private ExportRequest request;
     private ExportModel exportModel;
 
-    public JdbcTemplateExporterFactoryImpl(ExportRequest request, ExportModel exportModel, DataSourceModel dataSource) {
+    public JdbcExporterFactory(ExportRequest request, ExportModel exportModel) {
         this.request = request;
         this.exportModel = exportModel;
-        this.dataSource = dataSource;
-    }
-
-    @Override
-    public Collection<Object> getData() {
-        return Objects.nonNull(dataSource) ? dataSource.getData() : Collections.EMPTY_LIST;
     }
 
     @Override
@@ -46,7 +36,9 @@ class JdbcTemplateExporterFactoryImpl implements ExporterFactory {
     @Override
     public Exporter newInstance() {
         List<ColumnSpec> columns = getExportModel().getColumnSpecs().stream().map(col -> ColumnSpecMapper.create(col)).collect(Collectors.toList());
-        return new TableExporter(getExportName(), columns);
+        TableExporter exporter = new TableExporter(getExportName(), columns);
+        exporter.setPropertyAccessor(new HashMapPropertyAccessor());
+        return exporter;
     }
 
 }
