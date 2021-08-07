@@ -1,5 +1,6 @@
 package com.angrysurfer.social.shrapnel.service;
 
+import com.angrysurfer.social.dto.UserDTO;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,4 +12,5 @@ public class ExportRequest {
     private String exportName;
     private String fileType;
     Map<String, Object> filterCriteria;
+    private UserDTO user;
 }

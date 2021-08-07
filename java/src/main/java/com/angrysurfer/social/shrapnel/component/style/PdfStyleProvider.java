@@ -14,7 +14,6 @@ import java.util.Objects;
 @Setter
 public class PdfStyleProvider implements StyleProvider {
 
-    int firstRow = -1;
     private boolean applyDefaultStyles = true;
 
     private StyleAdapter defaultCellStyleAdapter;

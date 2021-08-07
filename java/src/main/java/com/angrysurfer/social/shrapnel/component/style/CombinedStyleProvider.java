@@ -2,14 +2,16 @@ package com.angrysurfer.social.shrapnel.component.style;
 
 import com.angrysurfer.social.shrapnel.component.ColumnSpec;
 import com.itextpdf.layout.Style;
-import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.awt.*;
-import java.awt.Color;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;

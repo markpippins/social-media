@@ -1,6 +1,6 @@
 package com.angrysurfer.social.shrapnel.util;
 
-import com.angrysurfer.social.shrapnel.Export;
+import com.angrysurfer.social.shrapnel.Exporter;
 import com.angrysurfer.social.shrapnel.component.writer.PdfRowWriter;
 import com.itextpdf.io.font.FontProgram;
 import com.itextpdf.kernel.font.PdfFont;
@@ -72,8 +72,8 @@ public class PdfUtil {
         return baos;
     }
 
-    public static ByteArrayOutputStream generateByteArrayOutputStream(Collection<Object> items, Export export) {
-        return generateByteArrayOutputStream(items, export.getPdfRowWriter(), export.getPageSize());
+    public static ByteArrayOutputStream generateByteArrayOutputStream(Collection<Object> items, Exporter exporter) {
+        return generateByteArrayOutputStream(items, exporter.getPdfRowWriter(), exporter.getPageSize());
     }
 
     public static ByteArrayOutputStream generateByteArrayOutputStream(Collection<Object> items, PdfRowWriter pdfRowWriter) {
@@ -104,8 +104,8 @@ public class PdfUtil {
         return outputFileName;
     }
 
-    public static String writeTabularFile(Collection<Object> items, Export export, String filename) throws IOException {
-        return writeTabularFile(items, export.getPdfRowWriter(), filename, export.getPageSize());
+    public static String writeTabularFile(Collection<Object> items, Exporter exporter, String filename) throws IOException {
+        return writeTabularFile(items, exporter.getPdfRowWriter(), filename, exporter.getPageSize());
     }
 
     public static void writeToTable(Collection<Object> items, PdfRowWriter pdfRowWriter, Table table) {

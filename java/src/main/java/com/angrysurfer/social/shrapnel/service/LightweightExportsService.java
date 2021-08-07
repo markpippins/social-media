@@ -7,7 +7,7 @@ import com.angrysurfer.social.shrapnel.component.writer.PdfRowWriter;
 import java.util.Collection;
 import java.util.List;
 
-public interface LightweightExportService {
+public interface LightweightExportsService {
 
     String writeCSVFile(Collection<Object> items, List<ColumnSpec> columns, String filename);
 

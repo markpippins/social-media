@@ -1,11 +1,11 @@
 package com.angrysurfer.social.shrapnel.service.controller;
 
+import com.angrysurfer.social.dto.UserDTO;
 import com.angrysurfer.social.shrapnel.service.ExportRequest;
 import com.angrysurfer.social.shrapnel.service.ExportsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,19 +22,30 @@ import java.util.Objects;
 @Slf4j
 public class ExportsController {
 
+    private static UserDTO user = new UserDTO() {
+        @Override
+        public String getAlias() {
+            return "system-export";
+        }
+    };
+
     @Resource
     ExportsService exportsService;
 
     @PostMapping(value = "/fileExport")
     public ResponseEntity<ByteArrayResource> exportFile(@RequestBody ExportRequest request) {
         HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.CONTENT_DISPOSITION, String.format("attachment;filename=%s.%s", request.getExportName(), request.getFileType()));
         ByteArrayResource bytes = null;
 
-        try {
-            bytes = exportsService.exportByteArrayResource(request);
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
+        if (isValid(request)) {
+            request.setUser(user);
+            headers.add(HttpHeaders.CONTENT_DISPOSITION, String.format("attachment;filename=%s.%s", request.getExportName(), request.getFileType()));
+
+            try {
+                bytes = exportsService.exportByteArrayResource(request);
+            } catch (Exception e) {
+                log.error(e.getMessage(), e);
+            }
         }
 
         return Objects.nonNull(bytes) ?
@@ -42,18 +53,29 @@ public class ExportsController {
                 ResponseEntity.notFound().build();
     }
 
+    private boolean isValid(ExportRequest request) {
+        return true;
+    }
+
     @PostMapping(value = "/streamExport")
     public ResponseEntity exportStream(@RequestBody ExportRequest request) {
 
         HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.CONTENT_DISPOSITION, String.format("attachment;filename=%s.%s", request.getExportName(), request.getFileType()));
+        ByteArrayOutputStream stream = null;
+        if (isValid(request)) {
+            request.setUser(user);
+            headers.add(HttpHeaders.CONTENT_DISPOSITION, String.format("attachment;filename=%s.%s", request.getExportName(), request.getFileType()));
 
-        try {
-            ByteArrayOutputStream stream = exportsService.exportByteArrayOutputStream(request);
-            return ResponseEntity.ok().headers(headers).contentLength(stream.size()).contentType(MediaType.APPLICATION_OCTET_STREAM).body(stream.toByteArray());
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            return ResponseEntity.notFound().build();
+            try {
+                stream = exportsService.exportByteArrayOutputStream(request);
+            } catch (Exception e) {
+                log.error(e.getMessage(), e);
+                return ResponseEntity.notFound().build();
+            }
         }
+
+        return Objects.nonNull(stream) ?
+                ResponseEntity.ok().headers(headers).contentLength(stream.size()).contentType(MediaType.APPLICATION_OCTET_STREAM).body(stream.toByteArray()) :
+                ResponseEntity.notFound().build();
     }
 }

@@ -1,6 +1,6 @@
 package com.angrysurfer.social.shrapnel.util;
 
-import com.angrysurfer.social.shrapnel.Export;
+import com.angrysurfer.social.shrapnel.Exporter;
 import com.angrysurfer.social.shrapnel.component.writer.ExcelRowWriter;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -29,9 +29,9 @@ public class ExcelUtil {
         writer.writeValues(config, items);
     }
 
-    public static ByteArrayOutputStream generateByteArrayOutputStream(Collection<Object> data, Export export, String tabLabel) throws IOException {
+    public static ByteArrayOutputStream generateByteArrayOutputStream(Collection<Object> data, Exporter exporter, String tabLabel) throws IOException {
         Workbook workbook = new XSSFWorkbook();
-        addSpreadSheet(workbook, tabLabel, data, export.getExcelRowWriter());
+        addSpreadSheet(workbook, tabLabel, data, exporter.getExcelRowWriter());
         return generateByteArrayOutputStream(workbook);
     }
 
@@ -54,9 +54,9 @@ public class ExcelUtil {
 
     }
 
-    public static String writeWorkbookToFile(Collection<Object> data, Export export, String filename) throws IOException {
+    public static String writeWorkbookToFile(Collection<Object> data, Exporter exporter, String filename) throws IOException {
         Workbook workbook = new XSSFWorkbook();
-        addSpreadSheet(workbook, FileUtil.getTabLabel(export), data, export.getExcelRowWriter());
+        addSpreadSheet(workbook, FileUtil.getTabLabel(exporter), data, exporter.getExcelRowWriter());
         return writeWorkbookToFile(workbook, filename);
     }
 }

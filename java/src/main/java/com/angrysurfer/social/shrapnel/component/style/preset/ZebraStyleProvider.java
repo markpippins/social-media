@@ -16,22 +16,27 @@ import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 public class ZebraStyleProvider extends CombinedStyleProvider {
 
     private IndexedColors excelBackgroundColor = IndexedColors.GREY_40_PERCENT;
+    private IndexedColors excelForegroundColor = IndexedColors.WHITE;
 
-    private CombinedStyleProvider darkStyleProvider = new CombinedStyleProvider() {
-        @Override
-        public void onWorkbookSet(Workbook workbook) {
-            getCellStyle(workbook).setFillForegroundColor(getExcelBackgroundColor().getIndex());
-            getCellStyle(workbook).setFillPattern(FillPatternType.SOLID_FOREGROUND);
-        }
-    };
+    private CombinedStyleProvider darkStyleProvider;
 
-    public ZebraStyleProvider() {
-        getDarkStyleProvider().getDefaultCellStyleAdapter().setBackgroundColor(Color.LIGHT_GRAY);
+    {
+        darkStyleProvider = new CombinedStyleProvider() {
+            @Override
+            public void onWorkbookSet(Workbook workbook) {
+                getCellStyle(workbook).setFillForegroundColor(getExcelBackgroundColor().getIndex());
+                getCellStyle(workbook).setFillPattern(FillPatternType.SOLID_FOREGROUND);
+            }
+        };
     }
 
-    public ZebraStyleProvider(Color backgroundColor) {
-        getDarkStyleProvider().getDefaultCellStyleAdapter().setBackgroundColor(backgroundColor);
-    }
+//    public ZebraStyleProvider() {
+//        getDarkStyleProvider().getDefaultCellStyleAdapter().setBackgroundColor(Color.LIGHT_GRAY);
+//    }
+//
+//    public ZebraStyleProvider(Color backgroundColor) {
+//        getDarkStyleProvider().getDefaultCellStyleAdapter().setBackgroundColor(backgroundColor);
+//    }
 
     public ZebraStyleProvider(IndexedColors excelBackgroundColor) {
         setExcelBackgroundColor(excelBackgroundColor);

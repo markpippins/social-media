@@ -2,6 +2,8 @@ package com.angrysurfer.social.shrapnel;
 
 import com.angrysurfer.social.shrapnel.component.ColumnSpec;
 import com.angrysurfer.social.shrapnel.component.filter.StringStartsWithFilter;
+import com.angrysurfer.social.shrapnel.component.format.ValueFormatter;
+import com.angrysurfer.social.shrapnel.component.style.CombinedStyleProvider;
 import com.angrysurfer.social.shrapnel.component.writer.ExcelRowWriter;
 import com.angrysurfer.social.shrapnel.component.writer.PdfRowWriter;
 import com.itextpdf.kernel.geom.PageSize;
@@ -16,7 +18,7 @@ import java.util.Objects;
 @Slf4j
 @Getter
 @Setter
-public class TabularExport implements Export {
+public class TableExporter implements Exporter {
 
     private List<ColumnSpec> columns;
 
@@ -26,7 +28,7 @@ public class TabularExport implements Export {
 
     private PdfRowWriter pdfRowWriter;
 
-    public TabularExport(String name, List<ColumnSpec> columns) {
+    public TableExporter(String name, List<ColumnSpec> columns) {
         setName(name);
         setColumns(columns);
     }
@@ -57,4 +59,15 @@ public class TabularExport implements Export {
     public PageSize getPageSize() {
         return PageSize.Default;
     }
+
+    public void setStyleProvider(CombinedStyleProvider styleProvider) {
+        getExcelRowWriter().setStyleProvider(styleProvider);
+        getPdfRowWriter().setStyleProvider(styleProvider);
+    }
+
+    public void setValueFormatter(ValueFormatter valueFormatter) {
+        getExcelRowWriter().setValueFormatter(valueFormatter);
+        getPdfRowWriter().setValueFormatter(valueFormatter);
+    }
+
 }

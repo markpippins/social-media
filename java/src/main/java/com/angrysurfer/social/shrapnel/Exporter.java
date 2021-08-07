@@ -8,7 +8,7 @@ import com.itextpdf.kernel.geom.PageSize;
 import java.util.List;
 import java.util.Map;
 
-public interface Export {
+public interface Exporter {
 
     void addFilter(Map<String, Object> filterCriteria);
 
