@@ -24,9 +24,11 @@ public class ColumnSpec {
     private String propertyName;
     private String headerLabel;
     private String type;
+    private int index;
 
     public ColumnSpec() {
     }
+
     public ColumnSpec(String propertyName, String headerLabel, String type) {
         setPropertyName(propertyName);
         setHeaderLabel(headerLabel);

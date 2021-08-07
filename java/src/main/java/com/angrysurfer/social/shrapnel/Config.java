@@ -34,6 +34,7 @@ class Config implements CommandLineRunner {
         idSpec.setType(Types.STRING);
         idSpec.setPropertyName("id");
         idSpec.setHeaderLabel("id");
+        idSpec.setIndex(1);
         idSpec = columnSpecModelRepository.save(idSpec);
 
         ColumnSpecModel nameSpec = new ColumnSpecModel();
@@ -41,6 +42,7 @@ class Config implements CommandLineRunner {
         nameSpec.setType(Types.STRING);
         nameSpec.setPropertyName("name");
         nameSpec.setHeaderLabel("name");
+        nameSpec.setIndex(2);
         nameSpec = columnSpecModelRepository.save(nameSpec);
 
         ExportModel export = new ExportModel();
@@ -59,6 +61,7 @@ class Config implements CommandLineRunner {
         idSpec2.setType(Types.STRING);
         idSpec2.setPropertyName("id");
         idSpec2.setHeaderLabel("id");
+        idSpec2.setIndex(0);
         idSpec2 = columnSpecModelRepository.save(idSpec2);
 
         ColumnSpecModel nameSpec2 = new ColumnSpecModel();
@@ -66,6 +69,7 @@ class Config implements CommandLineRunner {
         nameSpec2.setType(Types.STRING);
         nameSpec2.setPropertyName("email");
         nameSpec2.setHeaderLabel("email");
+        nameSpec2.setIndex(3);
         nameSpec2 = columnSpecModelRepository.save(nameSpec2);
 
         ColumnSpecModel nameSpec3 = new ColumnSpecModel();
@@ -73,6 +77,7 @@ class Config implements CommandLineRunner {
         nameSpec3.setType(Types.STRING);
         nameSpec3.setPropertyName("alias");
         nameSpec3.setHeaderLabel("alias");
+        nameSpec3.setIndex(2);
         nameSpec3 = columnSpecModelRepository.save(nameSpec3);
 
         ExportModel export2 = new ExportModel();
@@ -83,7 +88,7 @@ class Config implements CommandLineRunner {
         exportModelRepository.save(export2);
 
         DataSourceModel dataSourceModel2 = new DataSourceModel();
-        dataSourceModel2.setQuery("get-users;");
+        dataSourceModel2.setQuery("get-users");
         dataSourceModel2.setName("user-list");
         dataSourceModelRepository.save(dataSourceModel2);
     }

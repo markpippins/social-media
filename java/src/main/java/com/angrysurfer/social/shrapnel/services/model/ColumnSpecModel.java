@@ -27,4 +27,6 @@ public class ColumnSpecModel {
     @Column(name = "property_type", nullable = false)
     private String type;
 
+    @Column(name = "column_index", nullable = false)
+    private Integer index;
 }

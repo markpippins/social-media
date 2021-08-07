@@ -139,7 +139,9 @@ public class PropertyUtilsPropertyAccessor implements PropertyAccessor {
     }
 
     @Override
-    public void inspect(Object value) {
-
+    public void inspect(Object item) {
+        getPropertyNames(item).forEach(propertyName -> {
+            log.info(propertyName + " = " + getString(item, propertyName));
+        });
     }
 }

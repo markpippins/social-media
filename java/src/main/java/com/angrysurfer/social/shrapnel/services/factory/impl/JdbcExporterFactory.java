@@ -10,6 +10,7 @@ import com.angrysurfer.social.shrapnel.services.mapping.ColumnSpecMapper;
 import com.angrysurfer.social.shrapnel.services.model.ExportModel;
 import lombok.Getter;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,7 +33,15 @@ public abstract class JdbcExporterFactory implements ExporterFactory {
 
     @Override
     public Exporter newInstance() {
-        List<ColumnSpec> columns = getExportModel().getColumnSpecs().stream().map(col -> ColumnSpecMapper.create(col)).collect(Collectors.toList());
+        List<ColumnSpec> columns = getExportModel().getColumnSpecs().stream()
+                .map(col -> ColumnSpecMapper.create(col))
+                .sorted(new Comparator<ColumnSpec>() {
+                    @Override
+                    public int compare(ColumnSpec columnSpec1, ColumnSpec columnSpec2) {
+                        return Integer.compareUnsigned(columnSpec1.getIndex(), columnSpec2.getIndex());
+                    }
+                })
+                .collect(Collectors.toList());
         TableExporter exporter = new TableExporter(getExportName(), columns);
         exporter.setPropertyAccessor(new HashMapPropertyAccessor());
         return exporter;

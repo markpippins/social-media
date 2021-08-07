@@ -1,10 +1,17 @@
 package com.angrysurfer.social.shrapnel.component.property;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Set;
 
+@Slf4j
 public class HashMapPropertyAccessor implements PropertyAccessor {
+
     @Override
     public boolean accessorExists(Object item, String propertyName) {
         return ((HashMap) item).containsKey(propertyName);
@@ -51,7 +58,9 @@ public class HashMapPropertyAccessor implements PropertyAccessor {
     }
 
     @Override
-    public void inspect(Object value) {
-
+    public void inspect(Object item) {
+        getPropertyNames(item).forEach(propertyName -> {
+            log.info(propertyName + " = " + getString(item, propertyName));
+        });
     }
 }

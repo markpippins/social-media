@@ -10,6 +10,7 @@ public class ColumnSpecMapper {
         result.setPropertyName(spec.getPropertyName());
         result.setHeaderLabel(spec.getHeaderLabel());
         result.setType(spec.getType());
+        result.setIndex(spec.getIndex());
         return result;
     }
 }
