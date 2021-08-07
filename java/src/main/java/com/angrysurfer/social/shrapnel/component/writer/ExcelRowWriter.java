@@ -3,7 +3,6 @@ package com.angrysurfer.social.shrapnel.component.writer;
 import com.angrysurfer.social.shrapnel.component.ColumnSpec;
 import com.angrysurfer.social.shrapnel.component.filter.DataFilterList;
 import com.angrysurfer.social.shrapnel.component.format.ValueFormatter;
-import com.angrysurfer.social.shrapnel.component.property.Types;
 import com.angrysurfer.social.shrapnel.component.style.CombinedStyleProvider;
 import com.angrysurfer.social.shrapnel.component.style.ExcelStyleProvider;
 import lombok.Getter;
@@ -114,10 +113,7 @@ public class ExcelRowWriter extends AbstractRowWriter implements RowWriter {
 
     protected void writeCell(ColumnSpec col, Object item, Cell cell) {
         if (accessorExists(item, col.getPropertyName()))
-            if (getValueFormatter().hasFormatFor(col))
-                writeFormattedValue(item, col, cell);
-            else
-                writeValue(item, col, cell);
+            cell.setCellValue(getValueFormatter().hasFormatFor(col) ? getFormattedValue(item, col) : getValue(item, col));
     }
 
     protected void writeDisclaimer() {
@@ -158,63 +154,4 @@ public class ExcelRowWriter extends AbstractRowWriter implements RowWriter {
             writeDataRow(item, getSheet().createRow(getCurrentRow()));
         });
     }
-
-    protected void writeValue(Object item, ColumnSpec col, Cell cell) {
-        switch (col.getType()) {
-            case Types.BOOLEAN:
-                cell.setCellValue(getBoolean(item, col.getPropertyName()));
-                break;
-            case Types.DATE:
-                cell.setCellValue(getDate(item, col.getPropertyName()));
-                break;
-            case Types.DOUBLE:
-                cell.setCellValue(getDouble(item, col.getPropertyName()));
-                break;
-            case Types.CALENDAR:
-                cell.setCellValue(getCalendar(item, col.getPropertyName()));
-                break;
-            case Types.LOCALDATE:
-                cell.setCellValue(getLocalDate(item, col.getPropertyName()));
-                break;
-            case Types.LOCALDATETIME:
-                cell.setCellValue(getLocalDateTime(item, col.getPropertyName()));
-                break;
-            case Types.STRING:
-                cell.setCellValue(getString(item, col.getPropertyName()));
-                break;
-            // case Types.RICHTEXT:
-            //     cell.setCellValue(getR(item, col.getPropertyName()));
-            //     break;
-        }
-    }
-
-    protected void writeFormattedValue(Object item, ColumnSpec col, Cell cell) {
-        switch (col.getType()) {
-            case Types.BOOLEAN:
-                cell.setCellValue(getValueFormatter().format(col, getBoolean(item, col.getPropertyName())));
-                break;
-            case Types.DATE:
-                cell.setCellValue(getValueFormatter().format(col, getDate(item, col.getPropertyName())));
-                break;
-            case Types.DOUBLE:
-                cell.setCellValue(getValueFormatter().format(col, getDouble(item, col.getPropertyName())));
-                break;
-            case Types.CALENDAR:
-                cell.setCellValue(getValueFormatter().format(col, getCalendar(item, col.getPropertyName())));
-                break;
-            case Types.LOCALDATE:
-                cell.setCellValue(getValueFormatter().format(col, getLocalDate(item, col.getPropertyName())));
-                break;
-            case Types.LOCALDATETIME:
-                cell.setCellValue(getValueFormatter().format(col, getLocalDateTime(item, col.getPropertyName())));
-                break;
-            case Types.STRING:
-                cell.setCellValue(getValueFormatter().format(col, getString(item, col.getPropertyName())));
-                break;
-            // case Types.RICHTEXT:
-            //     cell.setCellValue(getValueFormatter().format(col, getR(item, col.getPropertyName()));
-            //     break;
-        }
-    }
-
 }

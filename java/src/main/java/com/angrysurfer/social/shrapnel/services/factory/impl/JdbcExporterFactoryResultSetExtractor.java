@@ -1,7 +1,7 @@
-package com.angrysurfer.social.shrapnel.service.factory;
+package com.angrysurfer.social.shrapnel.services.factory.impl;
 
 import com.angrysurfer.social.shrapnel.component.property.Types;
-import com.angrysurfer.social.shrapnel.service.model.ExportModel;
+import com.angrysurfer.social.shrapnel.services.model.ExportModel;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;
 

@@ -3,7 +3,6 @@ package com.angrysurfer.social.shrapnel.component.writer;
 import com.angrysurfer.social.shrapnel.component.ColumnSpec;
 import com.angrysurfer.social.shrapnel.component.filter.DataFilterList;
 import com.angrysurfer.social.shrapnel.component.format.ValueFormatter;
-import com.angrysurfer.social.shrapnel.component.property.Types;
 import com.angrysurfer.social.shrapnel.component.style.CombinedStyleProvider;
 import com.angrysurfer.social.shrapnel.component.style.PdfStyleProvider;
 import com.itextpdf.layout.element.Cell;
@@ -13,8 +12,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.*;
 
 @Slf4j
@@ -57,10 +54,7 @@ public class PdfRowWriter extends AbstractRowWriter {
             if (ColumnSpec.PADDING_COLUMNS.contains(col))
                 cell.add(col.getHeaderLabel());
 
-            else if (getValueFormatter().hasFormatFor(col))
-                writeFormattedValue(item, col, cell);
-
-            else writeValue(item, col, cell);
+            else cell.add(getValueFormatter().hasFormatFor(col) ? getFormattedValue(item, col) : getValue(item, col));
 
         return cell;
     }
@@ -143,119 +137,4 @@ public class PdfRowWriter extends AbstractRowWriter {
             writeDataRow(item, rowNum[0]++).forEach(getTable()::addCell);
         });
     }
-
-    protected void writeFormattedValue(Object item, ColumnSpec col, Cell cell) {
-        if (accessorExists(item, col.getPropertyName()))
-            try {
-                switch (col.getType()) {
-                    case Types.BOOLEAN:
-                        Boolean bool = getBoolean(item, col.getPropertyName());
-                        if (Objects.nonNull(bool))
-                            cell.add(getValueFormatter().format(col, bool));
-                        break;
-
-                    case Types.CALENDAR:
-                        Calendar calendar = getCalendar(item, col.getPropertyName());
-                        if (Objects.nonNull(calendar))
-                            cell.add(getValueFormatter().format(col, calendar));
-                        break;
-
-                    case Types.DATE:
-                        Date date = getDate(item, col.getPropertyName());
-                        if (Objects.nonNull(date))
-                            cell.add(getValueFormatter().format(col, date));
-                        break;
-
-                    case Types.DOUBLE:
-                        Double dbl = getDouble(item, col.getPropertyName());
-                        if (Objects.nonNull(dbl))
-                            cell.add(getValueFormatter().format(col, dbl));
-                        break;
-
-                    case Types.LOCALDATE:
-                        LocalDate localDate = getLocalDate(item, col.getPropertyName());
-                        if (Objects.nonNull(localDate))
-                            cell.add(getValueFormatter().format(col, localDate));
-                        break;
-
-                    case Types.LOCALDATETIME:
-                        LocalDateTime localDateTime = getLocalDateTime(item, col.getPropertyName());
-                        if (Objects.nonNull(localDateTime))
-                            cell.add(getValueFormatter().format(col, localDateTime));
-                        break;
-
-                    case Types.RICHTEXT:
-//                        Boolean value = getBooleanValue(item, col.getPropertyName());
-//                        if (Objects.nonNull(value))
-//                            cell.add(getValueFormatter().format(col, value.toString());
-                        break;
-
-                    case Types.STRING:
-                        String value = getString(item, col.getPropertyName());
-                        if (Objects.nonNull(value))
-                            cell.add(getValueFormatter().format(col, value));
-                        break;
-                }
-            } catch (Exception e) {
-                log.error(e.getMessage(), e);
-            }
-    }
-
-    protected void writeValue(Object item, ColumnSpec col, Cell cell) {
-        if (accessorExists(item, col.getPropertyName()))
-            try {
-                switch (col.getType()) {
-                    case Types.BOOLEAN:
-                        Boolean bool = getBoolean(item, col.getPropertyName());
-                        if (Objects.nonNull(bool))
-                            cell.add(bool.toString());
-                        break;
-
-                    case Types.CALENDAR:
-                        Calendar calendar = getCalendar(item, col.getPropertyName());
-                        if (Objects.nonNull(calendar))
-                            cell.add(calendar.toString());
-                        break;
-
-                    case Types.DATE:
-                        Date date = getDate(item, col.getPropertyName());
-                        if (Objects.nonNull(date))
-                            cell.add(date.toString());
-                        break;
-
-                    case Types.DOUBLE:
-                        Double dbl = getDouble(item, col.getPropertyName());
-                        if (Objects.nonNull(dbl))
-                            cell.add(dbl.toString());
-                        break;
-
-                    case Types.LOCALDATE:
-                        LocalDate localDate = getLocalDate(item, col.getPropertyName());
-                        if (Objects.nonNull(localDate))
-                            cell.add(localDate.toString());
-                        break;
-
-                    case Types.LOCALDATETIME:
-                        LocalDateTime localDateTime = getLocalDateTime(item, col.getPropertyName());
-                        if (Objects.nonNull(localDateTime))
-                            cell.add(localDateTime.toString());
-                        break;
-
-                    case Types.RICHTEXT:
-//                        Boolean value = getBooleanValue(item, col.getPropertyName());
-//                        if (Objects.nonNull(value))
-//                            cell.add(value.toString());
-                        break;
-
-                    case Types.STRING:
-                        String value = getString(item, col.getPropertyName());
-                        if (Objects.nonNull(value))
-                            cell.add(value.toString());
-                        break;
-                }
-            } catch (Exception e) {
-                log.error(e.getMessage(), e);
-            }
-    }
-
 }

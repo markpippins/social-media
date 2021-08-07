@@ -1,4 +1,4 @@
-package com.angrysurfer.social.shrapnel.service;
+package com.angrysurfer.social.shrapnel.services.service;
 
 import com.angrysurfer.social.shrapnel.component.ColumnSpec;
 import com.angrysurfer.social.shrapnel.component.writer.ExcelRowWriter;

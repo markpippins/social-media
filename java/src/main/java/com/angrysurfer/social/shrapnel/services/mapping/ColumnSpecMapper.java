@@ -1,7 +1,7 @@
-package com.angrysurfer.social.shrapnel.service.mapping;
+package com.angrysurfer.social.shrapnel.services.mapping;
 
 import com.angrysurfer.social.shrapnel.component.ColumnSpec;
-import com.angrysurfer.social.shrapnel.service.model.ColumnSpecModel;
+import com.angrysurfer.social.shrapnel.services.model.ColumnSpecModel;
 
 public class ColumnSpecMapper {
 

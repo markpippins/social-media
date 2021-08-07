@@ -1,4 +1,4 @@
-package com.angrysurfer.social.shrapnel.service.model;
+package com.angrysurfer.social.shrapnel.services.model;
 
 import lombok.Getter;
 import lombok.Setter;

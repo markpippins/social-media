@@ -1,10 +1,10 @@
-package com.angrysurfer.social.shrapnel.service.impl;
+package com.angrysurfer.social.shrapnel.services.service.impl;
 
 import com.angrysurfer.social.shrapnel.component.ColumnSpec;
 import com.angrysurfer.social.shrapnel.component.writer.ExcelRowWriter;
 import com.angrysurfer.social.shrapnel.component.writer.PdfRowWriter;
 import com.angrysurfer.social.shrapnel.component.writer.SimpleCSVRowWriter;
-import com.angrysurfer.social.shrapnel.service.LightweightExportsService;
+import com.angrysurfer.social.shrapnel.services.service.LightweightExportsService;
 import com.angrysurfer.social.shrapnel.util.ExcelUtil;
 import com.angrysurfer.social.shrapnel.util.FileUtil;
 import com.angrysurfer.social.shrapnel.util.PdfUtil;

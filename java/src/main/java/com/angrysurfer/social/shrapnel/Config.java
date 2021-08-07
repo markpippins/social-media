@@ -1,12 +1,12 @@
 package com.angrysurfer.social.shrapnel;
 
 import com.angrysurfer.social.shrapnel.component.property.Types;
-import com.angrysurfer.social.shrapnel.service.model.ColumnSpecModel;
-import com.angrysurfer.social.shrapnel.service.model.DataSourceModel;
-import com.angrysurfer.social.shrapnel.service.model.ExportModel;
-import com.angrysurfer.social.shrapnel.service.repository.ColumnSpecModelRepository;
-import com.angrysurfer.social.shrapnel.service.repository.DataSourceModelRepository;
-import com.angrysurfer.social.shrapnel.service.repository.ExportModelRepository;
+import com.angrysurfer.social.shrapnel.services.model.ColumnSpecModel;
+import com.angrysurfer.social.shrapnel.services.model.DataSourceModel;
+import com.angrysurfer.social.shrapnel.services.model.ExportModel;
+import com.angrysurfer.social.shrapnel.services.repository.ColumnSpecModelRepository;
+import com.angrysurfer.social.shrapnel.services.repository.DataSourceModelRepository;
+import com.angrysurfer.social.shrapnel.services.repository.ExportModelRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -51,7 +51,40 @@ class Config implements CommandLineRunner {
 
         DataSourceModel dataSourceModel = new DataSourceModel();
         dataSourceModel.setQuery("select * from forum;");
-        dataSourceModel.setName("test-export");
+        dataSourceModel.setName("forum-list");
         dataSourceModelRepository.save(dataSourceModel);
+
+        ColumnSpecModel idSpec2 = new ColumnSpecModel();
+        idSpec2.setName("id");
+        idSpec2.setType(Types.STRING);
+        idSpec2.setPropertyName("id");
+        idSpec2.setHeaderLabel("id");
+        idSpec2 = columnSpecModelRepository.save(idSpec2);
+
+        ColumnSpecModel nameSpec2 = new ColumnSpecModel();
+        nameSpec2.setName("email");
+        nameSpec2.setType(Types.STRING);
+        nameSpec2.setPropertyName("email");
+        nameSpec2.setHeaderLabel("email");
+        nameSpec2 = columnSpecModelRepository.save(nameSpec2);
+
+        ColumnSpecModel nameSpec3 = new ColumnSpecModel();
+        nameSpec3.setName("alias");
+        nameSpec3.setType(Types.STRING);
+        nameSpec3.setPropertyName("alias");
+        nameSpec3.setHeaderLabel("alias");
+        nameSpec3 = columnSpecModelRepository.save(nameSpec3);
+
+        ExportModel export2 = new ExportModel();
+        export2.setName("user-list");
+        export2.getColumnSpecs().add(idSpec2);
+        export2.getColumnSpecs().add(nameSpec2);
+        export2.getColumnSpecs().add(nameSpec3);
+        exportModelRepository.save(export2);
+
+        DataSourceModel dataSourceModel2 = new DataSourceModel();
+        dataSourceModel2.setQuery("select * from user;");
+        dataSourceModel2.setName("user-list");
+        dataSourceModelRepository.save(dataSourceModel2);
     }
 }

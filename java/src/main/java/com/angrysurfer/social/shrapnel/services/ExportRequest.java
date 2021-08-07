@@ -1,4 +1,4 @@
-package com.angrysurfer.social.shrapnel.service;
+package com.angrysurfer.social.shrapnel.services;
 
 import com.angrysurfer.social.dto.UserDTO;
 import lombok.Getter;

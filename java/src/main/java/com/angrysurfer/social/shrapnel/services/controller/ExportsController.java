@@ -1,8 +1,8 @@
-package com.angrysurfer.social.shrapnel.service.controller;
+package com.angrysurfer.social.shrapnel.services.controller;
 
 import com.angrysurfer.social.dto.UserDTO;
-import com.angrysurfer.social.shrapnel.service.ExportRequest;
-import com.angrysurfer.social.shrapnel.service.ExportsService;
+import com.angrysurfer.social.shrapnel.services.ExportRequest;
+import com.angrysurfer.social.shrapnel.services.service.ExportsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;

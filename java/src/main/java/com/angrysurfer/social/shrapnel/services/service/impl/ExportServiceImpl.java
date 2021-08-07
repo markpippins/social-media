@@ -1,9 +1,9 @@
-package com.angrysurfer.social.shrapnel.service.impl;
+package com.angrysurfer.social.shrapnel.services.service.impl;
 
-import com.angrysurfer.social.shrapnel.service.ExportRequest;
-import com.angrysurfer.social.shrapnel.service.factory.ExporterFactory;
-import com.angrysurfer.social.shrapnel.service.ExportsService;
-import com.angrysurfer.social.shrapnel.service.factory.JdbcExporterFactoryFactory;
+import com.angrysurfer.social.shrapnel.services.ExportRequest;
+import com.angrysurfer.social.shrapnel.services.factory.ExporterFactory;
+import com.angrysurfer.social.shrapnel.services.factory.JdbcExporterFactoryFactory;
+import com.angrysurfer.social.shrapnel.services.service.ExportsService;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
