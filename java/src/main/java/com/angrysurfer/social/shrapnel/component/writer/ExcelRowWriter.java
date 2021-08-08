@@ -123,11 +123,30 @@ public class ExcelRowWriter extends RowWriter implements DataWriter {
         if (autoCreateTopLevelHeader)
             writerHeaderRow();
 
-        items.stream().filter(item -> getFilters().allow(item, this, getPropertyAccessor()))
-                .forEach(item -> {
-                    beforeRow(item);
-                    writeDataRow(item, getSheet().createRow(getCurrentRow()));
-                });
+        try {
+            items.stream().filter(item -> getFilters().allow(item, this, getPropertyAccessor()))
+                    .forEach(item -> {
+                        beforeRow(item);
+                        writeDataRow(item, getSheet().createRow(getCurrentRow()));
+                    });
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            if (DEBUG)
+                writeError(e);
+            else throw e;
+        }
+    }
+
+    @Override
+    public void writeError(Exception e) {
+        Row r = getSheet().createRow(getCurrentRow());
+        Cell errorCell1 = r.createCell(0);
+        errorCell1.setCellValue(e.getClass().getName());
+        errorCell1.setCellStyle(getStyleProvider().getCellStyle(getWorkbook()));
+
+        Cell errorCell2 = r.createCell(1);
+        errorCell2.setCellValue(e.getMessage());
+        errorCell2.setCellStyle(getStyleProvider().getCellStyle(getWorkbook()));
     }
 
     protected void writeDataRow(Object item, Row row) {
