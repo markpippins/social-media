@@ -107,7 +107,7 @@ public class FontListExporter extends TableExporter {
         }
 
         @Override
-        public String calculateValue(FieldSpec field, Object item) {
+        public Object calculateValue(FieldSpec field, Object item) {
             if (field.getPropertyName().equalsIgnoreCase("fontname")) {
                 String fontName = ((File) item).getName();
                 try {

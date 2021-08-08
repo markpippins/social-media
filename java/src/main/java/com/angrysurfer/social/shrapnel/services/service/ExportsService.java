@@ -5,7 +5,7 @@ import com.angrysurfer.social.shrapnel.component.property.HashMapPropertyAccesso
 import com.angrysurfer.social.shrapnel.component.writer.CSVRowWriter;
 import com.angrysurfer.social.shrapnel.services.ExportRequest;
 import com.angrysurfer.social.shrapnel.services.factory.ExporterFactory;
-import com.angrysurfer.social.shrapnel.services.factory.impl.JdbcTableExporterFactory;
+import com.angrysurfer.social.shrapnel.services.factory.impl.JdbcTemplateExporterFactory;
 import com.angrysurfer.social.shrapnel.util.ExcelUtil;
 import com.angrysurfer.social.shrapnel.util.FileUtil;
 import com.angrysurfer.social.shrapnel.util.PdfUtil;
@@ -48,7 +48,7 @@ public interface ExportsService {
             case CSV_FILE:
                 Collection data = factory.getData();
                 CSVRowWriter writer = new CSVRowWriter(exporter.getFields());
-                if (factory instanceof JdbcTableExporterFactory)
+                if (factory instanceof JdbcTemplateExporterFactory)
                     writer.setPropertyAccessor((new HashMapPropertyAccessor()));
                 filename = FileUtil.makeFileName(request.getUser(), factory);
                 writer.writeValues(data, filename);

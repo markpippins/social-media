@@ -2,13 +2,26 @@ package com.angrysurfer.social.shrapnel.component.format;
 
 import com.angrysurfer.social.shrapnel.component.FieldSpec;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 
+import static com.angrysurfer.social.shrapnel.component.writer.RowWriter.EMPTY_STRING;
+
 public abstract class AbstractValueFormatter implements ValueFormatter {
+
+    public final String DEFAULT_DATE_FORMAT = "MM/dd/yyyy";
+    public final String DEFAULT_TIME_FORMAT = "HH:MM:SS";
+    public final String DEFAULT_DATE_TIME_FORMAT = "MM/dd/yyyy HH:MM:SS";
+
+    private SimpleDateFormat defaultDateFormat = new SimpleDateFormat(DEFAULT_DATE_FORMAT);
+    private SimpleDateFormat defaultTimeFormat = new SimpleDateFormat(DEFAULT_TIME_FORMAT);
+    private SimpleDateFormat defaultDateTimeFormat = new SimpleDateFormat(DEFAULT_DATE_TIME_FORMAT);
+
     @Override
     public String format(FieldSpec field, Boolean value) {
         return Objects.isNull(value) ? getBooleanNullDefault() : value.toString();
@@ -25,31 +38,27 @@ public abstract class AbstractValueFormatter implements ValueFormatter {
 
     @Override
     public String format(FieldSpec field, Calendar value) {
-        return nonNullString(value);
+        return Objects.isNull(value) ? EMPTY_STRING : defaultDateTimeFormat.format(value.getTime());
     }
 
     @Override
     public String format(FieldSpec field, Date value) {
-        return nonNullString(value);
+        return Objects.isNull(value) ? EMPTY_STRING : defaultDateFormat.format(value);
     }
 
     @Override
     public String format(FieldSpec field, LocalDate value) {
-        return nonNullString(value);
+        return Objects.isNull(value) ? EMPTY_STRING : defaultDateFormat.format(Date.from(value.atStartOfDay(ZoneId.systemDefault()).toInstant()));
     }
 
     @Override
     public String format(FieldSpec field, LocalDateTime value) {
-        return nonNullString(value);
+        return Objects.isNull(value) ? EMPTY_STRING : defaultDateTimeFormat.format(Date.from(value.atZone(ZoneId.systemDefault()).toInstant()));
     }
 
     @Override
     public String format(FieldSpec field, String value) {
-        return nonNullString(value);
-    }
-
-    private String nonNullString(Object value) {
-        return Objects.isNull(value) ? "" : value.toString();
+        return Objects.isNull(value) ? EMPTY_STRING : value;
     }
 
 }

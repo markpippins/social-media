@@ -22,7 +22,7 @@ import java.util.Objects;
 @Setter
 public abstract class RowWriter extends ProxyPropertyAccessorImpl implements DataWriter {
 
-    static final String EMPTY_STRING = "";
+    public static final String EMPTY_STRING = "";
 
     private List<FieldSpec> fields;
 
@@ -57,7 +57,7 @@ public abstract class RowWriter extends ProxyPropertyAccessorImpl implements Dat
                 }
 
                 @Override
-                public String calculateValue(FieldSpec field, Object item) {
+                public Object calculateValue(FieldSpec field, Object item) {
                     return EMPTY_STRING;
                 }
 
@@ -78,32 +78,32 @@ public abstract class RowWriter extends ProxyPropertyAccessorImpl implements Dat
                     case Types.BOOLEAN:
                         Boolean bool = getBoolean(item, field.getPropertyName());
                         return !field.isCalculated() && formatter.hasFormatFor(field) ?
-                                formatter.format(field, bool) : subGetValue(item, field, bool);
+                                formatter.format(field, bool) : secondGetValue(item, field, bool);
 
                     case Types.CALENDAR:
                         Calendar calendar = getCalendar(item, field.getPropertyName());
                         return !field.isCalculated() && formatter.hasFormatFor(field) ?
-                                formatter.format(field, calendar) : subGetValue(item, field, calendar);
+                                formatter.format(field, calendar) : secondGetValue(item, field, calendar);
 
                     case Types.DATE:
                         Date date = getDate(item, field.getPropertyName());
                         return !field.isCalculated() && formatter.hasFormatFor(field) ?
-                                formatter.format(field, date) : subGetValue(item, field, date);
+                                formatter.format(field, date) : secondGetValue(item, field, date);
 
                     case Types.DOUBLE:
                         Double dbl = getDouble(item, field.getPropertyName());
                         return !field.isCalculated() && formatter.hasFormatFor(field) ?
-                                formatter.format(field, dbl) : subGetValue(item, field, dbl);
+                                formatter.format(field, dbl) : secondGetValue(item, field, dbl);
 
                     case Types.LOCALDATE:
                         LocalDate localDate = getLocalDate(item, field.getPropertyName());
                         return !field.isCalculated() && formatter.hasFormatFor(field) ?
-                                formatter.format(field, localDate) : subGetValue(item, field, localDate);
+                                formatter.format(field, localDate) : secondGetValue(item, field, localDate);
 
                     case Types.LOCALDATETIME:
                         LocalDateTime localDateTime = getLocalDateTime(item, field.getPropertyName());
                         return !field.isCalculated() && formatter.hasFormatFor(field) ?
-                                formatter.format(field, localDateTime) : subGetValue(item, field, localDateTime);
+                                formatter.format(field, localDateTime) : secondGetValue(item, field, localDateTime);
 
                     case Types.RICHTEXT:
                         break;
@@ -111,7 +111,7 @@ public abstract class RowWriter extends ProxyPropertyAccessorImpl implements Dat
                     case Types.STRING:
                         String string = getString(item, field.getPropertyName());
                         return !field.isCalculated() && formatter.hasFormatFor(field) ?
-                                formatter.format(field, string) : subGetValue(item, field, string);
+                                formatter.format(field, string) : secondGetValue(item, field, string);
                 }
             } catch (Exception e) {
                 log.error(e.getMessage(), e);
@@ -120,9 +120,9 @@ public abstract class RowWriter extends ProxyPropertyAccessorImpl implements Dat
         return EMPTY_STRING;
     }
 
-    private String subGetValue(Object item, FieldSpec field, Object value) {
+    private String secondGetValue(Object item, FieldSpec field, Object value) {
         ValueFormatter formatter = getValueFormatter();
-        return !formatter.hasFormatFor(field) && field.isCalculated() ? formatter.calculateValue(field, item) :
+        return !formatter.hasFormatFor(field) && field.isCalculated() ? formatter.calculateValue(field, item).toString() :
                 formatter.hasFormatFor(field) && field.isCalculated() ? formatter.formatCalculatedValue(field, formatter.calculateValue(field, item)) :
                         Objects.isNull(value) ? EMPTY_STRING : value.toString();
     }

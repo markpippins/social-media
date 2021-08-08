@@ -1,11 +1,11 @@
 package com.angrysurfer.social.shrapnel.services.mapping;
 
 import com.angrysurfer.social.shrapnel.component.FieldSpec;
-import com.angrysurfer.social.shrapnel.services.model.ColumnSpecModel;
+import com.angrysurfer.social.shrapnel.services.model.FieldSpecModel;
 
-public class ColumnSpecMapper {
+public class FieldSpecMapper {
 
-    public static FieldSpec create(ColumnSpecModel spec) {
+    public static FieldSpec create(FieldSpecModel spec) {
         FieldSpec result = new FieldSpec();
         result.setPropertyName(spec.getPropertyName());
         result.setHeaderLabel(spec.getHeaderLabel());

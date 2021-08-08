@@ -2,7 +2,7 @@ package com.angrysurfer.social.shrapnel.services.factory.impl;
 
 import com.angrysurfer.social.shrapnel.services.ExportRequest;
 import com.angrysurfer.social.shrapnel.services.factory.ExporterFactory;
-import com.angrysurfer.social.shrapnel.services.factory.ExporterFactoryFactory;
+import com.angrysurfer.social.shrapnel.services.factory.MetaExporterFactory;
 import com.angrysurfer.social.shrapnel.services.model.DataSourceModel;
 import com.angrysurfer.social.shrapnel.services.model.ExportModel;
 import com.angrysurfer.social.shrapnel.services.repository.DataSourceModelRepository;
@@ -21,7 +21,7 @@ import java.util.Objects;
 
 @Slf4j
 @Component
-public class JdbcExporterFactoryFactoryImpl implements ExporterFactoryFactory {
+public class JdbcMetaExporterFactoryImpl implements MetaExporterFactory {
 
     public final static String SQL_FOLDER = "java/src/main/resources/sql/";
 
@@ -37,7 +37,7 @@ public class JdbcExporterFactoryFactoryImpl implements ExporterFactoryFactory {
     @Override
     public boolean hasFactory(ExportRequest request) {
         ExportModel export = exportModelRepository.findByName(request.getExport());
-        return Objects.nonNull(export) && ExportModel.isInitialized(export);
+        return Objects.nonNull(export) && export.isConfigured();
     }
 
     @Override
@@ -45,7 +45,7 @@ public class JdbcExporterFactoryFactoryImpl implements ExporterFactoryFactory {
         final ExportModel export = exportModelRepository.findByName(request.getExport());
         final DataSourceModel dataSource = dataSourceModelRepository.findByName(request.getExport());
 
-        return new JdbcTableExporterFactory(request, export) {
+        return new JdbcTemplateExporterFactory(request, export) {
             @Override
             public Collection getData() {
                 String sql = getSQL(dataSource);

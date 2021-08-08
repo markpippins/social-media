@@ -5,11 +5,11 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
-@Table(name = "ColumnSpecModel")
+//@Table(name = "field_spec")
 @Getter
 @Setter
 @Entity
-public class ColumnSpecModel {
+public class FieldSpecModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

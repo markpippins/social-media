@@ -34,16 +34,26 @@ public class ExportModel {
     // columns
     //
     @OneToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "export_model_column", joinColumns = {@JoinColumn(name = "export_model_id")}, inverseJoinColumns = {
-            @JoinColumn(name = "column_id")})
+    @JoinTable(name = "export_model_field_spec", joinColumns = {@JoinColumn(name = "model_id")}, inverseJoinColumns = {
+            @JoinColumn(name = "field_spec_id")})
     @Getter
-    private Set<ColumnSpecModel> columnSpecs = new HashSet<>();
+    private Set<FieldSpecModel> fieldSpecs = new HashSet<>();
 
-    public static boolean isInitialized(ExportModel model) {
-        return true;
-//        return Objects.nonNull(model.name)
-//                && model.getColumnSpecs().size() > 0
-//                && Objects.nonNull(model.getDataSource())
-//                && Objects.nonNull(model.getDataSource().getQuery());
+    public boolean isConfigured() {
+        final boolean[] valid = {true};
+
+        if (Objects.isNull(getName()) ||
+                Objects.isNull(getDataSource()) ||
+                Objects.isNull(getDataSource().getQuery()))
+            // bad model config
+            valid[0] = false;
+
+        getFieldSpecs().forEach(c -> {
+            if (Objects.isNull(c.getPropertyName()) || Objects.isNull(c.getIndex()) || Objects.isNull(c.getType()))
+                // bad field config
+                valid[0] = false;
+        });
+
+        return valid[0];
     }
 }

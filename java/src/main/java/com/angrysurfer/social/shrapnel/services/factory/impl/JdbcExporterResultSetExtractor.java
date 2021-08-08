@@ -28,7 +28,7 @@ class JdbcExporterResultSetExtractor implements ResultSetExtractor {
         while (rs.next()) {
             HashMap<String, Object> values = new HashMap();
 
-            export.getColumnSpecs().forEach(col -> {
+            export.getFieldSpecs().forEach(col -> {
                 try {
                     switch (col.getType()) {
                         case Types.BOOLEAN:

@@ -15,12 +15,12 @@ public interface ValueFormatter {
     String format(FieldSpec col, Date value);
     String format(FieldSpec col, LocalDate value);
     String format(FieldSpec col, LocalDateTime value);
-//    String format(ColumnSpecModel col, Richtext value);
+//    String format(FieldSpecModel col, Richtext value);
     String format(FieldSpec col, String value);
 
     boolean hasFormatFor(FieldSpec col);
 
-    String calculateValue(FieldSpec field, Object item);
+    Object calculateValue(FieldSpec field, Object item);
 
     String formatCalculatedValue(FieldSpec field, Object value);
 }

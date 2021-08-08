@@ -6,23 +6,22 @@ import com.angrysurfer.social.shrapnel.component.FieldSpec;
 import com.angrysurfer.social.shrapnel.component.property.HashMapPropertyAccessor;
 import com.angrysurfer.social.shrapnel.services.ExportRequest;
 import com.angrysurfer.social.shrapnel.services.factory.ExporterFactory;
-import com.angrysurfer.social.shrapnel.services.mapping.ColumnSpecMapper;
-import com.angrysurfer.social.shrapnel.services.model.ColumnSpecModel;
+import com.angrysurfer.social.shrapnel.services.mapping.FieldSpecMapper;
+import com.angrysurfer.social.shrapnel.services.model.FieldSpecModel;
 import com.angrysurfer.social.shrapnel.services.model.ExportModel;
 import lombok.Getter;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter
-public abstract class JdbcTableExporterFactory implements ExporterFactory {
+public abstract class JdbcTemplateExporterFactory implements ExporterFactory {
 
     private ExportRequest request;
 
     private ExportModel exportModel;
 
-    public JdbcTableExporterFactory(ExportRequest request, ExportModel exportModel) {
+    public JdbcTemplateExporterFactory(ExportRequest request, ExportModel exportModel) {
         this.request = request;
         this.exportModel = exportModel;
     }
@@ -34,14 +33,9 @@ public abstract class JdbcTableExporterFactory implements ExporterFactory {
 
     @Override
     public Exporter newInstance() {
-        List<FieldSpec> columns = getExportModel().getColumnSpecs().stream()
-                .sorted(new Comparator<ColumnSpecModel>() {
-                    @Override
-                    public int compare(ColumnSpecModel columnSpec1, ColumnSpecModel columnSpec2) {
-                        return Integer.compareUnsigned(columnSpec1.getIndex(), columnSpec2.getIndex());
-                    }
-                })
-                .map(col -> ColumnSpecMapper.create(col))
+        List<FieldSpec> columns = getExportModel().getFieldSpecs().stream()
+                .sorted((FieldSpecModel c1, FieldSpecModel c2) -> c1.getIndex().compareTo(c2.getIndex()))
+                .map(col -> FieldSpecMapper.create(col))
                 .collect(Collectors.toList());
         TableExporter exporter = new TableExporter(getExportName(), columns);
         exporter.setPropertyAccessor(new HashMapPropertyAccessor());
