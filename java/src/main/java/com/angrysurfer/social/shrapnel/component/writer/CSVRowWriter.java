@@ -37,7 +37,7 @@ public class CSVRowWriter extends RowWriter implements DataWriter {
     }
 
     @Override
-    public void run(Map<String, Object> outputConfig, Collection<Object> items) {
+    public void writeData(Map<String, Object> outputConfig, Collection<Object> items) {
         String filename = outputConfig.get(FileUtil.FILENAME).toString();
         writeValues(items, filename);
     }

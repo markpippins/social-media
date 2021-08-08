@@ -26,7 +26,7 @@ public class ExcelUtil {
         config.put(ExcelRowWriter.WORKBOOK, workbook);
         config.put(ExcelRowWriter.SHEET, sheet);
 
-        writer.run(config, items);
+        writer.writeData(config, items);
     }
 
     public static ByteArrayOutputStream generateByteArrayOutputStream(Collection<Object> data, Exporter exporter, String tabLabel) throws IOException {

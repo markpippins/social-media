@@ -13,10 +13,11 @@ public interface DataWriter {
 
     List<FieldSpec> getFields();
 
-    void run(Map<String, Object> outputConfig, Collection<Object> items);
+    void writeData(Map<String, Object> outputConfig, Collection<Object> items);
 
     default FieldSpec getField(String propertyName) {
-        Optional<FieldSpec> opt = getFields().stream().filter(c -> c.getPropertyName().equalsIgnoreCase(propertyName)).findFirst();
+        Optional<FieldSpec> opt = getFields().stream()
+                .filter(field -> field.getPropertyName().equalsIgnoreCase(propertyName)).findFirst();
         return opt.isPresent() ? opt.get() : null;
     }
 }

@@ -54,7 +54,6 @@ public class PdfRowWriter extends RowWriter {
             if (FieldSpec.PADDING_COLUMNS.contains(field))
                 cell.add(field.getHeaderLabel());
             else cell.add(getValue(item, field));
-//            else cell.add(getValueFormatter().hasFormatFor(field) ? getFormattedValue(item, field) : getValue(item, field));
 
         return cell;
     }
@@ -100,8 +99,18 @@ public class PdfRowWriter extends RowWriter {
         setTable((Table) outputConfig.get(TABLE));
     }
 
-    public void writeDisclaimer() {
+    @Override
+    public void writeData(Map<String, Object> outputConfig, Collection<Object> items) {
+        setup(outputConfig, items);
+        writeDisclaimer();
+        if (autoCreateTopLevelHeader)
+            writeHeaderRow();
 
+        final int[] rowNum = {0};
+        items.stream().filter(item -> getFilters().allow(item, this, this)).forEach(item -> {
+            beforeRow(item);
+            writeDataRow(item, rowNum[0]++).forEach(getTable()::addCell);
+        });
     }
 
     protected List<Cell> writeDataRow(Object item, int rowNum) {
@@ -118,21 +127,12 @@ public class PdfRowWriter extends RowWriter {
         return rightPadDataRow(row, rowNum);
     }
 
+    public void writeDisclaimer() {
+
+    }
+
     public void writeHeaderRow() {
         getFields().forEach(field -> getTable().addHeaderCell(createHeaderCell(field)));
     }
 
-    @Override
-    public void run(Map<String, Object> outputConfig, Collection<Object> items) {
-        setup(outputConfig, items);
-        writeDisclaimer();
-        if (autoCreateTopLevelHeader)
-            writeHeaderRow();
-
-        final int[] rowNum = {0};
-        items.stream().filter(item -> getFilters().allow(item, this, this)).forEach(item -> {
-            beforeRow(item);
-            writeDataRow(item, rowNum[0]++).forEach(getTable()::addCell);
-        });
-    }
 }

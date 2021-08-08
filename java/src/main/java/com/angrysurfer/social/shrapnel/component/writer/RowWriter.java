@@ -39,10 +39,6 @@ public abstract class RowWriter extends ProxyPropertyAccessorImpl implements Dat
         setValueFormatter(valueFormatter);
     }
 
-    public boolean accessorExists(Object item, String propertyName) {
-        return super.accessorExists(item, propertyName);
-    }
-
     public int getCellOffSet(Object item) {
         return 0;
     }
@@ -77,44 +73,45 @@ public abstract class RowWriter extends ProxyPropertyAccessorImpl implements Dat
     public String getValue(Object item, FieldSpec field) {
         if (accessorExists(item, field.getPropertyName()) || field.isCalculated())
             try {
+                ValueFormatter formatter = getValueFormatter();
                 switch (field.getType()) {
                     case Types.BOOLEAN:
                         Boolean bool = getBoolean(item, field.getPropertyName());
-                        return !field.isCalculated() && getValueFormatter().hasFormatFor(field) ?
-                                getValueFormatter().format(field, bool) : subGetValue(item, field, bool);
+                        return !field.isCalculated() && formatter.hasFormatFor(field) ?
+                                formatter.format(field, bool) : subGetValue(item, field, bool);
 
                     case Types.CALENDAR:
                         Calendar calendar = getCalendar(item, field.getPropertyName());
-                        return !field.isCalculated() && getValueFormatter().hasFormatFor(field) ?
-                                getValueFormatter().format(field, calendar) : subGetValue(item, field, calendar);
+                        return !field.isCalculated() && formatter.hasFormatFor(field) ?
+                                formatter.format(field, calendar) : subGetValue(item, field, calendar);
 
                     case Types.DATE:
                         Date date = getDate(item, field.getPropertyName());
-                        return !field.isCalculated() && getValueFormatter().hasFormatFor(field) ?
-                                getValueFormatter().format(field, date) : subGetValue(item, field, date);
+                        return !field.isCalculated() && formatter.hasFormatFor(field) ?
+                                formatter.format(field, date) : subGetValue(item, field, date);
 
                     case Types.DOUBLE:
                         Double dbl = getDouble(item, field.getPropertyName());
-                        return !field.isCalculated() && getValueFormatter().hasFormatFor(field) ?
-                                getValueFormatter().format(field, dbl) : subGetValue(item, field, dbl);
+                        return !field.isCalculated() && formatter.hasFormatFor(field) ?
+                                formatter.format(field, dbl) : subGetValue(item, field, dbl);
 
                     case Types.LOCALDATE:
                         LocalDate localDate = getLocalDate(item, field.getPropertyName());
-                        return !field.isCalculated() && getValueFormatter().hasFormatFor(field) ?
-                                getValueFormatter().format(field, localDate) : subGetValue(item, field, localDate);
+                        return !field.isCalculated() && formatter.hasFormatFor(field) ?
+                                formatter.format(field, localDate) : subGetValue(item, field, localDate);
 
                     case Types.LOCALDATETIME:
                         LocalDateTime localDateTime = getLocalDateTime(item, field.getPropertyName());
-                        return !field.isCalculated() && getValueFormatter().hasFormatFor(field) ?
-                                getValueFormatter().format(field, localDateTime) : subGetValue(item, field, localDateTime);
+                        return !field.isCalculated() && formatter.hasFormatFor(field) ?
+                                formatter.format(field, localDateTime) : subGetValue(item, field, localDateTime);
 
                     case Types.RICHTEXT:
                         break;
 
                     case Types.STRING:
                         String string = getString(item, field.getPropertyName());
-                        return !field.isCalculated() && getValueFormatter().hasFormatFor(field) ?
-                                getValueFormatter().format(field, string) : subGetValue(item, field, string);
+                        return !field.isCalculated() && formatter.hasFormatFor(field) ?
+                                formatter.format(field, string) : subGetValue(item, field, string);
                 }
             } catch (Exception e) {
                 log.error(e.getMessage(), e);
@@ -124,8 +121,9 @@ public abstract class RowWriter extends ProxyPropertyAccessorImpl implements Dat
     }
 
     private String subGetValue(Object item, FieldSpec field, Object value) {
-        return !getValueFormatter().hasFormatFor(field) && field.isCalculated() ? getValueFormatter().calculateValue(field, item) :
-                getValueFormatter().hasFormatFor(field) && field.isCalculated() ? getValueFormatter().formatCalculatedValue(field, getValueFormatter().calculateValue(field, item)) :
+        ValueFormatter formatter = getValueFormatter();
+        return !formatter.hasFormatFor(field) && field.isCalculated() ? formatter.calculateValue(field, item) :
+                formatter.hasFormatFor(field) && field.isCalculated() ? formatter.formatCalculatedValue(field, formatter.calculateValue(field, item)) :
                         Objects.isNull(value) ? EMPTY_STRING : value.toString();
     }
 

@@ -111,13 +111,13 @@ public class PdfUtil {
     public static void writeToTable(Collection<Object> items, PdfRowWriter pdfRowWriter, Table table) {
         Map<String, Object> outputConfig = new HashMap<>();
         outputConfig.put(PdfRowWriter.TABLE, table);
-        pdfRowWriter.run(outputConfig, items);
+        pdfRowWriter.writeData(outputConfig, items);
     }
 
     public static void writeToTable(Collection<Object> items, PdfRowWriter pdfRowWriter) {
         Table table = pdfRowWriter.createTable();
         Map<String, Object> outputConfig = new HashMap<>();
         outputConfig.put(PdfRowWriter.TABLE, table);
-        pdfRowWriter.run(outputConfig, items);
+        pdfRowWriter.writeData(outputConfig, items);
     }
 }

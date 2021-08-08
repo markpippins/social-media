@@ -117,8 +117,18 @@ public class ExcelRowWriter extends RowWriter implements DataWriter {
 //            cell.setCellValue(getValueFormatter().hasFormatFor(field) ? getFormattedValue(item, field) : getValue(item, field));
     }
 
-    protected void writeDisclaimer() {
-        // incrementRow();
+    @Override
+    public void writeData(Map<String, Object> outputConfig, Collection<Object> items) {
+        setup(outputConfig, items);
+        writeDisclaimer();
+
+        if (autoCreateTopLevelHeader)
+            writerHeaderRow();
+
+        items.stream().filter(item -> getFilters().allow(item, this, this)).forEach(item -> {
+            beforeRow(item);
+            writeDataRow(item, getSheet().createRow(getCurrentRow()));
+        });
     }
 
     protected void writeDataRow(Object item, Row row) {
@@ -134,6 +144,10 @@ public class ExcelRowWriter extends RowWriter implements DataWriter {
         incrementRow();
     }
 
+    protected void writeDisclaimer() {
+        // incrementRow();
+    }
+
     protected void writerHeaderRow() {
         final int[] index = {0};
         Row header = getSheet().createRow(getCurrentRow());
@@ -142,17 +156,4 @@ public class ExcelRowWriter extends RowWriter implements DataWriter {
         incrementRow();
     }
 
-    @Override
-    public void run(Map<String, Object> outputConfig, Collection<Object> items) {
-        setup(outputConfig, items);
-        writeDisclaimer();
-
-        if (autoCreateTopLevelHeader)
-            writerHeaderRow();
-
-        items.stream().filter(item -> getFilters().allow(item, this, this)).forEach(item -> {
-            beforeRow(item);
-            writeDataRow(item, getSheet().createRow(getCurrentRow()));
-        });
-    }
 }
