@@ -1,7 +1,7 @@
 package com.angrysurfer.social.shrapnel.services.domain;
 
 import com.angrysurfer.social.shrapnel.component.FieldSpec;
-import com.angrysurfer.social.shrapnel.component.property.Types;
+import com.angrysurfer.social.shrapnel.component.FieldTypeEnum;
 import com.angrysurfer.social.shrapnel.component.writer.ValueCalculator;
 import com.angrysurfer.social.shrapnel.component.writer.ValueRenderer;
 import com.angrysurfer.social.shrapnel.component.writer.style.FontSource;
@@ -31,7 +31,7 @@ public class FontListExport extends TabularExport {
 
 
     static List<FieldSpec> COLUMNS = FieldSpec.createColumnSpecs(Arrays.asList("path", "name"));
-    static FieldSpec calculated = new FieldSpec("fontname", "fontname", Types.STRING);
+    static FieldSpec calculated = new FieldSpec("fontname", "fontname", FieldTypeEnum.STRING);
     static String NAME = "font-list";
 
     static {

@@ -1,9 +1,9 @@
 package com.angrysurfer.social.shrapnel;
 
-import com.angrysurfer.social.shrapnel.component.property.Types;
-import com.angrysurfer.social.shrapnel.services.model.DBFieldSpec;
-import com.angrysurfer.social.shrapnel.services.model.DBDataSource;
-import com.angrysurfer.social.shrapnel.services.model.DBExport;
+import com.angrysurfer.social.shrapnel.component.FieldTypeEnum;
+import com.angrysurfer.social.shrapnel.services.model.FieldSpecModel;
+import com.angrysurfer.social.shrapnel.services.model.DataSourceModel;
+import com.angrysurfer.social.shrapnel.services.model.ExportModel;
 import com.angrysurfer.social.shrapnel.services.repository.ColumnSpecModelRepository;
 import com.angrysurfer.social.shrapnel.services.repository.DataSourceModelRepository;
 import com.angrysurfer.social.shrapnel.services.repository.ExportModelRepository;
@@ -29,64 +29,64 @@ class ShrapnelConfig implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        DBDataSource forumData = new DBDataSource();
+        DataSourceModel forumData = new DataSourceModel();
         forumData.setQuery("get-forums");
         forumData.setName("forum-list");
         dataSourceModelRepository.save(forumData);
 
-        DBFieldSpec idSpec1 = new DBFieldSpec();
+        FieldSpecModel idSpec1 = new FieldSpecModel();
         idSpec1.setName("id");
-        idSpec1.setType(Types.STRING);
+        idSpec1.setType(FieldTypeEnum.STRING.name());
         idSpec1.setPropertyName("id");
         idSpec1.setLabel("id");
         idSpec1.setIndex(1);
         idSpec1 = columnSpecModelRepository.save(idSpec1);
 
-        DBFieldSpec nameSpec = new DBFieldSpec();
+        FieldSpecModel nameSpec = new FieldSpecModel();
         nameSpec.setName("name");
-        nameSpec.setType(Types.STRING);
+        nameSpec.setType(FieldTypeEnum.STRING.name());
         nameSpec.setPropertyName("name");
         nameSpec.setLabel("name");
         nameSpec.setIndex(2);
         nameSpec = columnSpecModelRepository.save(nameSpec);
 
-        DBExport forumExport = new DBExport();
+        ExportModel forumExport = new ExportModel();
         forumExport.setName("forum-list");
         forumExport.getFieldSpecs().add(idSpec1);
         forumExport.getFieldSpecs().add(nameSpec);
         forumExport.setDataSource(forumData);
         exportModelRepository.save(forumExport);
 
-        DBDataSource userData = new DBDataSource();
+        DataSourceModel userData = new DataSourceModel();
         userData.setQuery("get-users");
         userData.setName("user-list");
         dataSourceModelRepository.save(userData);
 
-        DBFieldSpec idSpec2 = new DBFieldSpec();
+        FieldSpecModel idSpec2 = new FieldSpecModel();
         idSpec2.setName("id");
-        idSpec2.setType(Types.STRING);
+        idSpec2.setType(FieldTypeEnum.STRING.name());
         idSpec2.setPropertyName("id");
         idSpec2.setLabel("id");
         idSpec2.setIndex(0);
         idSpec2 = columnSpecModelRepository.save(idSpec2);
 
-        DBFieldSpec emailSpec = new DBFieldSpec();
+        FieldSpecModel emailSpec = new FieldSpecModel();
         emailSpec.setName("email");
-        emailSpec.setType(Types.STRING);
+        emailSpec.setType(FieldTypeEnum.STRING.name());
         emailSpec.setPropertyName("email");
         emailSpec.setLabel("email");
         emailSpec.setIndex(3);
         emailSpec = columnSpecModelRepository.save(emailSpec);
 
-        DBFieldSpec aliasSpec = new DBFieldSpec();
+        FieldSpecModel aliasSpec = new FieldSpecModel();
         aliasSpec.setName("alias");
-        aliasSpec.setType(Types.STRING);
+        aliasSpec.setType(FieldTypeEnum.STRING.name());
         aliasSpec.setPropertyName("alias");
         aliasSpec.setLabel("alias");
         aliasSpec.setIndex(2);
         aliasSpec = columnSpecModelRepository.save(aliasSpec);
 
-        DBExport userExport = new DBExport();
+        ExportModel userExport = new ExportModel();
         userExport.setName("user-list");
         userExport.getFieldSpecs().add(idSpec2);
         userExport.getFieldSpecs().add(aliasSpec);

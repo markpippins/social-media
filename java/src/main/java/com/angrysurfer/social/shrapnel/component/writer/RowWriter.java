@@ -1,10 +1,10 @@
 package com.angrysurfer.social.shrapnel.component.writer;
 
 import com.angrysurfer.social.shrapnel.component.FieldSpec;
+import com.angrysurfer.social.shrapnel.component.FieldTypeEnum;
 import com.angrysurfer.social.shrapnel.component.property.PropertyAccessor;
 import com.angrysurfer.social.shrapnel.component.property.PropertyUtilsPropertyAccessor;
 import com.angrysurfer.social.shrapnel.component.property.ProxyPropertyAccessor;
-import com.angrysurfer.social.shrapnel.component.property.Types;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -22,11 +22,11 @@ public abstract class RowWriter implements DataWriter, ProxyPropertyAccessor {
 
     public static final String EMPTY_STRING = "";
 
-    public static final FieldSpec DATA_NULL_VALUE = new FieldSpec.DebugFieldSpec("dataNullValue", "<< NULL >>", Types.STRING);
-    public static final FieldSpec DATA_PADDING_LEFT = new FieldSpec.DebugFieldSpec("dataPaddingLeft", "<< DATA <<", Types.STRING);
-    public static final FieldSpec DATA_PADDING_RIGHT = new FieldSpec.DebugFieldSpec("dataPaddingRight", ">> DATA >>", Types.STRING);
-    public static final FieldSpec HEADER_PADDING_LEFT = new FieldSpec.DebugFieldSpec("hdrPaddingLeft", "<< HDR <<", Types.STRING);
-    public static final FieldSpec HEADER_PADDING_RIGHT = new FieldSpec.DebugFieldSpec("hdrPaddingRight", ">> HDR >>", Types.STRING);
+    public static final FieldSpec DATA_NULL_VALUE = new FieldSpec.DebugFieldSpec("dataNullValue", "<< NULL >>", FieldTypeEnum.STRING);
+    public static final FieldSpec DATA_PADDING_LEFT = new FieldSpec.DebugFieldSpec("dataPaddingLeft", "<< DATA <<", FieldTypeEnum.STRING);
+    public static final FieldSpec DATA_PADDING_RIGHT = new FieldSpec.DebugFieldSpec("dataPaddingRight", ">> DATA >>", FieldTypeEnum.STRING);
+    public static final FieldSpec HEADER_PADDING_LEFT = new FieldSpec.DebugFieldSpec("hdrPaddingLeft", "<< HDR <<", FieldTypeEnum.STRING);
+    public static final FieldSpec HEADER_PADDING_RIGHT = new FieldSpec.DebugFieldSpec("hdrPaddingRight", ">> HDR >>", FieldTypeEnum.STRING);
 
     public static List<FieldSpec> PADDING_COLUMNS = Arrays.asList(DATA_NULL_VALUE, DATA_PADDING_LEFT, DATA_PADDING_RIGHT,
             HEADER_PADDING_LEFT, HEADER_PADDING_RIGHT);
@@ -83,46 +83,46 @@ public abstract class RowWriter implements DataWriter, ProxyPropertyAccessor {
         if (accessorExists(item, field.getPropertyName()) || field.isCalculated())
             try {
                 switch (field.getType()) {
-                    case Types.BOOLEAN:
+                    case BOOLEAN:
                         Boolean bool = getBoolean(item, field.getPropertyName());
                         return shouldOnlyFormat(field) ?
                                 getValueRenderer().render(field, bool) :
                                 extendedGetValue(item, field, bool);
 
-                    case Types.CALENDAR:
+                    case CALENDAR:
                         Calendar calendar = getCalendar(item, field.getPropertyName());
                         return shouldOnlyFormat(field) ?
                                 getValueRenderer().render(field, calendar) :
                                 extendedGetValue(item, field, calendar);
 
-                    case Types.DATE:
+                    case DATE:
                         Date date = getDate(item, field.getPropertyName());
                         return shouldOnlyFormat(field) ?
                                 getValueRenderer().render(field, date) :
                                 extendedGetValue(item, field, date);
 
-                    case Types.DOUBLE:
+                    case DOUBLE:
                         Double dbl = getDouble(item, field.getPropertyName());
                         return shouldOnlyFormat(field) ?
                                 getValueRenderer().render(field, dbl) :
                                 extendedGetValue(item, field, dbl);
 
-                    case Types.LOCALDATE:
+                    case LOCALDATE:
                         LocalDate localDate = getLocalDate(item, field.getPropertyName());
                         return shouldOnlyFormat(field) ?
                                 getValueRenderer().render(field, localDate) :
                                 extendedGetValue(item, field, localDate);
 
-                    case Types.LOCALDATETIME:
+                    case LOCALDATETIME:
                         LocalDateTime localDateTime = getLocalDateTime(item, field.getPropertyName());
                         return shouldOnlyFormat(field) ?
                                 getValueRenderer().render(field, localDateTime) :
                                 extendedGetValue(item, field, localDateTime);
 
-                    case Types.RICHTEXT:
+                    case RICHTEXT:
                         break;
 
-                    case Types.STRING:
+                    case STRING:
                         String string = getString(item, field.getPropertyName());
                         return shouldOnlyFormat(field) ?
                                 getValueRenderer().render(field, string) :

@@ -62,6 +62,6 @@ public interface ValueRenderer {
         return Objects.isNull(value) ? EMPTY_STRING : value;
     }
 
-//    String render(DBFieldSpec col, Richtext value);
+//    String render(FieldSpecModel col, Richtext value);
 
 }

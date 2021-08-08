@@ -8,7 +8,8 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-public class DBDataSource {
+@Table(name = "data_source_model")
+public class DataSourceModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

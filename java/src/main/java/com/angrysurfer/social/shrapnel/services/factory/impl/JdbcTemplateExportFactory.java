@@ -6,8 +6,8 @@ import com.angrysurfer.social.shrapnel.component.FieldSpec;
 import com.angrysurfer.social.shrapnel.component.property.PropertyMapAccessor;
 import com.angrysurfer.social.shrapnel.services.ExportRequest;
 import com.angrysurfer.social.shrapnel.services.factory.ExportFactory;
-import com.angrysurfer.social.shrapnel.services.model.DBExport;
-import com.angrysurfer.social.shrapnel.services.model.DBFieldSpec;
+import com.angrysurfer.social.shrapnel.services.model.ExportModel;
+import com.angrysurfer.social.shrapnel.services.model.FieldSpecModel;
 import lombok.Getter;
 
 import java.util.List;
@@ -18,9 +18,9 @@ public abstract class JdbcTemplateExportFactory implements ExportFactory {
 
     private ExportRequest request;
 
-    private DBExport exportModel;
+    private ExportModel exportModel;
 
-    public JdbcTemplateExportFactory(ExportRequest request, DBExport exportModel) {
+    public JdbcTemplateExportFactory(ExportRequest request, ExportModel exportModel) {
         this.request = request;
         this.exportModel = exportModel;
     }
@@ -33,7 +33,7 @@ public abstract class JdbcTemplateExportFactory implements ExportFactory {
     @Override
     public Export newInstance() {
         List<FieldSpec> fields = getExportModel().getFieldSpecs().stream()
-                .sorted((DBFieldSpec c1, DBFieldSpec c2) -> c1.getIndex().compareTo(c2.getIndex()))
+                .sorted((FieldSpecModel c1, FieldSpecModel c2) -> c1.getIndex().compareTo(c2.getIndex()))
                 .map(field -> field.createFieldSpec())
                 .collect(Collectors.toList());
         TabularExport exporter = new TabularExport(getExportName(), fields);

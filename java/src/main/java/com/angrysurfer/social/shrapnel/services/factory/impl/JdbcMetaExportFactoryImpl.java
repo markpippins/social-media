@@ -3,9 +3,9 @@ package com.angrysurfer.social.shrapnel.services.factory.impl;
 import com.angrysurfer.social.shrapnel.services.ExportRequest;
 import com.angrysurfer.social.shrapnel.services.factory.ExportFactory;
 import com.angrysurfer.social.shrapnel.services.factory.MetaExportFactory;
-import com.angrysurfer.social.shrapnel.services.mapping.HashMapResultSetExtractor;
-import com.angrysurfer.social.shrapnel.services.model.DBDataSource;
-import com.angrysurfer.social.shrapnel.services.model.DBExport;
+import com.angrysurfer.social.shrapnel.services.repository.mapping.HashMapResultSetExtractor;
+import com.angrysurfer.social.shrapnel.services.model.DataSourceModel;
+import com.angrysurfer.social.shrapnel.services.model.ExportModel;
 import com.angrysurfer.social.shrapnel.services.repository.DataSourceModelRepository;
 import com.angrysurfer.social.shrapnel.services.repository.ExportModelRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -37,14 +37,14 @@ public class JdbcMetaExportFactoryImpl implements MetaExportFactory {
 
     @Override
     public boolean hasFactory(ExportRequest request) {
-        DBExport export = exportModelRepository.findByName(request.getExport());
+        ExportModel export = exportModelRepository.findByName(request.getExport());
         return Objects.nonNull(export) && export.isConfigured();
     }
 
     @Override
     public ExportFactory newInstance(ExportRequest request) {
-        final DBExport export = exportModelRepository.findByName(request.getExport());
-        final DBDataSource dataSource = dataSourceModelRepository.findByName(request.getExport());
+        final ExportModel export = exportModelRepository.findByName(request.getExport());
+        final DataSourceModel dataSource = dataSourceModelRepository.findByName(request.getExport());
 
         return new JdbcTemplateExportFactory(request, export) {
             @Override
@@ -64,7 +64,7 @@ public class JdbcMetaExportFactoryImpl implements MetaExportFactory {
         };
     }
 
-    private String getSQL(DBDataSource dataSource) throws IOException {
+    private String getSQL(DataSourceModel dataSource) throws IOException {
         return Files.readString(Path.of(SQL_FOLDER + dataSource.getQuery() + ".sql"));
     }
 

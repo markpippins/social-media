@@ -1,6 +1,5 @@
 package com.angrysurfer.social.shrapnel.component;
 
-import com.angrysurfer.social.shrapnel.component.property.Types;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,21 +16,21 @@ public class FieldSpec {
 
     private String propertyName;
     private String label;
-    private String type;
+    private FieldTypeEnum type;
     private int index;
     private boolean calculated = false;
 
     public FieldSpec() {
     }
 
-    public FieldSpec(String propertyName, String label, String type) {
+    public FieldSpec(String propertyName, String label, FieldTypeEnum type) {
         setPropertyName(propertyName);
         setLabel(label);
         setType(type);
     }
 
     public static List<FieldSpec> createColumnSpecs(List<String> properties) {
-        return properties.stream().map(property -> new FieldSpec(property, property.toUpperCase(Locale.ROOT), Types.STRING))
+        return properties.stream().map(property -> new FieldSpec(property, property.toUpperCase(Locale.ROOT), FieldTypeEnum.STRING))
                 .collect(Collectors.toList());
     }
 
@@ -41,7 +40,7 @@ public class FieldSpec {
 
     public static class DebugFieldSpec extends FieldSpec {
 
-        public DebugFieldSpec(String propertyName, String headerLabel, String type) {
+        public DebugFieldSpec(String propertyName, String headerLabel, FieldTypeEnum type) {
             super(propertyName, headerLabel, type);
         }
 

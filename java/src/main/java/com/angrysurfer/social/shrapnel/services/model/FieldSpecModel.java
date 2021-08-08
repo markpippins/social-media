@@ -1,16 +1,17 @@
 package com.angrysurfer.social.shrapnel.services.model;
 
 import com.angrysurfer.social.shrapnel.component.FieldSpec;
+import com.angrysurfer.social.shrapnel.component.FieldTypeEnum;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 
-@Table(name = "field_spec")
 @Getter
 @Setter
 @Entity
-public class DBFieldSpec {
+@Table(name = "field_spec_model")
+public class FieldSpecModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -33,11 +34,11 @@ public class DBFieldSpec {
     private Integer index;
 
     public FieldSpec createFieldSpec() {
-            FieldSpec result = new FieldSpec();
-            result.setPropertyName(getPropertyName());
-            result.setLabel(getLabel());
-            result.setType(getType());
-            result.setIndex(getIndex());
-            return result;
+        FieldSpec result = new FieldSpec();
+        result.setPropertyName(getPropertyName());
+        result.setLabel(getLabel());
+        result.setType(FieldTypeEnum.from(getType()));
+        result.setIndex(getIndex());
+        return result;
     }
 }

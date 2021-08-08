@@ -1,7 +1,7 @@
 package com.angrysurfer.social.shrapnel.component.writer.filter;
 
 import com.angrysurfer.social.shrapnel.component.property.PropertyAccessor;
-import com.angrysurfer.social.shrapnel.component.property.Types;
+import com.angrysurfer.social.shrapnel.component.FieldTypeEnum;
 import com.angrysurfer.social.shrapnel.component.writer.DataWriter;
 import lombok.Getter;
 import lombok.Setter;
@@ -37,7 +37,7 @@ public class StringStartsWithFilter implements DataFilter {
             String propertyValue = null;
 
             switch (writer.getField(propertyName).getType()) {
-                case Types.STRING:
+                case STRING:
                     propertyValue = accessor.getString(item, propertyName);
             }
 

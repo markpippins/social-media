@@ -12,12 +12,13 @@ import static com.angrysurfer.social.shrapnel.services.factory.impl.JdbcMetaExpo
 @Getter
 @Setter
 @Entity
-public class DBExport {
+@Table(name = "export_model")
+public class ExportModel {
     //
     //
     @ManyToOne
     @JoinColumn(name = "data_source_id")
-    public DBDataSource dataSource;
+    public DataSourceModel dataSource;
     //
     //
     @Id
@@ -34,7 +35,7 @@ public class DBExport {
     @JoinTable(name = "export_model_field_spec", joinColumns = {@JoinColumn(name = "model_id")}, inverseJoinColumns = {
             @JoinColumn(name = "field_spec_id")})
     @Getter
-    private Set<DBFieldSpec> fieldSpecs = new HashSet<>();
+    private Set<FieldSpecModel> fieldSpecs = new HashSet<>();
 
     public boolean isConfigured() {
         final boolean[] isConfigured = {true};
@@ -44,7 +45,7 @@ public class DBExport {
                 || Objects.isNull(getDataSource().getQuery()))
             isConfigured[0] = false;
 
-        Map<Integer, DBFieldSpec> indexMap = new HashMap<>();
+        Map<Integer, FieldSpecModel> indexMap = new HashMap<>();
         getFieldSpecs().forEach(field -> {
             if (Objects.isNull(field.getPropertyName())
                     || Objects.isNull(field.getType())
