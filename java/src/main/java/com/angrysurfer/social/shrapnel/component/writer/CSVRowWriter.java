@@ -1,10 +1,10 @@
 package com.angrysurfer.social.shrapnel.component.writer;
 
 import com.angrysurfer.social.shrapnel.component.FieldSpec;
-import com.angrysurfer.social.shrapnel.component.filter.DataFilterList;
+import com.angrysurfer.social.shrapnel.component.writer.filter.DataFilterList;
 import com.angrysurfer.social.shrapnel.component.property.PropertyAccessor;
 import com.angrysurfer.social.shrapnel.component.property.PropertyUtilsPropertyAccessor;
-import com.angrysurfer.social.shrapnel.util.FileUtil;
+import com.angrysurfer.social.shrapnel.services.util.FileUtil;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;

@@ -1,7 +1,7 @@
 package com.angrysurfer.social.shrapnel.component.writer;
 
-import com.angrysurfer.social.shrapnel.component.format.ValueFormatter;
 import com.angrysurfer.social.shrapnel.component.FieldSpec;
+import com.angrysurfer.social.shrapnel.component.ValueFormatter;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;

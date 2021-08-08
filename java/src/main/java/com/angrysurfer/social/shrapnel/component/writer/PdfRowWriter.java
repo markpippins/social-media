@@ -1,10 +1,10 @@
 package com.angrysurfer.social.shrapnel.component.writer;
 
 import com.angrysurfer.social.shrapnel.component.FieldSpec;
-import com.angrysurfer.social.shrapnel.component.filter.DataFilterList;
-import com.angrysurfer.social.shrapnel.component.format.ValueFormatter;
-import com.angrysurfer.social.shrapnel.component.style.CombinedStyleProvider;
-import com.angrysurfer.social.shrapnel.component.style.PdfStyleProvider;
+import com.angrysurfer.social.shrapnel.component.ValueFormatter;
+import com.angrysurfer.social.shrapnel.component.writer.filter.DataFilterList;
+import com.angrysurfer.social.shrapnel.component.writer.style.CombinedStyleProvider;
+import com.angrysurfer.social.shrapnel.component.writer.style.PdfStyleProvider;
 import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.property.UnitValue;
@@ -18,9 +18,6 @@ import java.util.*;
 @Getter
 @Setter
 public class PdfRowWriter extends RowWriter {
-
-    private static final String DEFAULT_FONT_NAME = "Courier";
-    private static final float DEFAULT_FONT_SIZE = 7;
 
     public static String TABLE = "table";
 
@@ -48,7 +45,7 @@ public class PdfRowWriter extends RowWriter {
         Cell cell = new Cell();
 
         if (Objects.nonNull(getStyleProvider().getCellStyle(item, field, row)))
-            getStyleProvider().getCellStyle(item, field, row).apply(cell);
+            cell.addStyle(getStyleProvider().getCellStyle(item, field, row));
 
         if (Objects.nonNull(field))
             if (FieldSpec.PADDING_COLUMNS.contains(field))
@@ -62,7 +59,7 @@ public class PdfRowWriter extends RowWriter {
         Cell cell = new Cell();
 
         if (Objects.nonNull(getStyleProvider().getHeaderStyle(field)))
-            getStyleProvider().getHeaderStyle(field).apply(cell);
+            cell.addStyle(getStyleProvider().getHeaderStyle(field));
 
         return cell.add(field.getHeaderLabel());
     }
@@ -95,7 +92,6 @@ public class PdfRowWriter extends RowWriter {
     protected void setup(Map<String, Object> outputConfig, Collection<Object> items) {
         if (!outputConfig.containsKey(TABLE) || !(outputConfig.get(TABLE) instanceof Table || Objects.isNull(items)))
             throw new IllegalArgumentException();
-
         setTable((Table) outputConfig.get(TABLE));
     }
 
@@ -107,10 +103,11 @@ public class PdfRowWriter extends RowWriter {
             writeHeaderRow();
 
         final int[] rowNum = {0};
-        items.stream().filter(item -> getFilters().allow(item, this, this)).forEach(item -> {
-            beforeRow(item);
-            writeDataRow(item, rowNum[0]++).forEach(getTable()::addCell);
-        });
+        items.stream().filter(item -> getFilters().allow(item, this, this))
+                .forEach(item -> {
+                    beforeRow(item);
+                    writeDataRow(item, rowNum[0]++).forEach(getTable()::addCell);
+                });
     }
 
     protected List<Cell> writeDataRow(Object item, int rowNum) {

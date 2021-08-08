@@ -1,10 +1,10 @@
 package com.angrysurfer.social.shrapnel.component.writer;
 
 import com.angrysurfer.social.shrapnel.component.FieldSpec;
-import com.angrysurfer.social.shrapnel.component.filter.DataFilterList;
-import com.angrysurfer.social.shrapnel.component.format.ValueFormatter;
-import com.angrysurfer.social.shrapnel.component.style.CombinedStyleProvider;
-import com.angrysurfer.social.shrapnel.component.style.ExcelStyleProvider;
+import com.angrysurfer.social.shrapnel.component.writer.filter.DataFilterList;
+import com.angrysurfer.social.shrapnel.component.ValueFormatter;
+import com.angrysurfer.social.shrapnel.component.writer.style.CombinedStyleProvider;
+import com.angrysurfer.social.shrapnel.component.writer.style.ExcelStyleProvider;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -36,16 +36,16 @@ public class ExcelRowWriter extends RowWriter implements DataWriter {
 
     private boolean autoCreateTopLevelHeader = true;
 
-    public ExcelRowWriter(List<FieldSpec> columns) {
-        super(columns);
+    public ExcelRowWriter(List<FieldSpec> fields) {
+        super(fields);
     }
 
-    public ExcelRowWriter(List<FieldSpec> columns, ValueFormatter valueFormatter) {
-        super(columns, valueFormatter);
+    public ExcelRowWriter(List<FieldSpec> fields, ValueFormatter valueFormatter) {
+        super(fields, valueFormatter);
     }
 
-    public ExcelRowWriter(List<FieldSpec> columns, ValueFormatter valueFormatter, CombinedStyleProvider styleProvider) {
-        super(columns, valueFormatter);
+    public ExcelRowWriter(List<FieldSpec> fields, ValueFormatter valueFormatter, CombinedStyleProvider styleProvider) {
+        super(fields, valueFormatter);
         setStyleProvider(styleProvider);
     }
 
@@ -112,9 +112,8 @@ public class ExcelRowWriter extends RowWriter implements DataWriter {
     }
 
     protected void writeCell(FieldSpec field, Object item, Cell cell) {
-        if (accessorExists(item, field.getPropertyName()))
+        if (accessorExists(item, field.getPropertyName()) || field.isCalculated())
             cell.setCellValue(getValue(item, field));
-//            cell.setCellValue(getValueFormatter().hasFormatFor(field) ? getFormattedValue(item, field) : getValue(item, field));
     }
 
     @Override
@@ -125,20 +124,20 @@ public class ExcelRowWriter extends RowWriter implements DataWriter {
         if (autoCreateTopLevelHeader)
             writerHeaderRow();
 
-        items.stream().filter(item -> getFilters().allow(item, this, this)).forEach(item -> {
-            beforeRow(item);
-            writeDataRow(item, getSheet().createRow(getCurrentRow()));
-        });
+        items.stream().filter(item -> getFilters().allow(item, this, getPropertyAccessor()))
+                .forEach(item -> {
+                    beforeRow(item);
+                    writeDataRow(item, getSheet().createRow(getCurrentRow()));
+                });
     }
 
     protected void writeDataRow(Object item, Row row) {
         final int[] colNum = {getCellOffSet(item)};
         getFields().forEach(field -> {
             if (!shouldSkip(field, item) && shouldWrite(field, item)) {
-                Cell cell = row.createCell(colNum[0]);
+                Cell cell = row.createCell(colNum[0]++);
                 cell.setCellStyle(getStyleProvider().getCellStyle(item, getWorkbook(), field, getCurrentRow()));
                 writeCell(field, item, cell);
-                colNum[0]++;
             }
         });
         incrementRow();

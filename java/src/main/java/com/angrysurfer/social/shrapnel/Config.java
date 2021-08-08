@@ -1,9 +1,9 @@
 package com.angrysurfer.social.shrapnel;
 
 import com.angrysurfer.social.shrapnel.component.property.Types;
-import com.angrysurfer.social.shrapnel.services.model.DataSourceModel;
-import com.angrysurfer.social.shrapnel.services.model.ExportModel;
-import com.angrysurfer.social.shrapnel.services.model.FieldSpecModel;
+import com.angrysurfer.social.shrapnel.services.model.DBFieldSpec;
+import com.angrysurfer.social.shrapnel.services.model.DBDataSource;
+import com.angrysurfer.social.shrapnel.services.model.DBExport;
 import com.angrysurfer.social.shrapnel.services.repository.ColumnSpecModelRepository;
 import com.angrysurfer.social.shrapnel.services.repository.DataSourceModelRepository;
 import com.angrysurfer.social.shrapnel.services.repository.ExportModelRepository;
@@ -29,12 +29,12 @@ class Config implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        DataSourceModel forumData = new DataSourceModel();
+        DBDataSource forumData = new DBDataSource();
         forumData.setQuery("get-forums");
         forumData.setName("forum-list");
         dataSourceModelRepository.save(forumData);
 
-        FieldSpecModel idSpec1 = new FieldSpecModel();
+        DBFieldSpec idSpec1 = new DBFieldSpec();
         idSpec1.setName("id");
         idSpec1.setType(Types.STRING);
         idSpec1.setPropertyName("id");
@@ -42,7 +42,7 @@ class Config implements CommandLineRunner {
         idSpec1.setIndex(1);
         idSpec1 = columnSpecModelRepository.save(idSpec1);
 
-        FieldSpecModel nameSpec = new FieldSpecModel();
+        DBFieldSpec nameSpec = new DBFieldSpec();
         nameSpec.setName("name");
         nameSpec.setType(Types.STRING);
         nameSpec.setPropertyName("name");
@@ -50,19 +50,19 @@ class Config implements CommandLineRunner {
         nameSpec.setIndex(2);
         nameSpec = columnSpecModelRepository.save(nameSpec);
 
-        ExportModel forumExport = new ExportModel();
+        DBExport forumExport = new DBExport();
         forumExport.setName("forum-list");
         forumExport.getFieldSpecs().add(idSpec1);
         forumExport.getFieldSpecs().add(nameSpec);
         forumExport.setDataSource(forumData);
         exportModelRepository.save(forumExport);
 
-        DataSourceModel userData = new DataSourceModel();
+        DBDataSource userData = new DBDataSource();
         userData.setQuery("get-users");
         userData.setName("user-list");
         dataSourceModelRepository.save(userData);
 
-        FieldSpecModel idSpec2 = new FieldSpecModel();
+        DBFieldSpec idSpec2 = new DBFieldSpec();
         idSpec2.setName("id");
         idSpec2.setType(Types.STRING);
         idSpec2.setPropertyName("id");
@@ -70,7 +70,7 @@ class Config implements CommandLineRunner {
         idSpec2.setIndex(0);
         idSpec2 = columnSpecModelRepository.save(idSpec2);
 
-        FieldSpecModel emailSpec = new FieldSpecModel();
+        DBFieldSpec emailSpec = new DBFieldSpec();
         emailSpec.setName("email");
         emailSpec.setType(Types.STRING);
         emailSpec.setPropertyName("email");
@@ -78,7 +78,7 @@ class Config implements CommandLineRunner {
         emailSpec.setIndex(3);
         emailSpec = columnSpecModelRepository.save(emailSpec);
 
-        FieldSpecModel aliasSpec = new FieldSpecModel();
+        DBFieldSpec aliasSpec = new DBFieldSpec();
         aliasSpec.setName("alias");
         aliasSpec.setType(Types.STRING);
         aliasSpec.setPropertyName("alias");
@@ -86,7 +86,7 @@ class Config implements CommandLineRunner {
         aliasSpec.setIndex(2);
         aliasSpec = columnSpecModelRepository.save(aliasSpec);
 
-        ExportModel userExport = new ExportModel();
+        DBExport userExport = new DBExport();
         userExport.setName("user-list");
         userExport.getFieldSpecs().add(idSpec2);
         userExport.getFieldSpecs().add(aliasSpec);

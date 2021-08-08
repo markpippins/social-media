@@ -1,11 +1,12 @@
 package com.angrysurfer.social.shrapnel.component.writer;
 
 import com.angrysurfer.social.shrapnel.component.FieldSpec;
-import com.angrysurfer.social.shrapnel.component.format.AbstractValueFormatter;
-import com.angrysurfer.social.shrapnel.component.format.ValueFormatter;
-import com.angrysurfer.social.shrapnel.component.property.PropertyUtilsPropertyAccessor;
-import com.angrysurfer.social.shrapnel.component.property.ProxyPropertyAccessorImpl;
+import com.angrysurfer.social.shrapnel.component.ValueFormatter;
+import com.angrysurfer.social.shrapnel.component.property.PropertyAccessor;
+import com.angrysurfer.social.shrapnel.component.property.ProxyPropertyAccessor;
 import com.angrysurfer.social.shrapnel.component.property.Types;
+import com.angrysurfer.social.shrapnel.component.property.PropertyUtilsPropertyAccessor;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +21,9 @@ import java.util.Objects;
 @Slf4j
 @Getter
 @Setter
-public abstract class RowWriter extends ProxyPropertyAccessorImpl implements DataWriter {
+public abstract class RowWriter implements DataWriter, ProxyPropertyAccessor {
+
+    private PropertyAccessor propertyAccessor;
 
     public static final String EMPTY_STRING = "";
 
@@ -43,13 +46,9 @@ public abstract class RowWriter extends ProxyPropertyAccessorImpl implements Dat
         return 0;
     }
 
-    public int getFieldCount() {
-        return getFields().size();
-    }
-
     public ValueFormatter getValueFormatter() {
         if (Objects.isNull(valueFormatter))
-            valueFormatter = new AbstractValueFormatter() {
+            valueFormatter = new ValueFormatter() {
 
                 @Override
                 public boolean hasFormatFor(FieldSpec field) {
@@ -73,45 +72,51 @@ public abstract class RowWriter extends ProxyPropertyAccessorImpl implements Dat
     public String getValue(Object item, FieldSpec field) {
         if (accessorExists(item, field.getPropertyName()) || field.isCalculated())
             try {
-                ValueFormatter formatter = getValueFormatter();
                 switch (field.getType()) {
                     case Types.BOOLEAN:
                         Boolean bool = getBoolean(item, field.getPropertyName());
-                        return !field.isCalculated() && formatter.hasFormatFor(field) ?
-                                formatter.format(field, bool) : secondGetValue(item, field, bool);
+                        return shouldOnlyFormat(field) ?
+                                getValueFormatter().format(field, bool) :
+                                extendedGetValue(item, field, bool);
 
                     case Types.CALENDAR:
                         Calendar calendar = getCalendar(item, field.getPropertyName());
-                        return !field.isCalculated() && formatter.hasFormatFor(field) ?
-                                formatter.format(field, calendar) : secondGetValue(item, field, calendar);
+                        return shouldOnlyFormat(field) ?
+                                getValueFormatter().format(field, calendar) :
+                                extendedGetValue(item, field, calendar);
 
                     case Types.DATE:
                         Date date = getDate(item, field.getPropertyName());
-                        return !field.isCalculated() && formatter.hasFormatFor(field) ?
-                                formatter.format(field, date) : secondGetValue(item, field, date);
+                        return shouldOnlyFormat(field) ?
+                                getValueFormatter().format(field, date) :
+                                extendedGetValue(item, field, date);
 
                     case Types.DOUBLE:
                         Double dbl = getDouble(item, field.getPropertyName());
-                        return !field.isCalculated() && formatter.hasFormatFor(field) ?
-                                formatter.format(field, dbl) : secondGetValue(item, field, dbl);
+                        return shouldOnlyFormat(field) ?
+                                getValueFormatter().format(field, dbl) :
+                                extendedGetValue(item, field, dbl);
 
                     case Types.LOCALDATE:
                         LocalDate localDate = getLocalDate(item, field.getPropertyName());
-                        return !field.isCalculated() && formatter.hasFormatFor(field) ?
-                                formatter.format(field, localDate) : secondGetValue(item, field, localDate);
+                        return shouldOnlyFormat(field) ?
+                                getValueFormatter().format(field, localDate) :
+                                extendedGetValue(item, field, localDate);
 
                     case Types.LOCALDATETIME:
                         LocalDateTime localDateTime = getLocalDateTime(item, field.getPropertyName());
-                        return !field.isCalculated() && formatter.hasFormatFor(field) ?
-                                formatter.format(field, localDateTime) : secondGetValue(item, field, localDateTime);
+                        return shouldOnlyFormat(field) ?
+                                getValueFormatter().format(field, localDateTime) :
+                                extendedGetValue(item, field, localDateTime);
 
                     case Types.RICHTEXT:
                         break;
 
                     case Types.STRING:
                         String string = getString(item, field.getPropertyName());
-                        return !field.isCalculated() && formatter.hasFormatFor(field) ?
-                                formatter.format(field, string) : secondGetValue(item, field, string);
+                        return shouldOnlyFormat(field) ?
+                                getValueFormatter().format(field, string) :
+                                extendedGetValue(item, field, string);
                 }
             } catch (Exception e) {
                 log.error(e.getMessage(), e);
@@ -120,11 +125,16 @@ public abstract class RowWriter extends ProxyPropertyAccessorImpl implements Dat
         return EMPTY_STRING;
     }
 
-    private String secondGetValue(Object item, FieldSpec field, Object value) {
-        ValueFormatter formatter = getValueFormatter();
-        return !formatter.hasFormatFor(field) && field.isCalculated() ? formatter.calculateValue(field, item).toString() :
-                formatter.hasFormatFor(field) && field.isCalculated() ? formatter.formatCalculatedValue(field, formatter.calculateValue(field, item)) :
-                        Objects.isNull(value) ? EMPTY_STRING : value.toString();
+    private String extendedGetValue(Object item, FieldSpec field, Object value) {
+        return field.isCalculated() && !getValueFormatter().hasFormatFor(field) ?
+                getValueFormatter().calculateValue(field, item).toString() :
+                getValueFormatter().hasFormatFor(field) && field.isCalculated() ?
+                        getValueFormatter().formatCalculatedValue(field, getValueFormatter().calculateValue(field, item)) :
+                        Objects.nonNull(value) ? value.toString() : EMPTY_STRING;
+    }
+
+    protected boolean shouldOnlyFormat(FieldSpec field) {
+        return !field.isCalculated() && getValueFormatter().hasFormatFor(field);
     }
 
     public boolean shouldSkip(FieldSpec field, Object item) {

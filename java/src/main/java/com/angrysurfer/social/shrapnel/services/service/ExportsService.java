@@ -1,14 +1,14 @@
 package com.angrysurfer.social.shrapnel.services.service;
 
-import com.angrysurfer.social.shrapnel.Exporter;
-import com.angrysurfer.social.shrapnel.component.property.HashMapPropertyAccessor;
+import com.angrysurfer.social.shrapnel.services.Export;
+import com.angrysurfer.social.shrapnel.component.property.PropertyMapAccessor;
 import com.angrysurfer.social.shrapnel.component.writer.CSVRowWriter;
 import com.angrysurfer.social.shrapnel.services.ExportRequest;
-import com.angrysurfer.social.shrapnel.services.factory.ExporterFactory;
-import com.angrysurfer.social.shrapnel.services.factory.impl.JdbcTemplateExporterFactory;
-import com.angrysurfer.social.shrapnel.util.ExcelUtil;
-import com.angrysurfer.social.shrapnel.util.FileUtil;
-import com.angrysurfer.social.shrapnel.util.PdfUtil;
+import com.angrysurfer.social.shrapnel.services.factory.ExportFactory;
+import com.angrysurfer.social.shrapnel.services.factory.impl.JdbcTemplateExportFactory;
+import com.angrysurfer.social.shrapnel.services.util.ExcelUtil;
+import com.angrysurfer.social.shrapnel.services.util.FileUtil;
+import com.angrysurfer.social.shrapnel.services.util.PdfUtil;
 import org.springframework.core.io.ByteArrayResource;
 
 import java.io.ByteArrayOutputStream;
@@ -25,41 +25,41 @@ public interface ExportsService {
     String XLSX_FILE = "xlsx";
     long WAIT_SECONDS = 360;
 
-    ExporterFactory getFactory(ExportRequest request);
+    ExportFactory getFactory(ExportRequest request);
 
     default ByteArrayResource exportByteArrayResource(ExportRequest request) throws IOException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-        ExporterFactory factory = getFactory(request);
+        ExportFactory factory = getFactory(request);
         return Objects.nonNull(factory) ? exportByteArrayResource(request, FileUtil.makeFileName(request.getUser(), factory)) : null;
     }
 
     default ByteArrayResource exportByteArrayResource(ExportRequest request, String tempFileName) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException, IOException {
 
-        ExporterFactory factory = getFactory(request);
-        Exporter exporter = factory.newInstance();
-        if (Objects.isNull(exporter))
+        ExportFactory factory = getFactory(request);
+        Export export = factory.newInstance();
+        if (Objects.isNull(export))
             return null;
 
         if (Objects.nonNull(request.getFilterCriteria()) && request.getFilterCriteria().size() > 0)
-            exporter.addFilter(request.getFilterCriteria());
+            export.addFilter(request.getFilterCriteria());
 
         String filename = null;
 
         switch (request.getFileType().toLowerCase(Locale.ROOT)) {
             case CSV_FILE:
                 Collection data = factory.getData();
-                CSVRowWriter writer = new CSVRowWriter(exporter.getFields());
-                if (factory instanceof JdbcTemplateExporterFactory)
-                    writer.setPropertyAccessor((new HashMapPropertyAccessor()));
+                CSVRowWriter writer = new CSVRowWriter(export.getFields());
+                if (factory instanceof JdbcTemplateExportFactory)
+                    writer.setPropertyAccessor((new PropertyMapAccessor()));
                 filename = FileUtil.makeFileName(request.getUser(), factory);
                 writer.writeValues(data, filename);
                 break;
 
             case PDF_FILE:
-                filename = PdfUtil.writeTabularFile(factory.getData(), exporter.getPdfRowWriter(), tempFileName);
+                filename = PdfUtil.writeTabularFile(factory.getData(), export.getPdfRowWriter(), tempFileName);
                 break;
 
             case XLSX_FILE:
-                filename = ExcelUtil.writeWorkbookToFile(factory.getData(), exporter, tempFileName);
+                filename = ExcelUtil.writeWorkbookToFile(factory.getData(), export, tempFileName);
                 break;
         }
 
@@ -72,20 +72,20 @@ public interface ExportsService {
     }
 
     default ByteArrayOutputStream exportByteArrayOutputStream(ExportRequest request) throws IOException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-        ExporterFactory factory = getFactory(request);
-        Exporter exporter = factory.newInstance();
-        if (Objects.isNull(exporter))
+        ExportFactory factory = getFactory(request);
+        Export export = factory.newInstance();
+        if (Objects.isNull(export))
             return null;
 
         if (Objects.nonNull(request.getFilterCriteria()) && request.getFilterCriteria().size() > 0)
-            exporter.addFilter(request.getFilterCriteria());
+            export.addFilter(request.getFilterCriteria());
 
         switch (request.getFileType().toLowerCase(Locale.ROOT)) {
             case PDF_FILE:
-                return PdfUtil.generateByteArrayOutputStream(factory.getData(), exporter);
+                return PdfUtil.generateByteArrayOutputStream(factory.getData(), export);
 
             case XLSX_FILE:
-                return ExcelUtil.generateByteArrayOutputStream(factory.getData(), exporter, FileUtil.getTabLabel(exporter));
+                return ExcelUtil.generateByteArrayOutputStream(factory.getData(), export, FileUtil.getTabLabel(export));
         }
 
         return null;

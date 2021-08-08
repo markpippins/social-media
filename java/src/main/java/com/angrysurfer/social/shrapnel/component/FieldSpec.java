@@ -19,7 +19,8 @@ public class FieldSpec {
     public static final FieldSpec HEADER_PADDING_LEFT = new DebugFieldSpec("hdrPaddingLeft", "<< HDR <<", Types.STRING);
     public static final FieldSpec HEADER_PADDING_RIGHT = new DebugFieldSpec("hdrPaddingRight", ">> HDR >>", Types.STRING);
 
-    public static List<FieldSpec> PADDING_COLUMNS = Arrays.asList(DATA_NULL_VALUE, DATA_PADDING_LEFT, DATA_PADDING_RIGHT, HEADER_PADDING_LEFT, HEADER_PADDING_RIGHT);
+    public static List<FieldSpec> PADDING_COLUMNS = Arrays.asList(DATA_NULL_VALUE, DATA_PADDING_LEFT, DATA_PADDING_RIGHT,
+            HEADER_PADDING_LEFT, HEADER_PADDING_RIGHT);
 
     private String propertyName;
     private String headerLabel;
@@ -37,7 +38,8 @@ public class FieldSpec {
     }
 
     public static List<FieldSpec> createColumnSpecs(List<String> properties) {
-        return properties.stream().map(property -> new FieldSpec(property, property.toUpperCase(Locale.ROOT), Types.STRING)).collect(Collectors.toList());
+        return properties.stream().map(property -> new FieldSpec(property, property.toUpperCase(Locale.ROOT), Types.STRING))
+                .collect(Collectors.toList());
     }
 
     public FieldSpec cloneWithNewLabel(String newLabel) {

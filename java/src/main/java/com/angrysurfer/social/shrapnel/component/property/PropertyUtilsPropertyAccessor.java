@@ -1,5 +1,6 @@
 package com.angrysurfer.social.shrapnel.component.property;
 
+import com.angrysurfer.social.shrapnel.component.property.PropertyAccessor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.PropertyUtils;
 

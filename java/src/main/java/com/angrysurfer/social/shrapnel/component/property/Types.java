@@ -1,7 +1,6 @@
 package com.angrysurfer.social.shrapnel.component.property;
 
-public class Types {
-
+public interface Types {
     public static final String BOOLEAN = "boolean";
     public static final String DATE = "date";
     public static final String DOUBLE = "double";

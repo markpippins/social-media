@@ -1,16 +1,8 @@
 package com.angrysurfer.social.shrapnel.services.mapping;
 
 import com.angrysurfer.social.shrapnel.component.FieldSpec;
-import com.angrysurfer.social.shrapnel.services.model.FieldSpecModel;
+import com.angrysurfer.social.shrapnel.services.model.DBFieldSpec;
 
 public class FieldSpecMapper {
 
-    public static FieldSpec create(FieldSpecModel spec) {
-        FieldSpec result = new FieldSpec();
-        result.setPropertyName(spec.getPropertyName());
-        result.setHeaderLabel(spec.getHeaderLabel());
-        result.setType(spec.getType());
-        result.setIndex(spec.getIndex());
-        return result;
-    }
 }
