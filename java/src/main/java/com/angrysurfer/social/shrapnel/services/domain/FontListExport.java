@@ -1,8 +1,9 @@
-package com.angrysurfer.social.shrapnel.domain;
+package com.angrysurfer.social.shrapnel.services.domain;
 
 import com.angrysurfer.social.shrapnel.component.FieldSpec;
 import com.angrysurfer.social.shrapnel.component.property.Types;
-import com.angrysurfer.social.shrapnel.component.ValueFormatter;
+import com.angrysurfer.social.shrapnel.component.writer.ValueCalculator;
+import com.angrysurfer.social.shrapnel.component.writer.ValueRenderer;
 import com.angrysurfer.social.shrapnel.component.writer.style.FontSource;
 import com.angrysurfer.social.shrapnel.component.writer.style.StyleAdapter;
 import com.angrysurfer.social.shrapnel.component.writer.style.preset.provider.ZebraStyleProvider;
@@ -41,7 +42,9 @@ public class FontListExport extends TabularExport {
     public FontListExport() {
         super(NAME, COLUMNS);
         setStyleProvider(new FontListStyleProvider(Color.PINK, IndexedColors.PALE_BLUE));
-        setValueFormatter(new FontListValueFormatter());
+        setValueRenderer(new FontListValueRenderer());
+        setValueCalculator(new FontListValueCalculator());
+
     }
 
     static class FontListStyleProvider extends ZebraStyleProvider {
@@ -80,10 +83,10 @@ public class FontListExport extends TabularExport {
         }
     }
 
-    static class FontListValueFormatter implements ValueFormatter {
+    static class FontListValueRenderer implements ValueRenderer {
 
         @Override
-        public String format(FieldSpec col, String value) {
+        public String render(FieldSpec col, String value) {
             if (col.getPropertyName().equals("name"))
                 try {
                     PdfFont font = FontSource.getPdfFont2(value.toString());
@@ -102,28 +105,12 @@ public class FontListExport extends TabularExport {
         }
 
         @Override
-        public boolean hasFormatFor(FieldSpec col) {
+        public boolean canRender(FieldSpec col) {
             return Arrays.asList("path", "name").contains(col.getPropertyName());
         }
 
         @Override
-        public Object calculateValue(FieldSpec field, Object item) {
-            if (field.getPropertyName().equalsIgnoreCase("fontname")) {
-                String fontName = ((File) item).getName();
-                try {
-                    if (FontSource.fontFileExists(fontName)) {
-                        PdfFont font = FontSource.getPdfFont2(fontName);
-                        return font.getFontProgram().getFontNames().getFontName();
-                    }
-                } catch (IOException e) {
-                    log.error(e.getMessage(), e);
-                }
-            }
-            return null;
-        }
-
-        @Override
-        public String formatCalculatedValue(FieldSpec field, Object calculateValue) {
+        public String renderCalculatedValue(FieldSpec field, Object calculateValue) {
             return null;
         }
     }
@@ -155,6 +142,24 @@ public class FontListExport extends TabularExport {
         @Override
         public Class getExportClass() {
             return FontListExport.class;
+        }
+    }
+
+    static class FontListValueCalculator implements ValueCalculator {
+        @Override
+        public Object calculateValue(FieldSpec field, Object item) {
+            if (field.getPropertyName().equalsIgnoreCase("fontname")) {
+                String fontName = ((File) item).getName();
+                try {
+                    if (FontSource.fontFileExists(fontName)) {
+                        PdfFont font = FontSource.getPdfFont2(fontName);
+                        return font.getFontProgram().getFontNames().getFontName();
+                    }
+                } catch (IOException e) {
+                    log.error(e.getMessage(), e);
+                }
+            }
+            return null;
         }
     }
 }

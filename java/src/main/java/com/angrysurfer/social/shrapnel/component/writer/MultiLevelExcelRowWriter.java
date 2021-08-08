@@ -1,7 +1,6 @@
 package com.angrysurfer.social.shrapnel.component.writer;
 
 import com.angrysurfer.social.shrapnel.component.FieldSpec;
-import com.angrysurfer.social.shrapnel.component.ValueFormatter;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -20,8 +19,8 @@ public abstract class MultiLevelExcelRowWriter extends ExcelRowWriter implements
 
     private String levelPropertyName;
 
-    public MultiLevelExcelRowWriter(String levelPropertyName, List<FieldSpec> fields, ValueFormatter valueFormatter) {
-        super(fields, valueFormatter);
+    public MultiLevelExcelRowWriter(String levelPropertyName, List<FieldSpec> fields, ValueRenderer valueRenderer) {
+        super(fields, valueRenderer);
         setAutoCreateTopLevelHeader(false);
         setLevelPropertyName(levelPropertyName);
     }
@@ -54,7 +53,7 @@ public abstract class MultiLevelExcelRowWriter extends ExcelRowWriter implements
         for (int i = 0; i < getLevel() - 1; i++) {
             Cell cell = header.createCell(i);
             cell.setCellStyle(headerStyle);
-            cell.setCellValue(FieldSpec.HEADER_PADDING_LEFT.getHeaderLabel());
+            cell.setCellValue(HEADER_PADDING_LEFT.getLabel());
         }
     }
 

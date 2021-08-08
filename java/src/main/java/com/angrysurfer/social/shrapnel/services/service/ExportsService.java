@@ -5,6 +5,7 @@ import com.angrysurfer.social.shrapnel.component.property.PropertyMapAccessor;
 import com.angrysurfer.social.shrapnel.component.writer.CSVRowWriter;
 import com.angrysurfer.social.shrapnel.services.ExportRequest;
 import com.angrysurfer.social.shrapnel.services.factory.ExportFactory;
+import com.angrysurfer.social.shrapnel.services.factory.MetaExportFactory;
 import com.angrysurfer.social.shrapnel.services.factory.impl.JdbcTemplateExportFactory;
 import com.angrysurfer.social.shrapnel.services.util.ExcelUtil;
 import com.angrysurfer.social.shrapnel.services.util.FileUtil;
@@ -26,6 +27,10 @@ public interface ExportsService {
     long WAIT_SECONDS = 360;
 
     ExportFactory getFactory(ExportRequest request);
+
+    default boolean isValid(ExportRequest request) {
+        return Objects.nonNull(getFactory(request));
+    }
 
     default ByteArrayResource exportByteArrayResource(ExportRequest request) throws IOException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         ExportFactory factory = getFactory(request);

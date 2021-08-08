@@ -15,7 +15,7 @@ import javax.annotation.Resource;
 
 @Slf4j
 @Component
-class Config implements CommandLineRunner {
+class ShrapnelConfig implements CommandLineRunner {
 
     @Resource
     ColumnSpecModelRepository columnSpecModelRepository;
@@ -38,7 +38,7 @@ class Config implements CommandLineRunner {
         idSpec1.setName("id");
         idSpec1.setType(Types.STRING);
         idSpec1.setPropertyName("id");
-        idSpec1.setHeaderLabel("id");
+        idSpec1.setLabel("id");
         idSpec1.setIndex(1);
         idSpec1 = columnSpecModelRepository.save(idSpec1);
 
@@ -46,7 +46,7 @@ class Config implements CommandLineRunner {
         nameSpec.setName("name");
         nameSpec.setType(Types.STRING);
         nameSpec.setPropertyName("name");
-        nameSpec.setHeaderLabel("name");
+        nameSpec.setLabel("name");
         nameSpec.setIndex(2);
         nameSpec = columnSpecModelRepository.save(nameSpec);
 
@@ -66,7 +66,7 @@ class Config implements CommandLineRunner {
         idSpec2.setName("id");
         idSpec2.setType(Types.STRING);
         idSpec2.setPropertyName("id");
-        idSpec2.setHeaderLabel("id");
+        idSpec2.setLabel("id");
         idSpec2.setIndex(0);
         idSpec2 = columnSpecModelRepository.save(idSpec2);
 
@@ -74,7 +74,7 @@ class Config implements CommandLineRunner {
         emailSpec.setName("email");
         emailSpec.setType(Types.STRING);
         emailSpec.setPropertyName("email");
-        emailSpec.setHeaderLabel("email");
+        emailSpec.setLabel("email");
         emailSpec.setIndex(3);
         emailSpec = columnSpecModelRepository.save(emailSpec);
 
@@ -82,7 +82,7 @@ class Config implements CommandLineRunner {
         aliasSpec.setName("alias");
         aliasSpec.setType(Types.STRING);
         aliasSpec.setPropertyName("alias");
-        aliasSpec.setHeaderLabel("alias");
+        aliasSpec.setLabel("alias");
         aliasSpec.setIndex(2);
         aliasSpec = columnSpecModelRepository.save(aliasSpec);
 

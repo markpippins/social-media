@@ -1,7 +1,6 @@
 package com.angrysurfer.social.shrapnel.component.writer;
 
 import com.angrysurfer.social.shrapnel.component.FieldSpec;
-import com.angrysurfer.social.shrapnel.component.ValueFormatter;
 import com.itextpdf.layout.element.Cell;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,8 +18,8 @@ public abstract class MultiLevelPdfRowWriter extends PdfRowWriter implements Mul
 
     private String levelPropertyName;
 
-    public MultiLevelPdfRowWriter(String levelPropertyName, List<FieldSpec> fields, ValueFormatter valueFormatter) {
-        super(fields, valueFormatter);
+    public MultiLevelPdfRowWriter(String levelPropertyName, List<FieldSpec> fields, ValueRenderer valueRenderer) {
+        super(fields, valueRenderer);
         setAutoCreateTopLevelHeader(false);
         setLevelPropertyName(levelPropertyName);
     }
@@ -49,18 +48,18 @@ public abstract class MultiLevelPdfRowWriter extends PdfRowWriter implements Mul
     public void writeHeader() {
         List<Cell> row = new ArrayList<>();
         leftPadHeaderRow(getLevel() - 1, row);
-        getColumnsForLevel(getLevel()).forEach(field -> row.add(createHeaderCell(field)));
+        getFieldsForLevel(getLevel()).forEach(field -> row.add(createHeaderCell(field)));
         rightPadHeaderRow(row);
         row.forEach(getTable()::addCell);
     }
 
     protected void leftPadHeaderRow(int startCol, List<Cell> row) {
         while (row.size() < startCol)
-            row.add(createHeaderCell(FieldSpec.HEADER_PADDING_LEFT));
+            row.add(createHeaderCell(HEADER_PADDING_LEFT));
     }
 
     protected void rightPadHeaderRow(List<Cell> row) {
         while (row.size() < getFieldCount())
-            row.add(createHeaderCell(FieldSpec.HEADER_PADDING_LEFT));
+            row.add(createHeaderCell(HEADER_PADDING_LEFT));
     }
 }

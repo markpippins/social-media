@@ -14,25 +14,21 @@ import static com.angrysurfer.social.shrapnel.services.factory.impl.JdbcMetaExpo
 @Entity
 public class DBExport {
     //
-    // data source
     //
     @ManyToOne
     @JoinColumn(name = "data_source_id")
     public DBDataSource dataSource;
     //
-    // id
     //
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     private Long id;
     //
-    // name
     //
     @Column(name = "name", nullable = false)
     private String name;
     //
-    // columns
     //
     @OneToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "export_model_field_spec", joinColumns = {@JoinColumn(name = "model_id")}, inverseJoinColumns = {

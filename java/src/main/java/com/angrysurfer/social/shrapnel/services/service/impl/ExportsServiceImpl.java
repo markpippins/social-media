@@ -14,7 +14,7 @@ import java.util.List;
 @Slf4j
 @Getter
 @Service
-public class ExportServiceImpl implements ExportsService {
+public class ExportsServiceImpl implements ExportsService {
 
     @Resource
     List<MetaExportFactory> metaFactories;
@@ -22,18 +22,16 @@ public class ExportServiceImpl implements ExportsService {
     @Resource
     List<ExportFactory> exporterFactories;
 
-    public ExportFactory getFactory(ExportRequest request) {
-        return getExporterFactories().stream().filter(fac -> fac.getExportName().equalsIgnoreCase(request.getExport())).findFirst()
-                .orElseGet(() -> factoryRegistered(request) ? getRegisteredFactory(request).newInstance(request) : null);
+    private boolean factoryRegistered(ExportRequest request) {
+        return metaFactories.stream().anyMatch(fac -> fac.hasFactory(request));
     }
 
-    private MetaExportFactory getRegisteredFactory(ExportRequest request) {
+    private MetaExportFactory getMetaFactory(ExportRequest request) {
         return metaFactories.stream().filter(fac -> fac.hasFactory(request)).findFirst().orElseGet(() -> null);
     }
 
-    private boolean factoryRegistered(ExportRequest request) {
-        return metaFactories.stream().filter(fac -> fac.hasFactory(request)).findAny().isPresent();
+    public ExportFactory getFactory(ExportRequest request) {
+        return getExporterFactories().stream().filter(fac -> fac.getExportName().equalsIgnoreCase(request.getExport())).findFirst()
+                .orElseGet(() -> factoryRegistered(request) ? getMetaFactory(request).newInstance(request) : null);
     }
-
-
 }

@@ -8,7 +8,7 @@ import java.util.Map;
 
 public interface DataWriter {
 
-    boolean DEBUG = false;
+    ValueCalculator getValueCalculator();
 
     List<FieldSpec> getFields();
 

@@ -1,7 +1,6 @@
 package com.angrysurfer.social.shrapnel.component.writer;
 
 import com.angrysurfer.social.shrapnel.component.FieldSpec;
-import com.angrysurfer.social.shrapnel.component.ValueFormatter;
 import com.angrysurfer.social.shrapnel.component.writer.filter.DataFilterList;
 import com.angrysurfer.social.shrapnel.component.writer.style.CombinedStyleProvider;
 import com.angrysurfer.social.shrapnel.component.writer.style.PdfStyleProvider;
@@ -33,8 +32,8 @@ public class PdfRowWriter extends RowWriter {
         super(fields);
     }
 
-    public PdfRowWriter(List<FieldSpec> fields, ValueFormatter valueFormatter) {
-        super(fields, valueFormatter);
+    public PdfRowWriter(List<FieldSpec> fields, ValueRenderer valueRenderer) {
+        super(fields, valueRenderer);
     }
 
     protected void beforeRow(Object item) {
@@ -48,8 +47,8 @@ public class PdfRowWriter extends RowWriter {
             cell.addStyle(getStyleProvider().getCellStyle(item, field, row));
 
         if (Objects.nonNull(field))
-            if (FieldSpec.PADDING_COLUMNS.contains(field))
-                cell.add(field.getHeaderLabel());
+            if (PADDING_COLUMNS.contains(field))
+                cell.add(field.getLabel());
             else cell.add(getValue(item, field));
 
         return cell;
@@ -61,7 +60,7 @@ public class PdfRowWriter extends RowWriter {
         if (Objects.nonNull(getStyleProvider().getHeaderStyle(field)))
             cell.addStyle(getStyleProvider().getHeaderStyle(field));
 
-        return cell.add(field.getHeaderLabel());
+        return cell.add(field.getLabel());
     }
 
     public Table createTable() {
@@ -85,7 +84,7 @@ public class PdfRowWriter extends RowWriter {
     private List<Cell> rightPadDataRow(List<Cell> row, int rowNum) {
         List<Cell> result = new ArrayList<>(row);
         while (result.size() < getFieldCount())
-            result.add(createCell(null, FieldSpec.DATA_PADDING_RIGHT, rowNum));
+            result.add(createCell(null, DATA_PADDING_RIGHT, rowNum));
         return result;
     }
 
@@ -116,9 +115,9 @@ public class PdfRowWriter extends RowWriter {
 
         getFields().forEach(field -> {
             if (index[0]++ < getCellOffSet(item))
-                row.add(createCell(item, FieldSpec.DATA_PADDING_LEFT, rowNum));
+                row.add(createCell(item, DATA_PADDING_LEFT, rowNum));
             else if (shouldWrite(field, item) && !shouldSkip(field, item))
-                row.add(createCell(item, accessorExists(item, field.getPropertyName()) || field.isCalculated() ? field : FieldSpec.DATA_NULL_VALUE, rowNum));
+                row.add(createCell(item, accessorExists(item, field.getPropertyName()) || field.isCalculated() ? field : DATA_NULL_VALUE, rowNum));
         });
 
         return rightPadDataRow(row, rowNum);

@@ -1,8 +1,9 @@
 package com.angrysurfer.social.shrapnel.services;
 
 import com.angrysurfer.social.shrapnel.component.FieldSpec;
+import com.angrysurfer.social.shrapnel.component.writer.ValueCalculator;
 import com.angrysurfer.social.shrapnel.component.writer.filter.StringStartsWithFilter;
-import com.angrysurfer.social.shrapnel.component.ValueFormatter;
+import com.angrysurfer.social.shrapnel.component.writer.ValueRenderer;
 import com.angrysurfer.social.shrapnel.component.property.PropertyAccessor;
 import com.angrysurfer.social.shrapnel.component.writer.style.CombinedStyleProvider;
 import com.angrysurfer.social.shrapnel.component.writer.ExcelRowWriter;
@@ -66,9 +67,14 @@ public class TabularExport implements Export {
         getPdfRowWriter().setStyleProvider(styleProvider);
     }
 
-    public void setValueFormatter(ValueFormatter valueFormatter) {
-        getExcelRowWriter().setValueFormatter(valueFormatter);
-        getPdfRowWriter().setValueFormatter(valueFormatter);
+    public void setValueCalculator(ValueCalculator valueCalculator) {
+        getExcelRowWriter().setValueCalculator(valueCalculator);
+        getPdfRowWriter().setValueCalculator(valueCalculator);
+    }
+
+    public void setValueRenderer(ValueRenderer valueRenderer) {
+        getExcelRowWriter().setValueRenderer(valueRenderer);
+        getPdfRowWriter().setValueRenderer(valueRenderer);
     }
 
     @Override

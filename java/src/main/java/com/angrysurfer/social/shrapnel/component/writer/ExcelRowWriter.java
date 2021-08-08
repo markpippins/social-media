@@ -2,7 +2,6 @@ package com.angrysurfer.social.shrapnel.component.writer;
 
 import com.angrysurfer.social.shrapnel.component.FieldSpec;
 import com.angrysurfer.social.shrapnel.component.writer.filter.DataFilterList;
-import com.angrysurfer.social.shrapnel.component.ValueFormatter;
 import com.angrysurfer.social.shrapnel.component.writer.style.CombinedStyleProvider;
 import com.angrysurfer.social.shrapnel.component.writer.style.ExcelStyleProvider;
 import lombok.Getter;
@@ -40,12 +39,12 @@ public class ExcelRowWriter extends RowWriter implements DataWriter {
         super(fields);
     }
 
-    public ExcelRowWriter(List<FieldSpec> fields, ValueFormatter valueFormatter) {
-        super(fields, valueFormatter);
+    public ExcelRowWriter(List<FieldSpec> fields, ValueRenderer valueRenderer) {
+        super(fields, valueRenderer);
     }
 
-    public ExcelRowWriter(List<FieldSpec> fields, ValueFormatter valueFormatter, CombinedStyleProvider styleProvider) {
-        super(fields, valueFormatter);
+    public ExcelRowWriter(List<FieldSpec> fields, ValueRenderer valueRenderer, CombinedStyleProvider styleProvider) {
+        super(fields, valueRenderer);
         setStyleProvider(styleProvider);
     }
 
@@ -150,8 +149,8 @@ public class ExcelRowWriter extends RowWriter implements DataWriter {
     protected void writerHeaderRow() {
         final int[] index = {0};
         Row header = getSheet().createRow(getCurrentRow());
-        getFields().forEach(field -> createHeaderCell(field, header, index[0]++).setCellValue(Objects.nonNull(field.getHeaderLabel()) ?
-                field.getHeaderLabel() : field.getPropertyName().toUpperCase(Locale.ROOT)));
+        getFields().forEach(field -> createHeaderCell(field, header, index[0]++).setCellValue(Objects.nonNull(field.getLabel()) ?
+                field.getLabel() : field.getPropertyName().toUpperCase(Locale.ROOT)));
         incrementRow();
     }
 

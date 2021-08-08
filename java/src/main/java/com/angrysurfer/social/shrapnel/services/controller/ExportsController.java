@@ -37,24 +37,18 @@ public class ExportsController {
         HttpHeaders headers = new HttpHeaders();
         ByteArrayResource bytes = null;
 
-        if (isValid(request)) {
-            request.setUser(user);
-            headers.add(HttpHeaders.CONTENT_DISPOSITION, String.format("attachment;filename=%s.%s", request.getExport(), request.getFileType()));
-
+        if (exportsService.isValid(request))
             try {
+                request.setUser(user);
+                headers.add(HttpHeaders.CONTENT_DISPOSITION, String.format("attachment;filename=%s.%s", request.getExport(), request.getFileType()));
                 bytes = exportsService.exportByteArrayResource(request);
             } catch (Exception e) {
                 log.error(e.getMessage(), e);
             }
-        }
 
         return Objects.nonNull(bytes) ?
                 ResponseEntity.ok().headers(headers).contentLength(bytes.contentLength()).contentType(MediaType.APPLICATION_OCTET_STREAM).body(bytes) :
                 ResponseEntity.notFound().build();
-    }
-
-    private boolean isValid(ExportRequest request) {
-        return true;
     }
 
     @PostMapping(value = "/streamExport")
@@ -62,17 +56,15 @@ public class ExportsController {
         HttpHeaders headers = new HttpHeaders();
         ByteArrayOutputStream stream = null;
 
-        if (isValid(request)) {
-            request.setUser(user);
-            headers.add(HttpHeaders.CONTENT_DISPOSITION, String.format("attachment;filename=%s.%s", request.getExport(), request.getFileType()));
-
+        if (exportsService.isValid(request))
             try {
+                request.setUser(user);
+                headers.add(HttpHeaders.CONTENT_DISPOSITION, String.format("attachment;filename=%s.%s", request.getExport(), request.getFileType()));
                 stream = exportsService.exportByteArrayOutputStream(request);
             } catch (Exception e) {
                 log.error(e.getMessage(), e);
                 return ResponseEntity.notFound().build();
             }
-        }
 
         return Objects.nonNull(stream) ?
                 ResponseEntity.ok().headers(headers).contentLength(stream.size()).contentType(MediaType.APPLICATION_OCTET_STREAM).body(stream.toByteArray()) :

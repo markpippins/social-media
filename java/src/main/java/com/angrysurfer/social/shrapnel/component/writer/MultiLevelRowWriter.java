@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface MultiLevelRowWriter {
 
-    List<FieldSpec> getColumnsForLevel(int level);
+    List<FieldSpec> getFieldsForLevel(int level);
 
     int getLevel();
 
@@ -37,19 +37,19 @@ public interface MultiLevelRowWriter {
         return 0;
     }
 
-    default boolean shouldSkip(MultiLevelRowWriter writer, FieldSpec col, Object item, PropertyAccessor propertyAccessor) {
+    default boolean shouldSkip(MultiLevelRowWriter writer, FieldSpec field, Object item, PropertyAccessor propertyAccessor) {
         if (propertyAccessor.accessorExists(item, writer.getLevelPropertyName())) {
             int level = Integer.parseInt(propertyAccessor.getString(item, writer.getLevelPropertyName()));
-            return !writer.getColumnsForLevel(level).contains(col);
+            return !writer.getFieldsForLevel(level).contains(field);
         }
 
         return false;
     }
 
-    default boolean shouldWrite(MultiLevelRowWriter writer, FieldSpec col, Object item, PropertyAccessor propertyAccessor) {
+    default boolean shouldWrite(MultiLevelRowWriter writer, FieldSpec field, Object item, PropertyAccessor propertyAccessor) {
         if (propertyAccessor.accessorExists(item, writer.getLevelPropertyName())) {
             int level = Integer.parseInt(propertyAccessor.getString(item, writer.getLevelPropertyName()));
-            return writer.getColumnsForLevel(level).contains(col);
+            return writer.getFieldsForLevel(level).contains(field);
         }
 
         return true;

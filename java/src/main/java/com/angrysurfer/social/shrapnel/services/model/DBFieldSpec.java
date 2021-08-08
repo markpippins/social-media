@@ -20,21 +20,22 @@ public class DBFieldSpec {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "propertyName", nullable = false)
+    @Column(name = "property_name", nullable = false)
     private String propertyName;
 
-    private String headerLabel;
+    @Column(name = "label", nullable = false)
+    private String label;
 
     @Column(name = "property_type", nullable = false)
     private String type;
 
-    @Column(name = "column_index", nullable = false)
+    @Column(name = "field_index", nullable = false)
     private Integer index;
 
     public FieldSpec createFieldSpec() {
             FieldSpec result = new FieldSpec();
             result.setPropertyName(getPropertyName());
-            result.setHeaderLabel(getHeaderLabel());
+            result.setLabel(getLabel());
             result.setType(getType());
             result.setIndex(getIndex());
             return result;
