@@ -52,7 +52,11 @@ public class FontListExport extends TabularExport {
 
     public FontListExport() {
         super(NAME, FIELDS);
-        setStyleProvider(new FontListStyleProvider(Color.PINK, IndexedColors.PALE_BLUE));
+    }
+
+    @Override
+    public void init() {
+        setStyleProvider(new FontListStyleProvider(Color.LIGHT_GRAY, IndexedColors.PALE_BLUE));
         setValueRenderer(new FontListValueRenderer());
         setValueCalculator(new FontListValueCalculator());
         addFilter(new UniqueFontFilter());
@@ -61,7 +65,7 @@ public class FontListExport extends TabularExport {
     static class FontListStyleProvider extends ZebraStyleProvider {
         public FontListStyleProvider(Color pdfDarkColor, IndexedColors excelDarkColor) {
             super(pdfDarkColor, excelDarkColor);
-            getDefaultCellStyleAdapter().setBackgroundColor(Color.LIGHT_GRAY);
+            getDefaultCellStyleAdapter().setBackgroundColor(Color.WHITE);
         }
 
 //        @Override

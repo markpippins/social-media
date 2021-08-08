@@ -19,6 +19,7 @@ public class StringStartsWithFilter implements DataFilter {
     private Map<String, Object> filterCriteria = new HashMap<>();
 
     public StringStartsWithFilter() {
+        log.info("now");
     }
 
     public StringStartsWithFilter(Map<String, Object> filterCriteria) {
@@ -45,7 +46,7 @@ public class StringStartsWithFilter implements DataFilter {
                         !propertyValue.toLowerCase(Locale.ROOT).startsWith(criteriaValue.toString().toLowerCase(Locale.ROOT)))
                     result[0] = false;
 
-                log.info("allow({}) returning {}", propertyName, result[0]);
+                log.info("allow({}) returning {}", Objects.nonNull(propertyValue) ? propertyValue : "''", result[0]);
             });
 
         return result[0];

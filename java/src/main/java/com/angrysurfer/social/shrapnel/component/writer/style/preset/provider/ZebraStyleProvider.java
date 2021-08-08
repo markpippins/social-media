@@ -49,7 +49,7 @@ public class ZebraStyleProvider extends CombinedStyleProvider {
 
     @Override
     public StyleAdapter getCellStyle(Object item, FieldSpec col, int row) {
-        return row % 2 == 0 ? getDarkStyleProvider().getCellStyle(item, col, row) :
+        return row % 2 == 1 ? getDarkStyleProvider().getCellStyle(item, col, row) :
                 super.getCellStyle(item, col, row);
     }
 

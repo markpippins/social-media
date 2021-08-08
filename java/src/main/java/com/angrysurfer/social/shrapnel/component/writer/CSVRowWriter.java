@@ -42,6 +42,11 @@ public class CSVRowWriter extends RowWriter implements DataWriter {
         writeValues(items, filename);
     }
 
+    @Override
+    public void writeError(Exception e) {
+
+    }
+
     public void writeValues(Collection<Object> items, String filename) {
         try {
             FileWriter fileWriter = new FileWriter(filename);

@@ -26,5 +26,7 @@ public interface Export {
 
     PageSize getPageSize();
 
+    void init();
+
     void setPropertyAccessor(PropertyAccessor propertyAccessor);
 }

@@ -16,6 +16,7 @@ import java.util.stream.Stream;
 public class FontSource {
 
     public final static String FONTS_FOLDER = "java/src/main/resources/fonts/";
+    static boolean destroyOnError = false;
 
     public static boolean fontFileExists(String fontName) throws IOException {
 
@@ -46,10 +47,13 @@ public class FontSource {
             return PdfFontFactory.createFont(fontProgram, PdfEncodings.WINANSI, true);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
-            log.info("deleting {}", fontFileName);
-            File f = new File(fontFileName);
-            if (f.exists() && f.isFile())
-                f.delete();
+
+            if (destroyOnError) {
+                log.info("marking {} for deletion.", fontFileName);
+                File f = new File(fontFileName);
+                if (f.exists() && f.isFile())
+                    f.deleteOnExit();
+            }
 
             throw e;
         }

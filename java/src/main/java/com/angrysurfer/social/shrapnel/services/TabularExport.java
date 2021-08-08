@@ -21,7 +21,7 @@ import java.util.Objects;
 @Slf4j
 @Getter
 @Setter
-public class TabularExport implements Export {
+public abstract class TabularExport implements Export {
 
     private List<FieldSpec> fields;
 

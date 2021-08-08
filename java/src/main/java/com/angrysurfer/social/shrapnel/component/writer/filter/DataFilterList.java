@@ -13,14 +13,15 @@ public interface DataFilterList extends List<DataFilter> {
         final boolean[] result = {true};
 
         forEach(filter -> {
-            try {
-                if (!filter.allows(item, writer, propertyAccessor))
-                    result[0] = false;
-            } catch (Exception e) {
-                if (RowWriter.DEBUG)
-                    writer.writeError(e);
-                else throw e;
-            }
+            if (result[0])
+                try {
+                    if (!filter.allows(item, writer, propertyAccessor))
+                        result[0] = false;
+                } catch (Exception e) {
+                    if (RowWriter.DEBUG)
+                        writer.writeError(e);
+                    else throw e;
+                }
         });
 
         return result[0];

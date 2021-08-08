@@ -1,11 +1,10 @@
 package com.angrysurfer.social.shrapnel.services.service;
 
-import com.angrysurfer.social.shrapnel.services.Export;
 import com.angrysurfer.social.shrapnel.component.property.PropertyMapAccessor;
 import com.angrysurfer.social.shrapnel.component.writer.CSVRowWriter;
+import com.angrysurfer.social.shrapnel.services.Export;
 import com.angrysurfer.social.shrapnel.services.ExportRequest;
 import com.angrysurfer.social.shrapnel.services.factory.ExportFactory;
-import com.angrysurfer.social.shrapnel.services.factory.MetaExportFactory;
 import com.angrysurfer.social.shrapnel.services.factory.impl.JdbcTemplateExportFactory;
 import com.angrysurfer.social.shrapnel.services.util.ExcelUtil;
 import com.angrysurfer.social.shrapnel.services.util.FileUtil;
@@ -47,8 +46,9 @@ public interface ExportsService {
         if (Objects.nonNull(request.getFilterCriteria()) && request.getFilterCriteria().size() > 0)
             export.addFilter(request.getFilterCriteria());
 
-        String filename = null;
+        export.init();
 
+        String filename = null;
         switch (request.getFileType().toLowerCase(Locale.ROOT)) {
             case CSV_FILE:
                 Collection data = factory.getData();
@@ -84,6 +84,8 @@ public interface ExportsService {
 
         if (Objects.nonNull(request.getFilterCriteria()) && request.getFilterCriteria().size() > 0)
             export.addFilter(request.getFilterCriteria());
+
+        export.init();
 
         switch (request.getFileType().toLowerCase(Locale.ROOT)) {
             case PDF_FILE:
