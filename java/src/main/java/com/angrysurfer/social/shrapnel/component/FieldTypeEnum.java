@@ -5,53 +5,16 @@ import java.util.stream.Collectors;
 
 public enum FieldTypeEnum {
 
-    BOOLEAN(1) {
-        public String getName() {
-            return "boolean";
-        }
-    },
+    BOOLEAN(1),
+    DATE(2),
+    DOUBLE(3),
+    CALENDAR(4),
+    LOCALDATE(5),
+    LOCALDATETIME(6),
+    RICHTEXT(7),
+    STRING(8)
 
-    DATE(2) {
-        public String getName() {
-            return "date";
-        }
-    },
-
-    DOUBLE(3) {
-        public String getName() {
-            return "double";
-        }
-    },
-
-    CALENDAR(4) {
-        public String getName() {
-            return "calendar";
-        }
-    },
-
-    LOCALDATE(5) {
-        public String getName() {
-            return "localdate";
-        }
-    },
-
-    LOCALDATETIME(6) {
-        public String getName() {
-            return "localdatetime";
-        }
-    },
-
-    RICHTEXT(7) {
-        public String getName() {
-            return "richtext";
-        }
-    },
-
-    STRING(8) {
-        public String getName() {
-            return "string";
-        }
-    };
+    ;
 
     private int code;
 
@@ -68,6 +31,10 @@ public enum FieldTypeEnum {
                         }).collect(Collectors.toList()))));
 
         return result;
+    }
+
+    public int getCode() {
+        return code;
     }
 };
 

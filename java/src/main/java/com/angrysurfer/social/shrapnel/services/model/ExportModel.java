@@ -48,7 +48,7 @@ public class ExportModel {
         Map<Integer, FieldSpecModel> indexMap = new HashMap<>();
         getFieldSpecs().forEach(field -> {
             if (Objects.isNull(field.getPropertyName())
-                    || Objects.isNull(field.getType())
+                    || Objects.isNull(field.getFieldType())
                     || Objects.isNull(field.getIndex())
                     || indexMap.containsKey(field.getIndex()))
                 isConfigured[0] = false;

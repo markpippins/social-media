@@ -27,17 +27,18 @@ public class FieldSpecModel {
     @Column(name = "label", nullable = false)
     private String label;
 
-    @Column(name = "property_type", nullable = false)
-    private String type;
-
     @Column(name = "field_index", nullable = false)
     private Integer index;
+
+    @ManyToOne
+    @JoinColumn(name = "field_type_id")
+    public FieldTypeModel fieldType;
 
     public FieldSpec createFieldSpec() {
         FieldSpec result = new FieldSpec();
         result.setPropertyName(getPropertyName());
         result.setLabel(getLabel());
-        result.setType(FieldTypeEnum.from(getType()));
+        result.setType(FieldTypeEnum.from(fieldType.getName()));
         result.setIndex(getIndex());
         return result;
     }

@@ -30,7 +30,7 @@ public class HashMapResultSetExtractor implements ResultSetExtractor {
 
             export.getFieldSpecs().forEach(field -> {
                 try {
-                    switch (FieldTypeEnum.from(field.getType())) {
+                    switch (FieldTypeEnum.from(field.getFieldType().getName())) {
                         case BOOLEAN:
                             if (Objects.nonNull(rs.getString(field.getPropertyName())))
                                 values.put(field.getPropertyName(), rs.getBoolean(field.getPropertyName()));

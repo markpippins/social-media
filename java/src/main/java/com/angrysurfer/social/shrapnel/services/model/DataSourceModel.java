@@ -21,9 +21,4 @@ public class DataSourceModel {
 
     @Column(name = "query", nullable = false)
     private String query;
-
-//    @Transient
-//    public Collection<Object> getData() {
-//        return Collections.EMPTY_LIST;
-//    }
 }
