@@ -5,7 +5,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
-//@Table(name = "field_spec")
+@Table(name = "field_spec")
 @Getter
 @Setter
 @Entity
