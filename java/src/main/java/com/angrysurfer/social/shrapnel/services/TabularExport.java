@@ -1,13 +1,14 @@
 package com.angrysurfer.social.shrapnel.services;
 
 import com.angrysurfer.social.shrapnel.component.FieldSpec;
-import com.angrysurfer.social.shrapnel.component.writer.ValueCalculator;
-import com.angrysurfer.social.shrapnel.component.writer.filter.StringStartsWithFilter;
-import com.angrysurfer.social.shrapnel.component.writer.ValueRenderer;
 import com.angrysurfer.social.shrapnel.component.property.PropertyAccessor;
-import com.angrysurfer.social.shrapnel.component.writer.style.CombinedStyleProvider;
 import com.angrysurfer.social.shrapnel.component.writer.ExcelRowWriter;
 import com.angrysurfer.social.shrapnel.component.writer.PdfRowWriter;
+import com.angrysurfer.social.shrapnel.component.writer.ValueCalculator;
+import com.angrysurfer.social.shrapnel.component.writer.ValueRenderer;
+import com.angrysurfer.social.shrapnel.component.writer.filter.DataFilter;
+import com.angrysurfer.social.shrapnel.component.writer.filter.StringStartsWithFilter;
+import com.angrysurfer.social.shrapnel.component.writer.style.CombinedStyleProvider;
 import com.itextpdf.kernel.geom.PageSize;
 import lombok.Getter;
 import lombok.Setter;
@@ -39,6 +40,12 @@ public class TabularExport implements Export {
     public void addFilter(Map<String, Object> filterCriteria) {
         getExcelRowWriter().getFilters().add(new StringStartsWithFilter(filterCriteria));
         getPdfRowWriter().getFilters().add(new StringStartsWithFilter(filterCriteria));
+    }
+
+    @Override
+    public void addFilter(DataFilter filter) {
+        getExcelRowWriter().getFilters().add(filter);
+        getPdfRowWriter().getFilters().add(filter);
     }
 
     @Override

@@ -136,11 +136,26 @@ public abstract class RowWriter implements DataWriter, ProxyPropertyAccessor {
     }
 
     private String extendedGetValue(Object item, FieldSpec field, Object value) {
-        return field.isCalculated() && !getValueRenderer().canRender(field) ?
-                getValueCalculator().calculateValue(field, item).toString() :
-                getValueRenderer().canRender(field) && field.isCalculated() ?
-                        getValueRenderer().renderCalculatedValue(field, getValueCalculator().calculateValue(field, item)) :
+        ValueCalculator calc = getValueCalculator();
+
+        return shouldOnlyCalculate(field) ?
+                nonNullString(calc.calculateValue(field, item)) :
+                shouldCalculateAndRender(field) ? getValueRenderer()
+                        .renderCalculatedValue(field, nonNullString(getValueCalculator().calculateValue(field, item))) :
                         Objects.nonNull(value) ? value.toString() : EMPTY_STRING;
+    }
+
+    protected boolean shouldCalculateAndRender(FieldSpec field) {
+        return getValueRenderer().canRender(field) && field.isCalculated();
+    }
+
+
+    protected String nonNullString(Object value) {
+        return Objects.nonNull(value) ? value.toString() : EMPTY_STRING;
+    }
+
+    protected boolean shouldOnlyCalculate(FieldSpec field) {
+        return field.isCalculated() && !getValueRenderer().canRender(field);
     }
 
     protected boolean shouldOnlyFormat(FieldSpec field) {

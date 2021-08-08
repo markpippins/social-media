@@ -2,8 +2,11 @@ package com.angrysurfer.social.shrapnel.services.domain;
 
 import com.angrysurfer.social.shrapnel.component.FieldSpec;
 import com.angrysurfer.social.shrapnel.component.FieldTypeEnum;
+import com.angrysurfer.social.shrapnel.component.property.PropertyAccessor;
+import com.angrysurfer.social.shrapnel.component.writer.DataWriter;
 import com.angrysurfer.social.shrapnel.component.writer.ValueCalculator;
 import com.angrysurfer.social.shrapnel.component.writer.ValueRenderer;
+import com.angrysurfer.social.shrapnel.component.writer.filter.DataFilter;
 import com.angrysurfer.social.shrapnel.component.writer.style.FontSource;
 import com.angrysurfer.social.shrapnel.component.writer.style.StyleAdapter;
 import com.angrysurfer.social.shrapnel.component.writer.style.preset.provider.ZebraStyleProvider;
@@ -22,29 +25,37 @@ import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.angrysurfer.social.shrapnel.component.writer.RowWriter.EMPTY_STRING;
 import static com.angrysurfer.social.shrapnel.component.writer.style.FontSource.FONTS_FOLDER;
 
 @Getter
 @Setter
 @Slf4j
 public class FontListExport extends TabularExport {
+    static List<FieldSpec> FIELDS = new ArrayList();
 
-
-    static List<FieldSpec> COLUMNS = FieldSpec.createColumnSpecs(Arrays.asList("path", "name"));
-    static FieldSpec calculated = new FieldSpec("fontname", "fontname", FieldTypeEnum.STRING);
     static String NAME = "font-list";
 
+    static FieldSpec id = new FieldSpec("id", "id", FieldTypeEnum.STRING);
+    static FieldSpec sample = new FieldSpec("name", "Sample", FieldTypeEnum.STRING);
+    static FieldSpec path = new FieldSpec("path", "path", FieldTypeEnum.STRING);
+    static FieldSpec fontname = new FieldSpec("fontname", "fontname", FieldTypeEnum.STRING);
+
     static {
-        calculated.setCalculated(true);
-        COLUMNS.add(calculated);
+        id.setCalculated(true);
+        fontname.setCalculated(true);
+        FIELDS.add(id);
+        FIELDS.add(fontname);
+        FIELDS.add(sample);
+        FIELDS.add(path);
     }
 
     public FontListExport() {
-        super(NAME, COLUMNS);
+        super(NAME, FIELDS);
         setStyleProvider(new FontListStyleProvider(Color.PINK, IndexedColors.PALE_BLUE));
         setValueRenderer(new FontListValueRenderer());
         setValueCalculator(new FontListValueCalculator());
-
+        addFilter(new UniqueFontFilter());
     }
 
     static class FontListStyleProvider extends ZebraStyleProvider {
@@ -64,7 +75,6 @@ public class FontListExport extends TabularExport {
         public StyleAdapter getCellStyle(Object item, FieldSpec col, int row) {
 
             StyleAdapter style = super.getCellStyle(item, col, row);
-
             if (Objects.nonNull(col) && col.getPropertyName().equals("name"))
                 try {
                     StyleAdapter adapter = new StyleAdapter();
@@ -84,6 +94,7 @@ public class FontListExport extends TabularExport {
     }
 
     static class FontListValueRenderer implements ValueRenderer {
+
 
         @Override
         public String render(FieldSpec col, String value) {
@@ -110,8 +121,8 @@ public class FontListExport extends TabularExport {
         }
 
         @Override
-        public String renderCalculatedValue(FieldSpec field, Object calculateValue) {
-            return null;
+        public String renderCalculatedValue(FieldSpec field, Object value) {
+            return Objects.nonNull(value) ? value.toString() : EMPTY_STRING;
         }
     }
 
@@ -146,6 +157,8 @@ public class FontListExport extends TabularExport {
     }
 
     static class FontListValueCalculator implements ValueCalculator {
+        private int count = 0;
+
         @Override
         public Object calculateValue(FieldSpec field, Object item) {
             if (field.getPropertyName().equalsIgnoreCase("fontname")) {
@@ -158,8 +171,24 @@ public class FontListExport extends TabularExport {
                 } catch (IOException e) {
                     log.error(e.getMessage(), e);
                 }
+            } else if (Objects.nonNull(field) && field.getPropertyName().equals("id")) {
+                return Integer.toString(count++);
             }
-            return null;
+
+            return EMPTY_STRING;
+        }
+    }
+
+    private static class UniqueFontFilter implements DataFilter {
+        List<String> filenames = new ArrayList<>();
+
+        @Override
+        public boolean allows(Object item, DataWriter writer, PropertyAccessor accessor) {
+            File f = (File) item;
+            boolean result = !filenames.contains(f.getName().toLowerCase());
+            filenames.add(f.getName().toLowerCase());
+            log.info("allow({}) returning {}", f.getName(), result);
+            return result;
         }
     }
 }

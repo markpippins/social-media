@@ -12,7 +12,6 @@ import javax.persistence.*;
 public class FieldTypeModel {
 
     @Id
-//    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "code", nullable = false)
     private Integer code;
 

@@ -16,8 +16,8 @@ public class FieldSpec {
 
     private String propertyName;
     private String label;
-    private FieldTypeEnum type;
     private int index;
+    private FieldTypeEnum type;
     private boolean calculated = false;
 
     public FieldSpec() {

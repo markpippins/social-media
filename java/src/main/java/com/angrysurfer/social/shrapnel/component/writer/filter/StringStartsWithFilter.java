@@ -1,7 +1,6 @@
 package com.angrysurfer.social.shrapnel.component.writer.filter;
 
 import com.angrysurfer.social.shrapnel.component.property.PropertyAccessor;
-import com.angrysurfer.social.shrapnel.component.FieldTypeEnum;
 import com.angrysurfer.social.shrapnel.component.writer.DataWriter;
 import lombok.Getter;
 import lombok.Setter;
@@ -28,25 +27,27 @@ public class StringStartsWithFilter implements DataFilter {
 
     @Override
     public boolean allows(Object item, DataWriter writer, PropertyAccessor accessor) {
-        boolean[] result = {true};
+        boolean[] result = {Objects.nonNull(item)};
 
-        getFilterCriteria().forEach((propertyName, criteriaValue) -> {
-            if (Objects.isNull(criteriaValue) || Objects.isNull(writer.getField(propertyName)))
-                throw new NullPointerException();
+        if (result[0])
+            getFilterCriteria().forEach((propertyName, criteriaValue) -> {
+                if (Objects.isNull(criteriaValue) || Objects.isNull(writer.getField(propertyName)))
+                    throw new NullPointerException();
 
-            String propertyValue = null;
+                String propertyValue = null;
 
-            switch (writer.getField(propertyName).getType()) {
-                case STRING:
-                    propertyValue = accessor.getString(item, propertyName);
-            }
+                switch (writer.getField(propertyName).getType()) {
+                    case STRING:
+                        propertyValue = accessor.getString(item, propertyName);
+                }
 
-            if (Objects.isNull(propertyValue) ||
-                    !propertyValue.toLowerCase(Locale.ROOT).startsWith(criteriaValue.toString().toLowerCase(Locale.ROOT)))
-                result[0] = false;
+                if (Objects.isNull(propertyValue) ||
+                        !propertyValue.toLowerCase(Locale.ROOT).startsWith(criteriaValue.toString().toLowerCase(Locale.ROOT)))
+                    result[0] = false;
 
-            log.info("allow({} returning {}", propertyName, result[0]);
-        });
+                log.info("allow({}) returning {}", propertyName, result[0]);
+            });
+
         return result[0];
     }
 }

@@ -42,6 +42,16 @@ public class FontSource {
     public static PdfFont getPdfFont2(String fontName) throws IOException {
         String fontFileName = FONTS_FOLDER + fontName;
         FontProgram fontProgram = FontProgramFactory.createFont(fontFileName);
-        return PdfFontFactory.createFont(fontProgram, PdfEncodings.WINANSI, true);
+        try {
+            return PdfFontFactory.createFont(fontProgram, PdfEncodings.WINANSI, true);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            log.info("deleting {}", fontFileName);
+            File f = new File(fontFileName);
+            if (f.exists() && f.isFile())
+                f.delete();
+
+            throw e;
+        }
     }
 }
