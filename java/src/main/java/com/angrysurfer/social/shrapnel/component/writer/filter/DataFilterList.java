@@ -2,6 +2,7 @@ package com.angrysurfer.social.shrapnel.component.writer.filter;
 
 import com.angrysurfer.social.shrapnel.component.property.PropertyAccessor;
 import com.angrysurfer.social.shrapnel.component.writer.DataWriter;
+import com.angrysurfer.social.shrapnel.component.writer.RowWriter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,8 +13,14 @@ public interface DataFilterList extends List<DataFilter> {
         final boolean[] result = {true};
 
         forEach(filter -> {
-            if (!filter.allows(item, writer, propertyAccessor))
-                result[0] = false;
+            try {
+                if (!filter.allows(item, writer, propertyAccessor))
+                    result[0] = false;
+            } catch (Exception e) {
+                if (RowWriter.DEBUG)
+                    writer.writeError(e);
+                else throw e;
+            }
         });
 
         return result[0];

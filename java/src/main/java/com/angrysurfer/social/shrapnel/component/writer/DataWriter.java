@@ -23,4 +23,6 @@ public interface DataWriter {
     }
 
     void writeData(Map<String, Object> outputConfig, Collection<Object> items);
+
+    void writeError(Exception e);
 }

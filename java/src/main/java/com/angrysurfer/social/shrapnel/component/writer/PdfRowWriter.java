@@ -109,6 +109,11 @@ public class PdfRowWriter extends RowWriter {
                 });
     }
 
+    @Override
+    public void writeError(Exception e) {
+
+    }
+
     protected List<Cell> writeDataRow(Object item, int rowNum) {
         List<Cell> row = new ArrayList<>();
         final int[] index = {0};
