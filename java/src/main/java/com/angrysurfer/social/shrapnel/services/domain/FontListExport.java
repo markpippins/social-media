@@ -14,6 +14,7 @@ import com.angrysurfer.social.shrapnel.services.TabularExport;
 import com.angrysurfer.social.shrapnel.services.factory.ExportFactory;
 import com.itextpdf.kernel.color.Color;
 import com.itextpdf.kernel.font.PdfFont;
+import com.itextpdf.kernel.geom.PageSize;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -52,6 +53,11 @@ public class FontListExport extends TabularExport {
 
     public FontListExport() {
         super(NAME, FIELDS);
+    }
+
+    @Override
+    public PageSize getPageSize() {
+        return PageSize.A2;
     }
 
     @Override
@@ -183,7 +189,7 @@ public class FontListExport extends TabularExport {
         }
     }
 
-    private static class UniqueFontFilter implements DataFilter {
+    static class UniqueFontFilter implements DataFilter {
         List<String> filenames = new ArrayList<>();
 
         @Override

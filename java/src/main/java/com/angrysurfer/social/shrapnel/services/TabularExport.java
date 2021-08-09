@@ -7,7 +7,7 @@ import com.angrysurfer.social.shrapnel.component.writer.PdfRowWriter;
 import com.angrysurfer.social.shrapnel.component.writer.ValueCalculator;
 import com.angrysurfer.social.shrapnel.component.writer.ValueRenderer;
 import com.angrysurfer.social.shrapnel.component.writer.filter.DataFilter;
-import com.angrysurfer.social.shrapnel.component.writer.filter.StringStartsWithFilter;
+import com.angrysurfer.social.shrapnel.component.writer.filter.preset.StringFieldFilter;
 import com.angrysurfer.social.shrapnel.component.writer.style.CombinedStyleProvider;
 import com.itextpdf.kernel.geom.PageSize;
 import lombok.Getter;
@@ -38,8 +38,8 @@ public abstract class TabularExport implements Export {
 
     @Override
     public void addFilter(Map<String, Object> filterCriteria) {
-        getExcelRowWriter().getFilters().add(new StringStartsWithFilter(filterCriteria));
-        getPdfRowWriter().getFilters().add(new StringStartsWithFilter(filterCriteria));
+        getExcelRowWriter().getFilters().add(new StringFieldFilter(filterCriteria));
+        getPdfRowWriter().getFilters().add(new StringFieldFilter(filterCriteria));
     }
 
     @Override
