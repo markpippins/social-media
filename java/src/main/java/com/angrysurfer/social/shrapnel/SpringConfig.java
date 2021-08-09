@@ -1,13 +1,13 @@
 package com.angrysurfer.social.shrapnel;
 
 import com.angrysurfer.social.shrapnel.component.FieldTypeEnum;
-import com.angrysurfer.social.shrapnel.services.model.FieldSpecModel;
 import com.angrysurfer.social.shrapnel.services.model.DataSourceModel;
 import com.angrysurfer.social.shrapnel.services.model.ExportModel;
+import com.angrysurfer.social.shrapnel.services.model.FieldSpecModel;
 import com.angrysurfer.social.shrapnel.services.model.FieldTypeModel;
-import com.angrysurfer.social.shrapnel.services.repository.FieldSpecModelRepository;
 import com.angrysurfer.social.shrapnel.services.repository.DataSourceModelRepository;
 import com.angrysurfer.social.shrapnel.services.repository.ExportModelRepository;
+import com.angrysurfer.social.shrapnel.services.repository.FieldSpecModelRepository;
 import com.angrysurfer.social.shrapnel.services.repository.FieldTypeModelRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
@@ -17,7 +17,7 @@ import javax.annotation.Resource;
 
 @Slf4j
 @Component
-class ShrapnelConfig implements CommandLineRunner {
+class SpringConfig implements CommandLineRunner {
 
     @Resource
     FieldSpecModelRepository fieldSpecModelRepository;

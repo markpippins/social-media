@@ -16,6 +16,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Map;
 import java.util.Properties;
 
 @Slf4j
@@ -97,11 +98,7 @@ public class FileUtil {
         return String.format("%s - %s - %s - %s", export.getName(), LocalDate.now().getDayOfMonth(), LocalDate.now().getMonthValue(), LocalDate.now().getYear());
     }
 
-    public static Object getProperty(String propertyFile, String propertyName, Object defaultValue) {
-        return getProperties(propertyFile).getOrDefault(propertyName, defaultValue);
-    }
-
-    public static Properties getProperties(String propertyFile) {
+    public static Map<Object, Object> getFileProperties(String propertyFile) {
         Properties properties = new Properties();
         try (InputStream input = new FileInputStream(propertyFile)) {
             properties.load(input);
@@ -110,5 +107,5 @@ public class FileUtil {
         }
         return properties;
     }
-
 }
+

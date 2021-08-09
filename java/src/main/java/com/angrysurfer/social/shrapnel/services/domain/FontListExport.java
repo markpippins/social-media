@@ -104,8 +104,6 @@ public class FontListExport extends TabularExport {
     }
 
     static class FontListValueRenderer implements ValueRenderer {
-
-
         @Override
         public String render(FieldSpec col, String value) {
             if (col.getPropertyName().equals("name"))

@@ -1,13 +1,11 @@
 package com.angrysurfer.social.shrapnel.component.writer.style;
 
-import com.angrysurfer.social.shrapnel.services.util.FileUtil;
 import com.itextpdf.layout.Style;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Properties;
 
 @Slf4j
 public class StyleAdapter extends Style {
@@ -50,9 +48,5 @@ public class StyleAdapter extends Style {
             extendedProperties.put(property, value);
         else if (hasExtendedProperty(property))
             extendedProperties.remove(property);
-    }
-
-    protected Properties getDefaults() {
-        return FileUtil.getProperties(FileUtil.DEFAULTS);
     }
 }

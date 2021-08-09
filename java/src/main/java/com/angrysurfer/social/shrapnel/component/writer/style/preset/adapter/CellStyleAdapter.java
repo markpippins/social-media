@@ -1,5 +1,6 @@
 package com.angrysurfer.social.shrapnel.component.writer.style.preset.adapter;
 
+import com.angrysurfer.social.shrapnel.component.Config;
 import com.angrysurfer.social.shrapnel.component.writer.style.StyleAdapter;
 import com.itextpdf.io.font.FontConstants;
 import com.itextpdf.io.font.FontProgramFactory;
@@ -8,8 +9,6 @@ import com.itextpdf.kernel.font.PdfFontFactory;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-
-import java.util.Properties;
 
 import static com.angrysurfer.social.shrapnel.component.writer.style.FontSource.FONTS_FOLDER;
 
@@ -31,15 +30,14 @@ public class CellStyleAdapter extends StyleAdapter {
 
     public CellStyleAdapter() {
 
-        Properties defaults = getDefaults();
-
-        setFontSize(defaults.containsKey(FONT_SIZE) ? Integer.parseInt(defaults.getProperty(FONT_SIZE)) : DEFAULT_FONT_SIZE);
-        setMargin(defaults.containsKey(MARGIN) ? Integer.parseInt(defaults.getProperty(MARGIN)) : DEFAULT_MARGIN);
-        setPadding(defaults.containsKey(PADDING) ? Integer.parseInt(defaults.getProperty(PADDING)) : DEFAULT_PADDING);
+        Config config = Config.getInstance();
+        setFontSize(config.containsKey(FONT_SIZE) ? Integer.parseInt(config.getProperty(FONT_SIZE).toString()) : DEFAULT_FONT_SIZE);
+        setMargin(config.containsKey(MARGIN) ? Integer.parseInt(config.getProperty(MARGIN).toString()) : DEFAULT_MARGIN);
+        setPadding(config.containsKey(PADDING) ? Integer.parseInt(config.getProperty(PADDING).toString()) : DEFAULT_PADDING);
 
         try {
             setFont(PdfFontFactory.createFont(FontProgramFactory.createFont(FONTS_FOLDER +
-                            (defaults.containsKey(FONT_NAME) ? defaults.getProperty(FONT_NAME) : DEFAULT_FONT)),
+                            (config.containsKey(FONT_NAME) ? config.getProperty(FONT_NAME) : DEFAULT_FONT)),
                     PdfEncodings.WINANSI, true));
         } catch (Exception e) {
             log.error(e.getMessage(), e);

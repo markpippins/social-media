@@ -5,7 +5,5 @@ import com.angrysurfer.social.shrapnel.component.writer.DataWriter;
 
 
 public interface DataFilter {
-
-
     boolean allows(Object item, DataWriter writer, PropertyAccessor accessor);
 }

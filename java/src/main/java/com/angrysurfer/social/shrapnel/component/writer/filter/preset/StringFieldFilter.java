@@ -13,10 +13,14 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
+import static com.angrysurfer.social.shrapnel.component.writer.RowWriter.EMPTY_STRING;
+
 @Getter
 @Setter
 @Slf4j
 public class StringFieldFilter implements DataFilter {
+
+    private static final String NULL = "null";
 
     private Map<String, Object> filterCriteria = new HashMap<>();
 
@@ -32,10 +36,10 @@ public class StringFieldFilter implements DataFilter {
         boolean[] result = {Objects.nonNull(item)};
 
         if (result[0])
-            getFilterCriteria().forEach((propertyName, criteriaValue) -> {
+            getFilterCriteria().forEach((propertyName, criteria) -> {
                 FieldSpec field = writer.getField(propertyName);
-                if (Objects.isNull(criteriaValue) || Objects.isNull(field))
-                    throw new NullPointerException();
+                if (Objects.isNull(criteria) || Objects.isNull(field))
+                    throw new IllegalArgumentException();
 
                 String propertyValue = null;
 
@@ -44,8 +48,8 @@ public class StringFieldFilter implements DataFilter {
                         propertyValue = accessor.getString(item, propertyName);
                 }
 
-                if (Objects.isNull(propertyValue) ||
-                        !compare(propertyValue, criteriaValue))
+                if ((Objects.isNull(propertyValue) && !asCriteriaString(criteria).equals(EMPTY_STRING)) ||
+                        !compare(propertyValue, criteria))
                     result[0] = false;
 
                 log.info("allows({}) returning {} for criteria {}:{}", Objects.nonNull(propertyValue) ? propertyValue : "''", result[0], propertyName, propertyValue);
@@ -54,19 +58,25 @@ public class StringFieldFilter implements DataFilter {
         return result[0];
     }
 
-    private boolean compare(String propertyValue, Object criteriaValue) {
-        String param = criteriaValue.toString();
-        String value = criteriaValue.toString().replace("*", "").toLowerCase();
+    private String asCriteriaString(Object criteria) {
+        return criteria.toString().replace("*", "").toLowerCase().trim();
+    }
 
-        if (param.startsWith("*") && param.endsWith("*"))
-            return propertyValue.toLowerCase(Locale.ROOT).contains(value);
+    private boolean compare(String propertyValue, Object criteria) {
+        final String criteriaString = asCriteriaString(criteria);
 
-        if (param.startsWith("*"))
-            return propertyValue.toLowerCase(Locale.ROOT).endsWith(value);
+        if (criteriaString.equalsIgnoreCase(NULL) && propertyValue == null)
+            return true;
 
-        if (param.endsWith("*"))
-            return propertyValue.toLowerCase(Locale.ROOT).startsWith(value);
+        if (criteria.toString().startsWith("*") && criteria.toString().endsWith("*"))
+            return propertyValue.toLowerCase(Locale.ROOT).contains(criteriaString);
 
-        return propertyValue.equalsIgnoreCase(value);
+        if (criteria.toString().startsWith("*"))
+            return propertyValue.toLowerCase(Locale.ROOT).endsWith(criteriaString);
+
+        if (criteria.toString().endsWith("*"))
+            return propertyValue.toLowerCase(Locale.ROOT).startsWith(criteriaString);
+
+        return propertyValue.equalsIgnoreCase(criteriaString);
     }
 }
