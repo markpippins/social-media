@@ -73,7 +73,7 @@ public class PdfUtil {
     }
 
     public static ByteArrayOutputStream generateByteArrayOutputStream(Collection<Object> items, Export export) {
-        return generateByteArrayOutputStream(items, export.getPdfRowWriter(), export.getPageSize());
+        return generateByteArrayOutputStream(items, export.getPdfRowWriter(), export.getPdfPageSize());
     }
 
     public static ByteArrayOutputStream generateByteArrayOutputStream(Collection<Object> items, PdfTableWriter pdfRowWriter) {
@@ -105,7 +105,7 @@ public class PdfUtil {
     }
 
     public static String writeTabularFile(Collection<Object> items, Export export, String filename) throws IOException {
-        return writeTabularFile(items, export.getPdfRowWriter(), filename, export.getPageSize());
+        return writeTabularFile(items, export.getPdfRowWriter(), filename, export.getPdfPageSize());
     }
 
     public static void writeToTable(Collection<Object> items, PdfTableWriter pdfRowWriter, Table table) {

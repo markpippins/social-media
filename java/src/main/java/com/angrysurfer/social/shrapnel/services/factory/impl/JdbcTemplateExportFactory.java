@@ -43,7 +43,7 @@ public class JdbcTemplateExportFactory implements ExportFactory {
 
         final PageSize pageSize = Objects.nonNull(getExport().getPdfPageSize()) ?
                 ComponentCreator.getPageSize(getExport().getPdfPageSize()) :
-                PageSize.LETTER;
+                PageSize.B10;
 
         TabularExport exporter = new TabularExport(getExportName(), fields) {
             @Override
@@ -52,7 +52,7 @@ public class JdbcTemplateExportFactory implements ExportFactory {
             }
 
             @Override
-            public PageSize getPageSize() {
+            public PageSize getPdfPageSize() {
                 return pageSize;
             }
         };

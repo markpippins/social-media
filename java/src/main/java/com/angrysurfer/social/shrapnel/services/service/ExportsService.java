@@ -68,7 +68,8 @@ public interface ExportsService {
                 break;
 
             case PDF_FILE:
-                filename = PdfUtil.writeTabularFile(factory.getData(), export.getPdfRowWriter(), tempFileName);
+                filename = PdfUtil.writeTabularFile(factory.getData(), export.getPdfRowWriter(), tempFileName,
+                        export.getPdfPageSize());
                 break;
 
             case XLSX_FILE:

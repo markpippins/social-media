@@ -62,7 +62,7 @@ public abstract class TabularExport implements Export {
     }
 
     @Override
-    public PageSize getPageSize() {
+    public PageSize getPdfPageSize() {
         return PageSize.Default;
     }
 

@@ -98,7 +98,7 @@ class SpringConfig implements CommandLineRunner {
         forumExport.getFieldSpecs().add(idSpec1);
         forumExport.getFieldSpecs().add(nameSpec);
         forumExport.setDataSource(forumData);
-        forumExport.setPdfPageSize(pdfPageSizeRepository.findByName("LEDGER"));
+        forumExport.setPdfPageSize(pdfPageSizeRepository.findByName("A0"));
         exportRepository.save(forumExport);
 
         DataSource userData = new DataSource();
@@ -142,7 +142,7 @@ class SpringConfig implements CommandLineRunner {
         userExport.getFieldSpecs().add(aliasSpec);
         userExport.getFieldSpecs().add(emailSpec);
         userExport.setDataSource(userData);
-        userExport.setPdfPageSize(pdfPageSizeRepository.findByName("LEGAL"));
+        userExport.setPdfPageSize(pdfPageSizeRepository.findByName("A0"));
         exportRepository.save(userExport);
     }
 }

@@ -55,7 +55,8 @@ public class FontConfigExport extends TabularExport {
     }
 
     @Override
-    public PageSize getPageSize() {
+    public PageSize getPdfPageSize() {
+
         return PageSize.A2;
     }
 

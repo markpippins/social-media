@@ -23,7 +23,7 @@ public interface Export {
 
     PdfTableWriter getPdfRowWriter();
 
-    PageSize getPageSize();
+    PageSize getPdfPageSize();
 
     void init();
 
