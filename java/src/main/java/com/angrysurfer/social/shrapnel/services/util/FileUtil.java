@@ -22,8 +22,6 @@ import java.util.Properties;
 @Slf4j
 public class FileUtil {
 
-    public static final String DEFAULTS = "java/src/main/resources/pdf.properties";
-
     public static final String FILENAME = "filename";
 
     public static boolean ensureSafety(String filename) throws IOException {

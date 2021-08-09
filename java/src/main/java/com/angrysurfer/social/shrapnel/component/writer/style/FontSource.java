@@ -1,5 +1,6 @@
 package com.angrysurfer.social.shrapnel.component.writer.style;
 
+import com.angrysurfer.social.shrapnel.component.Config;
 import com.itextpdf.io.font.FontProgram;
 import com.itextpdf.io.font.FontProgramFactory;
 import com.itextpdf.io.font.PdfEncodings;
@@ -15,12 +16,12 @@ import java.util.stream.Stream;
 @Slf4j
 public class FontSource {
 
-    public final static String FONTS_FOLDER = "java/src/main/resources/fonts/";
+    public final static String FONTS_FOLDER = "fonts.folder";
     static boolean destroyOnError = false;
 
     public static boolean fontFileExists(String fontName) throws IOException {
 
-        File file = new File(FONTS_FOLDER);
+        File file = new File(Config.getInstance().getProperty(FONTS_FOLDER).toString());
         if ((Stream.of(file.listFiles()).filter(f -> f.getName().endsWith(".ttf")).collect(Collectors.toList()).size() > 0) ||
                 (Stream.of(file.listFiles()).filter(f -> f.getName().endsWith(".TTF")).collect(Collectors.toList()).size() > 0))
             return true;
@@ -30,7 +31,7 @@ public class FontSource {
 
     public static PdfFont getPdfFont(String fontName) throws IOException {
 
-        File file = new File(FONTS_FOLDER);
+        File file = new File(Config.getInstance().getProperty(FONTS_FOLDER).toString());
         if (Stream.of(file.listFiles()).filter(f -> f.getName().endsWith(".ttf")).collect(Collectors.toList()).size() > 0)
             return getPdfFont2(fontName + ".ttf");
 
@@ -41,7 +42,7 @@ public class FontSource {
     }
 
     public static PdfFont getPdfFont2(String fontName) throws IOException {
-        String fontFileName = FONTS_FOLDER + fontName;
+        String fontFileName = Config.getInstance().getProperty(FONTS_FOLDER) + fontName;
         FontProgram fontProgram = FontProgramFactory.createFont(fontFileName);
         try {
             return PdfFontFactory.createFont(fontProgram, PdfEncodings.WINANSI, true);

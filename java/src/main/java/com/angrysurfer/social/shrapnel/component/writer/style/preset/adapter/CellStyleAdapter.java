@@ -36,9 +36,10 @@ public class CellStyleAdapter extends StyleAdapter {
         setPadding(config.containsKey(PADDING) ? Integer.parseInt(config.getProperty(PADDING).toString()) : DEFAULT_PADDING);
 
         try {
-            setFont(PdfFontFactory.createFont(FontProgramFactory.createFont(FONTS_FOLDER +
-                            (config.containsKey(FONT_NAME) ? config.getProperty(FONT_NAME) : DEFAULT_FONT)),
-                    PdfEncodings.WINANSI, true));
+            setFont(PdfFontFactory.createFont(
+                    FontProgramFactory.createFont(Config.getInstance().getProperty(FONTS_FOLDER).toString() +
+                            (config.containsKey(FONT_NAME) ?
+                                    config.getProperty(FONT_NAME) : DEFAULT_FONT)), PdfEncodings.WINANSI, true));
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             try {

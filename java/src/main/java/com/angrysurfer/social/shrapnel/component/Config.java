@@ -14,26 +14,24 @@ import java.util.Objects;
 @Setter
 public class Config {
 
+    public static final String DEFAULTS = "java/src/main/resources/shrapnel.properties";
+
     private static Config instance;
 
     private Map<Object, Object> configurationMap = new HashedMap<>();
 
     private Config() {
         super();
-        init();
     }
 
-    public static Config getInstance() {
-        if (Objects.isNull(instance))
+    public static synchronized Config getInstance() {
+        if (Objects.isNull(instance)) {
             instance = new Config();
-
+            FileUtil.getFileProperties(DEFAULTS).entrySet().forEach(entry -> {
+                instance.setProperty(entry.getKey(), entry.getValue());
+            });
+        }
         return instance;
-    }
-
-    private void init() {
-        FileUtil.getFileProperties(FileUtil.DEFAULTS).entrySet().forEach(entry -> {
-            Config.getInstance().setProperty(entry.getKey(), entry.getValue());
-        });
     }
 
     public boolean containsKey(String key) {

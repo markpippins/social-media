@@ -1,5 +1,6 @@
 package com.angrysurfer.social.shrapnel.services.domain;
 
+import com.angrysurfer.social.shrapnel.component.Config;
 import com.angrysurfer.social.shrapnel.component.FieldSpec;
 import com.angrysurfer.social.shrapnel.component.FieldTypeEnum;
 import com.angrysurfer.social.shrapnel.component.property.PropertyAccessor;
@@ -27,7 +28,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.angrysurfer.social.shrapnel.component.writer.RowWriter.EMPTY_STRING;
-import static com.angrysurfer.social.shrapnel.component.writer.style.FontSource.FONTS_FOLDER;
 
 @Getter
 @Setter
@@ -140,8 +140,8 @@ public class FontListExport extends TabularExport {
         @Override
         public Collection<Object> getData() {
             File file = new File(".");
-            return Arrays.stream(new File(file.getAbsolutePath().substring(0, file.getAbsolutePath().length() - 1) + FONTS_FOLDER)
-                            .listFiles())
+            return Arrays.stream(new File(file.getAbsolutePath().substring(0, file.getAbsolutePath().length() - 1)
+                            + Config.getInstance().getProperty(FontSource.FONTS_FOLDER)).listFiles())
                     .filter(f -> f.getPath().toLowerCase(Locale.ROOT).endsWith(".ttf"))
                     .sorted(new Comparator<File>() {
                         @Override
