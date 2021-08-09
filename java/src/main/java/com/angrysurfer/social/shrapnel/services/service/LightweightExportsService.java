@@ -1,8 +1,8 @@
 package com.angrysurfer.social.shrapnel.services.service;
 
 import com.angrysurfer.social.shrapnel.component.FieldSpec;
-import com.angrysurfer.social.shrapnel.component.writer.ExcelRowWriter;
-import com.angrysurfer.social.shrapnel.component.writer.PdfRowWriter;
+import com.angrysurfer.social.shrapnel.component.writer.impl.ExcelRowWriter;
+import com.angrysurfer.social.shrapnel.component.writer.impl.PdfRowWriter;
 
 import java.util.Collection;
 import java.util.List;

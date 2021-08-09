@@ -1,4 +1,4 @@
-package com.angrysurfer.social.shrapnel.component.writer.style;
+package com.angrysurfer.social.shrapnel.component.writer.style.adapter;
 
 import com.itextpdf.layout.Style;
 import lombok.extern.slf4j.Slf4j;

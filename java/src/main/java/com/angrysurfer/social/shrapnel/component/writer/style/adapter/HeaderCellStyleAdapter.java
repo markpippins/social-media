@@ -1,6 +1,6 @@
-package com.angrysurfer.social.shrapnel.component.writer.style.preset.adapter;
+package com.angrysurfer.social.shrapnel.component.writer.style.adapter;
 
-import com.angrysurfer.social.shrapnel.component.Config;
+import com.angrysurfer.social.shrapnel.Config;
 import com.itextpdf.kernel.color.Color;
 import com.itextpdf.kernel.color.WebColors;
 

@@ -1,7 +1,6 @@
-package com.angrysurfer.social.shrapnel.component.writer.style.preset.adapter;
+package com.angrysurfer.social.shrapnel.component.writer.style.adapter;
 
-import com.angrysurfer.social.shrapnel.component.Config;
-import com.angrysurfer.social.shrapnel.component.writer.style.StyleAdapter;
+import com.angrysurfer.social.shrapnel.Config;
 import com.itextpdf.io.font.FontConstants;
 import com.itextpdf.io.font.FontProgramFactory;
 import com.itextpdf.io.font.PdfEncodings;
@@ -10,7 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
-import static com.angrysurfer.social.shrapnel.component.writer.style.FontSource.FONTS_FOLDER;
+import static com.angrysurfer.social.shrapnel.Config.FONTS_FOLDER;
 
 @Setter
 @Getter

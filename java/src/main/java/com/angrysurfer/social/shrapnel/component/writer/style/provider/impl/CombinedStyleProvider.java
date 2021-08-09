@@ -1,9 +1,8 @@
-package com.angrysurfer.social.shrapnel.component.writer.style;
+package com.angrysurfer.social.shrapnel.component.writer.style.provider.impl;
 
 import com.angrysurfer.social.shrapnel.component.FieldSpec;
-import com.angrysurfer.social.shrapnel.component.writer.style.ExcelStyleProvider;
-import com.angrysurfer.social.shrapnel.component.writer.style.PdfStyleProvider;
-import com.angrysurfer.social.shrapnel.component.writer.style.StyleAdapter;
+import com.angrysurfer.social.shrapnel.component.writer.style.adapter.StyleAdapter;
+import com.angrysurfer.social.shrapnel.component.writer.style.provider.ExcelStyleProvider;
 import com.itextpdf.layout.Style;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.FillPatternType;

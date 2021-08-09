@@ -1,10 +1,10 @@
-package com.angrysurfer.social.shrapnel.component.writer.style;
+package com.angrysurfer.social.shrapnel.component.writer.style.provider.impl;
 
 import com.angrysurfer.social.shrapnel.component.FieldSpec;
-import com.angrysurfer.social.shrapnel.component.writer.style.StyleProvider;
-import com.angrysurfer.social.shrapnel.component.writer.style.StyleAdapter;
-import com.angrysurfer.social.shrapnel.component.writer.style.preset.adapter.CellStyleAdapter;
-import com.angrysurfer.social.shrapnel.component.writer.style.preset.adapter.HeaderCellStyleAdapter;
+import com.angrysurfer.social.shrapnel.component.writer.style.adapter.CellStyleAdapter;
+import com.angrysurfer.social.shrapnel.component.writer.style.adapter.HeaderCellStyleAdapter;
+import com.angrysurfer.social.shrapnel.component.writer.style.adapter.StyleAdapter;
+import com.angrysurfer.social.shrapnel.component.writer.style.provider.StyleProvider;
 import lombok.Getter;
 import lombok.Setter;
 

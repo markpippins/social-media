@@ -1,7 +1,7 @@
-package com.angrysurfer.social.shrapnel.services.util;
+package com.angrysurfer.social.shrapnel.util;
 
 import com.angrysurfer.social.dto.UserDTO;
-import com.angrysurfer.social.shrapnel.services.Export;
+import com.angrysurfer.social.shrapnel.component.Export;
 import com.angrysurfer.social.shrapnel.services.factory.ExportFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ByteArrayResource;
@@ -92,7 +92,7 @@ public class FileUtil {
         return outputFileName;
     }
 
-    public static String getTabLabel(Export export) {
+    public static String getLabel(Export export) {
         return String.format("%s - %s - %s - %s", export.getName(), LocalDate.now().getDayOfMonth(), LocalDate.now().getMonthValue(), LocalDate.now().getYear());
     }
 

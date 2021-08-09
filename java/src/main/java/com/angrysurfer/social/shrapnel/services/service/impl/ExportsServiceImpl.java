@@ -31,7 +31,7 @@ public class ExportsServiceImpl implements ExportsService {
     }
 
     public ExportFactory getFactory(ExportRequest request) {
-        return getExporterFactories().stream().filter(fac -> fac.getExportName().equalsIgnoreCase(request.getExport())).findFirst()
+        return getExporterFactories().stream().filter(fac -> fac.getExportName().equalsIgnoreCase(request.getName())).findFirst()
                 .orElseGet(() -> factoryRegistered(request) ? getMetaFactory(request).newInstance(request) : null);
     }
 }

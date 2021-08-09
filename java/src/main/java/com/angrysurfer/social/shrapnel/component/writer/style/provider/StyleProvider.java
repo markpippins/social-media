@@ -1,7 +1,7 @@
-package com.angrysurfer.social.shrapnel.component.writer.style;
+package com.angrysurfer.social.shrapnel.component.writer.style.provider;
 
 import com.angrysurfer.social.shrapnel.component.FieldSpec;
-import com.angrysurfer.social.shrapnel.component.writer.style.StyleAdapter;
+import com.angrysurfer.social.shrapnel.component.writer.style.adapter.StyleAdapter;
 
 public interface StyleProvider {
 

@@ -1,4 +1,4 @@
-package com.angrysurfer.social.shrapnel.services.util;
+package com.angrysurfer.social.shrapnel.util;
 
 import java.time.Instant;
 import java.time.LocalDateTime;

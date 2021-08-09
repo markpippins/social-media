@@ -1,4 +1,4 @@
-package com.angrysurfer.social.shrapnel.component.writer.style;
+package com.angrysurfer.social.shrapnel.component.writer.style.provider;
 
 import com.angrysurfer.social.shrapnel.component.FieldSpec;
 import org.apache.poi.ss.usermodel.Sheet;

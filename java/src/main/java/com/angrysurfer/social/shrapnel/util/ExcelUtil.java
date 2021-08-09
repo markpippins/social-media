@@ -1,7 +1,7 @@
-package com.angrysurfer.social.shrapnel.services.util;
+package com.angrysurfer.social.shrapnel.util;
 
-import com.angrysurfer.social.shrapnel.services.Export;
-import com.angrysurfer.social.shrapnel.component.writer.ExcelRowWriter;
+import com.angrysurfer.social.shrapnel.component.Export;
+import com.angrysurfer.social.shrapnel.component.writer.impl.ExcelRowWriter;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -17,10 +17,15 @@ public class ExcelUtil {
 
     static final String XLSX = "xlsx";
 
-    public static void addSpreadSheet(Workbook workbook, String sheetName, Collection<Object> items, ExcelRowWriter writer) {
-        Sheet sheet = workbook.createSheet(sheetName);
+    static Sheet createSheet(Workbook workbook, ExcelRowWriter writer, String label) {
+        Sheet sheet = workbook.createSheet(label);
         for (int i = 0; i < writer.getFields().size(); i++)
             sheet.setColumnWidth(i, 6000);
+        return sheet;
+    }
+
+    public static void addSpreadSheet(Workbook workbook, String label, Collection<Object> items, ExcelRowWriter writer) {
+        Sheet sheet = createSheet(workbook, writer, label);
 
         Map<String, Object> config = new HashMap<>();
         config.put(ExcelRowWriter.WORKBOOK, workbook);
@@ -29,9 +34,13 @@ public class ExcelUtil {
         writer.writeData(config, items);
     }
 
-    public static ByteArrayOutputStream generateByteArrayOutputStream(Collection<Object> data, Export export, String tabLabel) throws IOException {
+    public static void addSpreadSheet(Workbook workbook, Export export, Collection<Object> items) {
+        addSpreadSheet(workbook, FileUtil.getLabel(export), items, export.getExcelRowWriter());
+    }
+
+    public static ByteArrayOutputStream generateByteArrayOutputStream(Collection<Object> data, Export export) throws IOException {
         Workbook workbook = new XSSFWorkbook();
-        addSpreadSheet(workbook, tabLabel, data, export.getExcelRowWriter());
+        addSpreadSheet(workbook, export, data);
         return generateByteArrayOutputStream(workbook);
     }
 
@@ -51,12 +60,12 @@ public class ExcelUtil {
             workbook.close();
             return outputFileName;
         }
-
     }
 
     public static String writeWorkbookToFile(Collection<Object> data, Export export, String filename) throws IOException {
         Workbook workbook = new XSSFWorkbook();
-        addSpreadSheet(workbook, FileUtil.getTabLabel(export), data, export.getExcelRowWriter());
+        addSpreadSheet(workbook, export, data);
         return writeWorkbookToFile(workbook, filename);
     }
+
 }

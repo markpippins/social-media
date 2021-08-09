@@ -1,7 +1,6 @@
 package com.angrysurfer.social.shrapnel.services.model;
 
 import com.angrysurfer.social.shrapnel.component.FieldSpec;
-import com.angrysurfer.social.shrapnel.component.FieldTypeEnum;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -38,7 +37,7 @@ public class FieldSpecModel {
         FieldSpec result = new FieldSpec();
         result.setPropertyName(getPropertyName());
         result.setLabel(getLabel());
-        result.setType(FieldTypeEnum.from(fieldType.getName()));
+        result.setType(FieldSpec.FieldTypeEnum.from(fieldType.getName()));
         result.setIndex(getIndex());
         return result;
     }

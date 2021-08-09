@@ -1,6 +1,6 @@
 package com.angrysurfer.social.shrapnel;
 
-import com.angrysurfer.social.shrapnel.component.FieldTypeEnum;
+import com.angrysurfer.social.shrapnel.component.FieldSpec;
 import com.angrysurfer.social.shrapnel.services.model.DataSourceModel;
 import com.angrysurfer.social.shrapnel.services.model.ExportModel;
 import com.angrysurfer.social.shrapnel.services.model.FieldSpecModel;
@@ -35,13 +35,13 @@ class SpringConfig implements CommandLineRunner {
     public void run(String... args) throws Exception {
 
         FieldTypeModel f1 = new FieldTypeModel();
-        f1.setName(FieldTypeEnum.STRING.name());
-        f1.setCode(FieldTypeEnum.STRING.getCode());
+        f1.setName(FieldSpec.FieldTypeEnum.STRING.name());
+        f1.setCode(FieldSpec.FieldTypeEnum.STRING.getCode());
         fieldTypeModelRepository.save(f1);
 
         FieldTypeModel f2 = new FieldTypeModel();
-        f2.setName(FieldTypeEnum.BOOLEAN.name());
-        f2.setCode(FieldTypeEnum.BOOLEAN.getCode());
+        f2.setName(FieldSpec.FieldTypeEnum.BOOLEAN.name());
+        f2.setCode(FieldSpec.FieldTypeEnum.BOOLEAN.getCode());
         fieldTypeModelRepository.save(f2);
 
         DataSourceModel forumData = new DataSourceModel();

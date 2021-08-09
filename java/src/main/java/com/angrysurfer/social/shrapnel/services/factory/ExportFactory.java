@@ -1,15 +1,18 @@
 package com.angrysurfer.social.shrapnel.services.factory;
 
-import com.angrysurfer.social.shrapnel.services.Export;
-import com.angrysurfer.social.shrapnel.services.TabularExport;
+import com.angrysurfer.social.shrapnel.component.Export;
+import com.angrysurfer.social.shrapnel.component.TabularExport;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
+import java.util.Collections;
 
 public interface ExportFactory {
 
-    Collection<Object> getData();
+    default Collection<Object> getData() {
+        return Collections.EMPTY_LIST;
+    }
 
     String getExportName();
 

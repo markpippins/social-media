@@ -3,11 +3,11 @@ package com.angrysurfer.social.shrapnel.services.factory.impl;
 import com.angrysurfer.social.shrapnel.services.ExportRequest;
 import com.angrysurfer.social.shrapnel.services.factory.ExportFactory;
 import com.angrysurfer.social.shrapnel.services.factory.MetaExportFactory;
-import com.angrysurfer.social.shrapnel.services.repository.mapping.HashMapResultSetExtractor;
 import com.angrysurfer.social.shrapnel.services.model.DataSourceModel;
 import com.angrysurfer.social.shrapnel.services.model.ExportModel;
 import com.angrysurfer.social.shrapnel.services.repository.DataSourceModelRepository;
 import com.angrysurfer.social.shrapnel.services.repository.ExportModelRepository;
+import com.angrysurfer.social.shrapnel.services.repository.mapping.HashMapResultSetExtractor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
@@ -22,7 +22,7 @@ import java.util.Objects;
 
 @Slf4j
 @Component
-public class JdbcMetaExportFactoryImpl implements MetaExportFactory {
+public class JdbcMetaExportFactory implements MetaExportFactory {
 
     public final static String SQL_FOLDER = "java/src/main/resources/sql/";
 
@@ -37,14 +37,14 @@ public class JdbcMetaExportFactoryImpl implements MetaExportFactory {
 
     @Override
     public boolean hasFactory(ExportRequest request) {
-        ExportModel export = exportModelRepository.findByName(request.getExport());
+        ExportModel export = exportModelRepository.findByName(request.getName());
         return Objects.nonNull(export) && export.isConfigured();
     }
 
     @Override
     public ExportFactory newInstance(ExportRequest request) {
-        final ExportModel export = exportModelRepository.findByName(request.getExport());
-        final DataSourceModel dataSource = dataSourceModelRepository.findByName(request.getExport());
+        final ExportModel export = exportModelRepository.findByName(request.getName());
+        final DataSourceModel dataSource = dataSourceModelRepository.findByName(request.getName());
 
         return new JdbcTemplateExportFactory(request, export) {
             @Override

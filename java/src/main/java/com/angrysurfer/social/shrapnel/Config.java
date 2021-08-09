@@ -1,6 +1,6 @@
-package com.angrysurfer.social.shrapnel.component;
+package com.angrysurfer.social.shrapnel;
 
-import com.angrysurfer.social.shrapnel.services.util.FileUtil;
+import com.angrysurfer.social.shrapnel.util.FileUtil;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +16,10 @@ public class Config {
 
     public static final String DEFAULTS = "java/src/main/resources/shrapnel.properties";
 
+    public static final String DESTROY_ON_ERROR = "destroyOnError";
+
+    public final static String FONTS_FOLDER = "fonts.folder";
+
     private static Config instance;
 
     private Map<Object, Object> configurationMap = new HashedMap<>();
@@ -27,10 +31,9 @@ public class Config {
     public static synchronized Config getInstance() {
         if (Objects.isNull(instance)) {
             instance = new Config();
-            FileUtil.getFileProperties(DEFAULTS).entrySet().forEach(entry -> {
-                instance.setProperty(entry.getKey(), entry.getValue());
-            });
+            instance.reload();
         }
+
         return instance;
     }
 
@@ -44,6 +47,12 @@ public class Config {
 
     public Object getProperty(Object key) {
         return getConfigurationMap().get(key);
+    }
+
+    public void reload() {
+        FileUtil.getFileProperties(DEFAULTS).entrySet().forEach(entry -> {
+            getInstance().setProperty(entry.getKey(), entry.getValue());
+        });
     }
 
     public void setProperty(Object key, Object value) {

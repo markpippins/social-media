@@ -1,6 +1,4 @@
-package com.angrysurfer.social.shrapnel.component.writer;
-
-import com.angrysurfer.social.shrapnel.component.FieldSpec;
+package com.angrysurfer.social.shrapnel.component;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;

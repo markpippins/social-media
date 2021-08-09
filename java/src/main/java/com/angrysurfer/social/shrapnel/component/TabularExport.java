@@ -1,14 +1,11 @@
-package com.angrysurfer.social.shrapnel.services;
+package com.angrysurfer.social.shrapnel.component;
 
-import com.angrysurfer.social.shrapnel.component.FieldSpec;
 import com.angrysurfer.social.shrapnel.component.property.PropertyAccessor;
-import com.angrysurfer.social.shrapnel.component.writer.ExcelRowWriter;
-import com.angrysurfer.social.shrapnel.component.writer.PdfRowWriter;
-import com.angrysurfer.social.shrapnel.component.writer.ValueCalculator;
-import com.angrysurfer.social.shrapnel.component.writer.ValueRenderer;
 import com.angrysurfer.social.shrapnel.component.writer.filter.DataFilter;
-import com.angrysurfer.social.shrapnel.component.writer.filter.preset.StringFieldFilter;
-import com.angrysurfer.social.shrapnel.component.writer.style.CombinedStyleProvider;
+import com.angrysurfer.social.shrapnel.component.writer.filter.impl.StringFieldFilter;
+import com.angrysurfer.social.shrapnel.component.writer.impl.ExcelRowWriter;
+import com.angrysurfer.social.shrapnel.component.writer.impl.PdfRowWriter;
+import com.angrysurfer.social.shrapnel.component.writer.style.provider.impl.CombinedStyleProvider;
 import com.itextpdf.kernel.geom.PageSize;
 import lombok.Getter;
 import lombok.Setter;

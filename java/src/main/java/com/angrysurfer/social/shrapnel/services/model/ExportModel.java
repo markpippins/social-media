@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.io.File;
 import java.util.*;
 
-import static com.angrysurfer.social.shrapnel.services.factory.impl.JdbcMetaExportFactoryImpl.SQL_FOLDER;
+import static com.angrysurfer.social.shrapnel.services.factory.impl.JdbcMetaExportFactory.SQL_FOLDER;
 
 @Getter
 @Setter

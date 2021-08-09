@@ -1,9 +1,12 @@
-package com.angrysurfer.social.shrapnel.component.writer;
+package com.angrysurfer.social.shrapnel.component.writer.impl;
 
 import com.angrysurfer.social.shrapnel.component.FieldSpec;
+import com.angrysurfer.social.shrapnel.component.ValueRenderer;
+import com.angrysurfer.social.shrapnel.component.writer.DataWriter;
+import com.angrysurfer.social.shrapnel.component.writer.RowWriter;
 import com.angrysurfer.social.shrapnel.component.writer.filter.DataFilterList;
-import com.angrysurfer.social.shrapnel.component.writer.style.CombinedStyleProvider;
-import com.angrysurfer.social.shrapnel.component.writer.style.ExcelStyleProvider;
+import com.angrysurfer.social.shrapnel.component.writer.style.provider.ExcelStyleProvider;
+import com.angrysurfer.social.shrapnel.component.writer.style.provider.impl.CombinedStyleProvider;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;

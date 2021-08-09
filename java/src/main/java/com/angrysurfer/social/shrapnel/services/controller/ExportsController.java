@@ -1,6 +1,6 @@
 package com.angrysurfer.social.shrapnel.services.controller;
 
-import com.angrysurfer.social.dto.UserDTO;
+import com.angrysurfer.social.shrapnel.Config;
 import com.angrysurfer.social.shrapnel.services.ExportRequest;
 import com.angrysurfer.social.shrapnel.services.service.ExportsService;
 import lombok.extern.slf4j.Slf4j;
@@ -22,13 +22,6 @@ import java.util.Objects;
 @Slf4j
 public class ExportsController {
 
-    private static UserDTO user = new UserDTO() {
-        @Override
-        public String getAlias() {
-            return "system-export";
-        }
-    };
-
     @Resource
     ExportsService exportsService;
 
@@ -39,8 +32,7 @@ public class ExportsController {
 
         if (exportsService.isValid(request))
             try {
-                request.setUser(user);
-                headers.add(HttpHeaders.CONTENT_DISPOSITION, String.format("attachment;filename=%s.%s", request.getExport(), request.getFileType()));
+                headers.add(HttpHeaders.CONTENT_DISPOSITION, String.format("attachment;filename=%s.%s", request.getName(), request.getFileType()));
                 bytes = exportsService.exportByteArrayResource(request);
             } catch (Exception e) {
                 log.error(e.getMessage(), e);
@@ -58,8 +50,7 @@ public class ExportsController {
 
         if (exportsService.isValid(request))
             try {
-                request.setUser(user);
-                headers.add(HttpHeaders.CONTENT_DISPOSITION, String.format("attachment;filename=%s.%s", request.getExport(), request.getFileType()));
+                headers.add(HttpHeaders.CONTENT_DISPOSITION, String.format("attachment;filename=%s.%s", request.getName(), request.getFileType()));
                 stream = exportsService.exportByteArrayOutputStream(request);
             } catch (Exception e) {
                 log.error(e.getMessage(), e);
@@ -69,5 +60,11 @@ public class ExportsController {
         return Objects.nonNull(stream) ?
                 ResponseEntity.ok().headers(headers).contentLength(stream.size()).contentType(MediaType.APPLICATION_OCTET_STREAM).body(stream.toByteArray()) :
                 ResponseEntity.notFound().build();
+    }
+
+    @PostMapping(value = "/reloadConfigFromFile")
+    public ResponseEntity reloadConfigFromFile() {
+        Config.getInstance().reload();
+        return ResponseEntity.ok().build();
     }
 }

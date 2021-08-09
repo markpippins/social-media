@@ -1,7 +1,8 @@
 package com.angrysurfer.social.shrapnel.component.writer;
 
 import com.angrysurfer.social.shrapnel.component.FieldSpec;
-import com.angrysurfer.social.shrapnel.component.FieldTypeEnum;
+import com.angrysurfer.social.shrapnel.component.ValueCalculator;
+import com.angrysurfer.social.shrapnel.component.ValueRenderer;
 import com.angrysurfer.social.shrapnel.component.property.PropertyAccessor;
 import com.angrysurfer.social.shrapnel.component.property.PropertyUtilsPropertyAccessor;
 import com.angrysurfer.social.shrapnel.component.property.ProxyPropertyAccessor;
@@ -21,12 +22,13 @@ public abstract class RowWriter implements DataWriter, ProxyPropertyAccessor {
     public static final boolean DEBUG = false;
 
     public static final String EMPTY_STRING = "";
+    public static final String EMPTY_QUOTES = "''";
 
-    public static final FieldSpec DATA_NULL_VALUE = new FieldSpec.DebugFieldSpec("dataNullValue", "<< NULL >>", FieldTypeEnum.STRING);
-    public static final FieldSpec DATA_PADDING_LEFT = new FieldSpec.DebugFieldSpec("dataPaddingLeft", "<< DATA <<", FieldTypeEnum.STRING);
-    public static final FieldSpec DATA_PADDING_RIGHT = new FieldSpec.DebugFieldSpec("dataPaddingRight", ">> DATA >>", FieldTypeEnum.STRING);
-    public static final FieldSpec HEADER_PADDING_LEFT = new FieldSpec.DebugFieldSpec("hdrPaddingLeft", "<< HDR <<", FieldTypeEnum.STRING);
-    public static final FieldSpec HEADER_PADDING_RIGHT = new FieldSpec.DebugFieldSpec("hdrPaddingRight", ">> HDR >>", FieldTypeEnum.STRING);
+    public static final FieldSpec DATA_NULL_VALUE = new FieldSpec.DebugFieldSpec("dataNullValue", "<< NULL >>", FieldSpec.FieldTypeEnum.STRING);
+    public static final FieldSpec DATA_PADDING_LEFT = new FieldSpec.DebugFieldSpec("dataPaddingLeft", "<< DATA <<", FieldSpec.FieldTypeEnum.STRING);
+    public static final FieldSpec DATA_PADDING_RIGHT = new FieldSpec.DebugFieldSpec("dataPaddingRight", ">> DATA >>", FieldSpec.FieldTypeEnum.STRING);
+    public static final FieldSpec HEADER_PADDING_LEFT = new FieldSpec.DebugFieldSpec("hdrPaddingLeft", "<< HDR <<", FieldSpec.FieldTypeEnum.STRING);
+    public static final FieldSpec HEADER_PADDING_RIGHT = new FieldSpec.DebugFieldSpec("hdrPaddingRight", ">> HDR >>", FieldSpec.FieldTypeEnum.STRING);
 
     public static List<FieldSpec> PADDING_COLUMNS = Arrays.asList(DATA_NULL_VALUE, DATA_PADDING_LEFT, DATA_PADDING_RIGHT,
             HEADER_PADDING_LEFT, HEADER_PADDING_RIGHT);
@@ -85,37 +87,37 @@ public abstract class RowWriter implements DataWriter, ProxyPropertyAccessor {
                 switch (field.getType()) {
                     case BOOLEAN:
                         Boolean bool = getBoolean(item, field.getPropertyName());
-                        return shouldOnlyFormat(field) ?
+                        return shouldOnlyRender(field) ?
                                 getValueRenderer().render(field, bool) :
                                 extendedGetValue(item, field, bool);
 
                     case CALENDAR:
                         Calendar calendar = getCalendar(item, field.getPropertyName());
-                        return shouldOnlyFormat(field) ?
+                        return shouldOnlyRender(field) ?
                                 getValueRenderer().render(field, calendar) :
                                 extendedGetValue(item, field, calendar);
 
                     case DATE:
                         Date date = getDate(item, field.getPropertyName());
-                        return shouldOnlyFormat(field) ?
+                        return shouldOnlyRender(field) ?
                                 getValueRenderer().render(field, date) :
                                 extendedGetValue(item, field, date);
 
                     case DOUBLE:
                         Double dbl = getDouble(item, field.getPropertyName());
-                        return shouldOnlyFormat(field) ?
+                        return shouldOnlyRender(field) ?
                                 getValueRenderer().render(field, dbl) :
                                 extendedGetValue(item, field, dbl);
 
                     case LOCALDATE:
                         LocalDate localDate = getLocalDate(item, field.getPropertyName());
-                        return shouldOnlyFormat(field) ?
+                        return shouldOnlyRender(field) ?
                                 getValueRenderer().render(field, localDate) :
                                 extendedGetValue(item, field, localDate);
 
                     case LOCALDATETIME:
                         LocalDateTime localDateTime = getLocalDateTime(item, field.getPropertyName());
-                        return shouldOnlyFormat(field) ?
+                        return shouldOnlyRender(field) ?
                                 getValueRenderer().render(field, localDateTime) :
                                 extendedGetValue(item, field, localDateTime);
 
@@ -124,7 +126,7 @@ public abstract class RowWriter implements DataWriter, ProxyPropertyAccessor {
 
                     case STRING:
                         String string = getString(item, field.getPropertyName());
-                        return shouldOnlyFormat(field) ?
+                        return shouldOnlyRender(field) ?
                                 getValueRenderer().render(field, string) :
                                 extendedGetValue(item, field, string);
                 }
@@ -136,29 +138,26 @@ public abstract class RowWriter implements DataWriter, ProxyPropertyAccessor {
     }
 
     private String extendedGetValue(Object item, FieldSpec field, Object value) {
-        ValueCalculator calc = getValueCalculator();
-
         return shouldOnlyCalculate(field) ?
-                nonNullString(calc.calculateValue(field, item)) :
+                safeString(getValueCalculator().calculateValue(field, item)) :
                 shouldCalculateAndRender(field) ? getValueRenderer()
-                        .renderCalculatedValue(field, nonNullString(getValueCalculator().calculateValue(field, item))) :
+                        .renderCalculatedValue(field, safeString(getValueCalculator().calculateValue(field, item))) :
                         Objects.nonNull(value) ? value.toString() : EMPTY_STRING;
+    }
+
+    protected String safeString(Object value) {
+        return Objects.nonNull(value) ? value.toString() : EMPTY_STRING;
     }
 
     protected boolean shouldCalculateAndRender(FieldSpec field) {
         return getValueRenderer().canRender(field) && field.isCalculated();
     }
 
-
-    protected String nonNullString(Object value) {
-        return Objects.nonNull(value) ? value.toString() : EMPTY_STRING;
-    }
-
     protected boolean shouldOnlyCalculate(FieldSpec field) {
         return field.isCalculated() && !getValueRenderer().canRender(field);
     }
 
-    protected boolean shouldOnlyFormat(FieldSpec field) {
+    protected boolean shouldOnlyRender(FieldSpec field) {
         return !field.isCalculated() && getValueRenderer().canRender(field);
     }
 

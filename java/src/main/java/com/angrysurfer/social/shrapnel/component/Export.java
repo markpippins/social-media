@@ -1,10 +1,9 @@
-package com.angrysurfer.social.shrapnel.services;
+package com.angrysurfer.social.shrapnel.component;
 
-import com.angrysurfer.social.shrapnel.component.FieldSpec;
 import com.angrysurfer.social.shrapnel.component.property.PropertyAccessor;
-import com.angrysurfer.social.shrapnel.component.writer.ExcelRowWriter;
-import com.angrysurfer.social.shrapnel.component.writer.PdfRowWriter;
 import com.angrysurfer.social.shrapnel.component.writer.filter.DataFilter;
+import com.angrysurfer.social.shrapnel.component.writer.impl.ExcelRowWriter;
+import com.angrysurfer.social.shrapnel.component.writer.impl.PdfRowWriter;
 import com.itextpdf.kernel.geom.PageSize;
 
 import java.util.List;

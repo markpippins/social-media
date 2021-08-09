@@ -1,7 +1,7 @@
-package com.angrysurfer.social.shrapnel.services.util;
+package com.angrysurfer.social.shrapnel.util;
 
-import com.angrysurfer.social.shrapnel.services.Export;
-import com.angrysurfer.social.shrapnel.component.writer.PdfRowWriter;
+import com.angrysurfer.social.shrapnel.component.Export;
+import com.angrysurfer.social.shrapnel.component.writer.impl.PdfRowWriter;
 import com.itextpdf.io.font.FontProgram;
 import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.kernel.geom.PageSize;

@@ -1,9 +1,11 @@
-package com.angrysurfer.social.shrapnel.component.writer;
+package com.angrysurfer.social.shrapnel.component.writer.impl;
 
 import com.angrysurfer.social.shrapnel.component.FieldSpec;
+import com.angrysurfer.social.shrapnel.component.ValueRenderer;
+import com.angrysurfer.social.shrapnel.component.writer.RowWriter;
 import com.angrysurfer.social.shrapnel.component.writer.filter.DataFilterList;
-import com.angrysurfer.social.shrapnel.component.writer.style.CombinedStyleProvider;
-import com.angrysurfer.social.shrapnel.component.writer.style.PdfStyleProvider;
+import com.angrysurfer.social.shrapnel.component.writer.style.provider.impl.CombinedStyleProvider;
+import com.angrysurfer.social.shrapnel.component.writer.style.provider.impl.PdfStyleProvider;
 import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.property.UnitValue;

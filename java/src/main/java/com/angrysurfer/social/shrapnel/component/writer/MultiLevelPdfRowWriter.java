@@ -1,6 +1,8 @@
 package com.angrysurfer.social.shrapnel.component.writer;
 
 import com.angrysurfer.social.shrapnel.component.FieldSpec;
+import com.angrysurfer.social.shrapnel.component.ValueRenderer;
+import com.angrysurfer.social.shrapnel.component.writer.impl.PdfRowWriter;
 import com.itextpdf.layout.element.Cell;
 import lombok.Getter;
 import lombok.Setter;

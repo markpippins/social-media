@@ -1,8 +1,7 @@
-package com.angrysurfer.social.shrapnel.component.writer.style.preset.provider;
+package com.angrysurfer.social.shrapnel.component.writer.style.provider.impl;
 
 import com.angrysurfer.social.shrapnel.component.FieldSpec;
-import com.angrysurfer.social.shrapnel.component.writer.style.CombinedStyleProvider;
-import com.angrysurfer.social.shrapnel.component.writer.style.StyleAdapter;
+import com.angrysurfer.social.shrapnel.component.writer.style.adapter.StyleAdapter;
 import com.itextpdf.kernel.color.Color;
 import lombok.Getter;
 import lombok.Setter;

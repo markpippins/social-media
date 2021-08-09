@@ -1,6 +1,7 @@
 package com.angrysurfer.social.shrapnel.component.writer;
 
 import com.angrysurfer.social.shrapnel.component.FieldSpec;
+import com.angrysurfer.social.shrapnel.component.ValueCalculator;
 
 import java.util.Collection;
 import java.util.List;

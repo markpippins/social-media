@@ -1,17 +1,16 @@
 package com.angrysurfer.social.shrapnel.services.domain;
 
-import com.angrysurfer.social.shrapnel.component.Config;
+import com.angrysurfer.social.shrapnel.Config;
 import com.angrysurfer.social.shrapnel.component.FieldSpec;
-import com.angrysurfer.social.shrapnel.component.FieldTypeEnum;
+import com.angrysurfer.social.shrapnel.component.TabularExport;
+import com.angrysurfer.social.shrapnel.component.ValueCalculator;
+import com.angrysurfer.social.shrapnel.component.ValueRenderer;
 import com.angrysurfer.social.shrapnel.component.property.PropertyAccessor;
 import com.angrysurfer.social.shrapnel.component.writer.DataWriter;
-import com.angrysurfer.social.shrapnel.component.writer.ValueCalculator;
-import com.angrysurfer.social.shrapnel.component.writer.ValueRenderer;
 import com.angrysurfer.social.shrapnel.component.writer.filter.DataFilter;
 import com.angrysurfer.social.shrapnel.component.writer.style.FontSource;
-import com.angrysurfer.social.shrapnel.component.writer.style.StyleAdapter;
-import com.angrysurfer.social.shrapnel.component.writer.style.preset.provider.ZebraStyleProvider;
-import com.angrysurfer.social.shrapnel.services.TabularExport;
+import com.angrysurfer.social.shrapnel.component.writer.style.adapter.StyleAdapter;
+import com.angrysurfer.social.shrapnel.component.writer.style.provider.impl.ZebraStyleProvider;
 import com.angrysurfer.social.shrapnel.services.factory.ExportFactory;
 import com.itextpdf.kernel.color.Color;
 import com.itextpdf.kernel.font.PdfFont;
@@ -37,10 +36,10 @@ public class FontListExport extends TabularExport {
 
     static String NAME = "font-list";
 
-    static FieldSpec id = new FieldSpec("id", "id", FieldTypeEnum.STRING);
-    static FieldSpec sample = new FieldSpec("name", "Sample", FieldTypeEnum.STRING);
-    static FieldSpec path = new FieldSpec("path", "path", FieldTypeEnum.STRING);
-    static FieldSpec fontname = new FieldSpec("fontname", "fontname", FieldTypeEnum.STRING);
+    static FieldSpec id = new FieldSpec("id", "id", FieldSpec.FieldTypeEnum.STRING);
+    static FieldSpec sample = new FieldSpec("name", "Sample", FieldSpec.FieldTypeEnum.STRING);
+    static FieldSpec path = new FieldSpec("path", "path", FieldSpec.FieldTypeEnum.STRING);
+    static FieldSpec fontname = new FieldSpec("fontname", "fontname", FieldSpec.FieldTypeEnum.STRING);
 
     static {
         id.setCalculated(true);
@@ -141,7 +140,7 @@ public class FontListExport extends TabularExport {
         public Collection<Object> getData() {
             File file = new File(".");
             return Arrays.stream(new File(file.getAbsolutePath().substring(0, file.getAbsolutePath().length() - 1)
-                            + Config.getInstance().getProperty(FontSource.FONTS_FOLDER)).listFiles())
+                            + Config.getInstance().getProperty(Config.FONTS_FOLDER)).listFiles())
                     .filter(f -> f.getPath().toLowerCase(Locale.ROOT).endsWith(".ttf"))
                     .sorted(new Comparator<File>() {
                         @Override

@@ -1,4 +1,4 @@
-package com.angrysurfer.social.shrapnel.component.writer.filter.preset;
+package com.angrysurfer.social.shrapnel.component.writer.filter.impl;
 
 import com.angrysurfer.social.shrapnel.component.FieldSpec;
 import com.angrysurfer.social.shrapnel.component.property.PropertyAccessor;

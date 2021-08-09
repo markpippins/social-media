@@ -1,10 +1,10 @@
 package com.angrysurfer.social.shrapnel.services.factory.impl;
 
+import com.angrysurfer.social.shrapnel.component.Export;
 import com.angrysurfer.social.shrapnel.component.FieldSpec;
+import com.angrysurfer.social.shrapnel.component.TabularExport;
 import com.angrysurfer.social.shrapnel.component.property.PropertyMapAccessor;
-import com.angrysurfer.social.shrapnel.services.Export;
 import com.angrysurfer.social.shrapnel.services.ExportRequest;
-import com.angrysurfer.social.shrapnel.services.TabularExport;
 import com.angrysurfer.social.shrapnel.services.factory.ExportFactory;
 import com.angrysurfer.social.shrapnel.services.model.ExportModel;
 import com.angrysurfer.social.shrapnel.services.model.FieldSpecModel;
@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 @Getter
 @Slf4j
-public abstract class JdbcTemplateExportFactory implements ExportFactory {
+public class JdbcTemplateExportFactory implements ExportFactory {
 
     private ExportRequest request;
 
@@ -29,7 +29,7 @@ public abstract class JdbcTemplateExportFactory implements ExportFactory {
 
     @Override
     public String getExportName() {
-        return request.getExport();
+        return request.getName();
     }
 
     @Override
@@ -43,9 +43,10 @@ public abstract class JdbcTemplateExportFactory implements ExportFactory {
         TabularExport exporter = new TabularExport(getExportName(), fields) {
             @Override
             public void init() {
-                            }
+                setPropertyAccessor(new PropertyMapAccessor());
+            }
         };
-        exporter.setPropertyAccessor(new PropertyMapAccessor());
+
         return exporter;
     }
 
