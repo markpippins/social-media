@@ -1,6 +1,5 @@
 package com.angrysurfer.social.shrapnel.services.model;
 
-import com.angrysurfer.social.shrapnel.component.FieldSpec;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,7 +9,7 @@ import javax.persistence.*;
 @Setter
 @Entity
 @Table(name = "field_spec_model")
-public class FieldSpecModel {
+public class FieldSpec {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -31,13 +30,13 @@ public class FieldSpecModel {
 
     @ManyToOne
     @JoinColumn(name = "field_type_id")
-    public FieldTypeModel fieldType;
+    public FieldType fieldType;
 
-    public FieldSpec createFieldSpec() {
-        FieldSpec result = new FieldSpec();
+    public com.angrysurfer.social.shrapnel.component.FieldSpec createFieldSpec() {
+        com.angrysurfer.social.shrapnel.component.FieldSpec result = new com.angrysurfer.social.shrapnel.component.FieldSpec();
         result.setPropertyName(getPropertyName());
         result.setLabel(getLabel());
-        result.setType(FieldSpec.FieldTypeEnum.from(fieldType.getName()));
+        result.setType(com.angrysurfer.social.shrapnel.component.FieldSpec.FieldTypeEnum.from(fieldType.getName()));
         result.setIndex(getIndex());
         return result;
     }

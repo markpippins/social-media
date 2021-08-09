@@ -1,13 +1,11 @@
 package com.angrysurfer.social.shrapnel.services.factory.impl;
 
-import com.angrysurfer.social.shrapnel.component.Export;
-import com.angrysurfer.social.shrapnel.component.FieldSpec;
 import com.angrysurfer.social.shrapnel.component.TabularExport;
 import com.angrysurfer.social.shrapnel.component.property.PropertyMapAccessor;
 import com.angrysurfer.social.shrapnel.services.ExportRequest;
 import com.angrysurfer.social.shrapnel.services.factory.ExportFactory;
-import com.angrysurfer.social.shrapnel.services.model.ExportModel;
-import com.angrysurfer.social.shrapnel.services.model.FieldSpecModel;
+import com.angrysurfer.social.shrapnel.services.model.Export;
+import com.angrysurfer.social.shrapnel.services.model.FieldSpec;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
@@ -20,11 +18,11 @@ public class JdbcTemplateExportFactory implements ExportFactory {
 
     private ExportRequest request;
 
-    private ExportModel exportModel;
+    private Export export;
 
-    public JdbcTemplateExportFactory(ExportRequest request, ExportModel exportModel) {
+    public JdbcTemplateExportFactory(ExportRequest request, Export export) {
         this.request = request;
-        this.exportModel = exportModel;
+        this.export = export;
     }
 
     @Override
@@ -33,10 +31,10 @@ public class JdbcTemplateExportFactory implements ExportFactory {
     }
 
     @Override
-    public Export newInstance() {
+    public com.angrysurfer.social.shrapnel.component.Export newInstance() {
 
-        List<FieldSpec> fields = getExportModel().getFieldSpecs().stream()
-                .sorted((FieldSpecModel c1, FieldSpecModel c2) -> c1.getIndex().compareTo(c2.getIndex()))
+        List<com.angrysurfer.social.shrapnel.component.FieldSpec> fields = getExport().getFieldSpecs().stream()
+                .sorted((FieldSpec c1, FieldSpec c2) -> c1.getIndex().compareTo(c2.getIndex()))
                 .map(field -> field.createFieldSpec())
                 .collect(Collectors.toList());
 

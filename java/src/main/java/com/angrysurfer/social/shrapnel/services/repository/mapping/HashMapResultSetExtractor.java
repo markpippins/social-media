@@ -1,7 +1,7 @@
 package com.angrysurfer.social.shrapnel.services.repository.mapping;
 
 import com.angrysurfer.social.shrapnel.component.FieldSpec;
-import com.angrysurfer.social.shrapnel.services.model.ExportModel;
+import com.angrysurfer.social.shrapnel.services.model.Export;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;
@@ -13,11 +13,11 @@ import java.util.*;
 @Slf4j
 public class HashMapResultSetExtractor implements ResultSetExtractor {
 
-    private final ExportModel export;
+    private final Export export;
 
     boolean useTimeStampForLocalDate = true;
 
-    public HashMapResultSetExtractor(ExportModel export) {
+    public HashMapResultSetExtractor(Export export) {
         this.export = export;
     }
 

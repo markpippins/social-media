@@ -3,8 +3,8 @@ package com.angrysurfer.social.shrapnel.services.factory.impl;
 import com.angrysurfer.social.shrapnel.services.ExportRequest;
 import com.angrysurfer.social.shrapnel.services.factory.ExportFactory;
 import com.angrysurfer.social.shrapnel.services.factory.MetaExportFactory;
-import com.angrysurfer.social.shrapnel.services.model.DataSourceModel;
-import com.angrysurfer.social.shrapnel.services.model.ExportModel;
+import com.angrysurfer.social.shrapnel.services.model.DataSource;
+import com.angrysurfer.social.shrapnel.services.model.Export;
 import com.angrysurfer.social.shrapnel.services.repository.DataSourceModelRepository;
 import com.angrysurfer.social.shrapnel.services.repository.ExportModelRepository;
 import com.angrysurfer.social.shrapnel.services.repository.mapping.HashMapResultSetExtractor;
@@ -37,14 +37,14 @@ public class JdbcMetaExportFactory implements MetaExportFactory {
 
     @Override
     public boolean hasFactory(ExportRequest request) {
-        ExportModel export = exportModelRepository.findByName(request.getName());
+        Export export = exportModelRepository.findByName(request.getName());
         return Objects.nonNull(export) && export.isConfigured();
     }
 
     @Override
     public ExportFactory newInstance(ExportRequest request) {
-        final ExportModel export = exportModelRepository.findByName(request.getName());
-        final DataSourceModel dataSource = dataSourceModelRepository.findByName(request.getName());
+        final Export export = exportModelRepository.findByName(request.getName());
+        final DataSource dataSource = dataSourceModelRepository.findByName(request.getName());
 
         return new JdbcTemplateExportFactory(request, export) {
             @Override
@@ -64,7 +64,7 @@ public class JdbcMetaExportFactory implements MetaExportFactory {
         };
     }
 
-    private String getSQL(DataSourceModel dataSource) throws IOException {
+    private String getSQL(DataSource dataSource) throws IOException {
         return Files.readString(Path.of(SQL_FOLDER + dataSource.getQuery() + ".sql"));
     }
 

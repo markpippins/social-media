@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Setter
 @Entity
 @Table(name = "data_source_model")
-public class DataSourceModel {
+public class DataSource {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

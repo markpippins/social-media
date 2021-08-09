@@ -1,10 +1,9 @@
 package com.angrysurfer.social.shrapnel;
 
-import com.angrysurfer.social.shrapnel.component.FieldSpec;
-import com.angrysurfer.social.shrapnel.services.model.DataSourceModel;
-import com.angrysurfer.social.shrapnel.services.model.ExportModel;
-import com.angrysurfer.social.shrapnel.services.model.FieldSpecModel;
-import com.angrysurfer.social.shrapnel.services.model.FieldTypeModel;
+import com.angrysurfer.social.shrapnel.services.model.DataSource;
+import com.angrysurfer.social.shrapnel.services.model.Export;
+import com.angrysurfer.social.shrapnel.services.model.FieldSpec;
+import com.angrysurfer.social.shrapnel.services.model.FieldType;
 import com.angrysurfer.social.shrapnel.services.repository.DataSourceModelRepository;
 import com.angrysurfer.social.shrapnel.services.repository.ExportModelRepository;
 import com.angrysurfer.social.shrapnel.services.repository.FieldSpecModelRepository;
@@ -14,6 +13,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.Arrays;
 
 @Slf4j
 @Component
@@ -34,74 +34,84 @@ class SpringConfig implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        FieldTypeModel f1 = new FieldTypeModel();
-        f1.setName(FieldSpec.FieldTypeEnum.STRING.name());
-        f1.setCode(FieldSpec.FieldTypeEnum.STRING.getCode());
-        fieldTypeModelRepository.save(f1);
+        Arrays.stream(com.angrysurfer.social.shrapnel.component.FieldSpec.FieldTypeEnum.values())
+                .forEach(fieldType -> {
+                    FieldType ft = new FieldType();
+                    ft.setName(fieldType.name());
+                    ft.setCode(fieldType.getCode());
 
-        FieldTypeModel f2 = new FieldTypeModel();
-        f2.setName(FieldSpec.FieldTypeEnum.BOOLEAN.name());
-        f2.setCode(FieldSpec.FieldTypeEnum.BOOLEAN.getCode());
-        fieldTypeModelRepository.save(f2);
+                    fieldTypeModelRepository.save(ft);
+                });
 
-        DataSourceModel forumData = new DataSourceModel();
+        DataSource forumData = new DataSource();
         forumData.setQuery("get-forums");
         forumData.setName("forum-list");
         dataSourceModelRepository.save(forumData);
 
-        FieldSpecModel idSpec1 = new FieldSpecModel();
+        FieldSpec idSpec1 = new FieldSpec();
         idSpec1.setName("id");
         idSpec1.setPropertyName("id");
         idSpec1.setLabel("id");
         idSpec1.setIndex(1);
-        idSpec1.setFieldType(f1);
+        idSpec1.setFieldType(fieldTypeModelRepository
+                .findById(Integer.valueOf(com.angrysurfer.social.shrapnel.component.FieldSpec.FieldTypeEnum.STRING.getCode()))
+                .orElseThrow(() -> new IllegalArgumentException()));
+
         idSpec1 = fieldSpecModelRepository.save(idSpec1);
 
-        FieldSpecModel nameSpec = new FieldSpecModel();
+        FieldSpec nameSpec = new FieldSpec();
         nameSpec.setName("name");
         nameSpec.setPropertyName("name");
         nameSpec.setLabel("name");
         nameSpec.setIndex(2);
-        nameSpec.setFieldType(f1);
+        nameSpec.setFieldType(fieldTypeModelRepository
+                .findById(Integer.valueOf(com.angrysurfer.social.shrapnel.component.FieldSpec.FieldTypeEnum.STRING.getCode()))
+                .orElseThrow(() -> new IllegalArgumentException()));
         nameSpec = fieldSpecModelRepository.save(nameSpec);
 
-        ExportModel forumExport = new ExportModel();
+        Export forumExport = new Export();
         forumExport.setName("forum-list");
         forumExport.getFieldSpecs().add(idSpec1);
         forumExport.getFieldSpecs().add(nameSpec);
         forumExport.setDataSource(forumData);
         exportModelRepository.save(forumExport);
 
-        DataSourceModel userData = new DataSourceModel();
+        DataSource userData = new DataSource();
         userData.setQuery("get-users");
         userData.setName("user-list");
         dataSourceModelRepository.save(userData);
 
-        FieldSpecModel idSpec2 = new FieldSpecModel();
+        FieldSpec idSpec2 = new FieldSpec();
         idSpec2.setName("id");
         idSpec2.setPropertyName("id");
         idSpec2.setLabel("id");
         idSpec2.setIndex(0);
-        idSpec2.setFieldType(f1);
+        idSpec2.setFieldType(fieldTypeModelRepository
+                .findById(Integer.valueOf(com.angrysurfer.social.shrapnel.component.FieldSpec.FieldTypeEnum.STRING.getCode()))
+                .orElseThrow(() -> new IllegalArgumentException()));
         idSpec2 = fieldSpecModelRepository.save(idSpec2);
 
-        FieldSpecModel emailSpec = new FieldSpecModel();
+        FieldSpec emailSpec = new FieldSpec();
         emailSpec.setName("email");
-        emailSpec.setFieldType(f1);
+        emailSpec.setFieldType(fieldTypeModelRepository
+                .findById(Integer.valueOf(com.angrysurfer.social.shrapnel.component.FieldSpec.FieldTypeEnum.STRING.getCode()))
+                .orElseThrow(() -> new IllegalArgumentException()));
         emailSpec.setPropertyName("email");
         emailSpec.setLabel("email");
         emailSpec.setIndex(3);
         emailSpec = fieldSpecModelRepository.save(emailSpec);
 
-        FieldSpecModel aliasSpec = new FieldSpecModel();
+        FieldSpec aliasSpec = new FieldSpec();
         aliasSpec.setName("alias");
-        aliasSpec.setFieldType(f1);
+        aliasSpec.setFieldType(fieldTypeModelRepository
+                .findById(Integer.valueOf(com.angrysurfer.social.shrapnel.component.FieldSpec.FieldTypeEnum.STRING.getCode()))
+                .orElseThrow(() -> new IllegalArgumentException()));
         aliasSpec.setPropertyName("alias");
         aliasSpec.setLabel("alias");
         aliasSpec.setIndex(2);
         aliasSpec = fieldSpecModelRepository.save(aliasSpec);
 
-        ExportModel userExport = new ExportModel();
+        Export userExport = new Export();
         userExport.setName("user-list");
         userExport.getFieldSpecs().add(idSpec2);
         userExport.getFieldSpecs().add(aliasSpec);

@@ -1,4 +1,4 @@
-package com.angrysurfer.social.shrapnel.services.domain;
+package com.angrysurfer.social.shrapnel.example;
 
 import com.angrysurfer.social.shrapnel.Config;
 import com.angrysurfer.social.shrapnel.component.FieldSpec;
@@ -31,7 +31,7 @@ import static com.angrysurfer.social.shrapnel.component.writer.RowWriter.EMPTY_S
 @Getter
 @Setter
 @Slf4j
-public class FontListExport extends TabularExport {
+public class FontConfigExport extends TabularExport {
     static List<FieldSpec> FIELDS = new ArrayList();
 
     static String NAME = "font-list";
@@ -50,7 +50,7 @@ public class FontListExport extends TabularExport {
         FIELDS.add(path);
     }
 
-    public FontListExport() {
+    public FontConfigExport() {
         super(NAME, FIELDS);
     }
 
@@ -159,7 +159,7 @@ public class FontListExport extends TabularExport {
 
         @Override
         public Class getExportClass() {
-            return FontListExport.class;
+            return FontConfigExport.class;
         }
     }
 

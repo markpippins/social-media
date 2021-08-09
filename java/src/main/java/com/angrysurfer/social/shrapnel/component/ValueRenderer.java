@@ -60,6 +60,6 @@ public interface ValueRenderer {
         return Objects.isNull(value) ? EMPTY_STRING : value;
     }
 
-//    String render(FieldSpecModel col, Richtext value);
+//    String render(FieldSpec col, Richtext value);
 
 }
