@@ -20,7 +20,7 @@ import java.util.Objects;
 
 @Slf4j
 @Component
-public class JdbcMetaExportFactory implements MetaExportFactory {
+public class JdbcTemplateMetaExportFactory implements MetaExportFactory {
 
     @Resource
     JdbcTemplate jdbcTemplate;
