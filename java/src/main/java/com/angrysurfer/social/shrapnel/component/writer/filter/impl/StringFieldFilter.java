@@ -13,7 +13,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
-import static com.angrysurfer.social.shrapnel.component.writer.RowWriter.EMPTY_STRING;
+import static com.angrysurfer.social.shrapnel.component.writer.TableWriter.EMPTY_STRING;
 
 @Getter
 @Setter

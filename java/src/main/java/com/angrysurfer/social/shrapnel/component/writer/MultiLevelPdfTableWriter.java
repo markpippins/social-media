@@ -2,7 +2,7 @@ package com.angrysurfer.social.shrapnel.component.writer;
 
 import com.angrysurfer.social.shrapnel.component.FieldSpec;
 import com.angrysurfer.social.shrapnel.component.ValueRenderer;
-import com.angrysurfer.social.shrapnel.component.writer.impl.PdfRowWriter;
+import com.angrysurfer.social.shrapnel.component.writer.impl.PdfTableWriter;
 import com.itextpdf.layout.element.Cell;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,13 +14,13 @@ import java.util.List;
 @Slf4j
 @Getter
 @Setter
-public abstract class MultiLevelPdfRowWriter extends PdfRowWriter implements MultiLevelRowWriter {
+public abstract class MultiLevelPdfTableWriter extends PdfTableWriter implements MultiLevelTableWriter {
 
     protected int level = -1;
 
     private String levelPropertyName;
 
-    public MultiLevelPdfRowWriter(String levelPropertyName, List<FieldSpec> fields, ValueRenderer valueRenderer) {
+    public MultiLevelPdfTableWriter(String levelPropertyName, List<FieldSpec> fields, ValueRenderer valueRenderer) {
         super(fields, valueRenderer);
         setAutoCreateTopLevelHeader(false);
         setLevelPropertyName(levelPropertyName);

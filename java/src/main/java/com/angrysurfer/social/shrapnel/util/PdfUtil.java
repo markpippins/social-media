@@ -1,7 +1,7 @@
 package com.angrysurfer.social.shrapnel.util;
 
 import com.angrysurfer.social.shrapnel.component.Export;
-import com.angrysurfer.social.shrapnel.component.writer.impl.PdfRowWriter;
+import com.angrysurfer.social.shrapnel.component.writer.impl.PdfTableWriter;
 import com.itextpdf.io.font.FontProgram;
 import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.kernel.geom.PageSize;
@@ -63,7 +63,7 @@ public class PdfUtil {
         return fontName;
     }
 
-    public static ByteArrayOutputStream generateByteArrayOutputStream(Collection<Object> items, PdfRowWriter pdfRowWriter, PageSize pageSize) {
+    public static ByteArrayOutputStream generateByteArrayOutputStream(Collection<Object> items, PdfTableWriter pdfRowWriter, PageSize pageSize) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         Document document = createDocument(baos, pageSize);
         writeToTable(items, pdfRowWriter);
@@ -76,7 +76,7 @@ public class PdfUtil {
         return generateByteArrayOutputStream(items, export.getPdfRowWriter(), export.getPageSize());
     }
 
-    public static ByteArrayOutputStream generateByteArrayOutputStream(Collection<Object> items, PdfRowWriter pdfRowWriter) {
+    public static ByteArrayOutputStream generateByteArrayOutputStream(Collection<Object> items, PdfTableWriter pdfRowWriter) {
         return generateByteArrayOutputStream(items, pdfRowWriter, PageSize.Default);
     }
 
@@ -90,11 +90,11 @@ public class PdfUtil {
         return properties;
     }
 
-    public static String writeTabularFile(Collection<Object> items, PdfRowWriter pdfRowWriter, String filename) throws IOException {
+    public static String writeTabularFile(Collection<Object> items, PdfTableWriter pdfRowWriter, String filename) throws IOException {
         return writeTabularFile(items, pdfRowWriter, filename, PageSize.Default);
     }
 
-    public static String writeTabularFile(Collection<Object> items, PdfRowWriter pdfRowWriter, String filename, PageSize pageSize) throws IOException {
+    public static String writeTabularFile(Collection<Object> items, PdfTableWriter pdfRowWriter, String filename, PageSize pageSize) throws IOException {
         String outputFileName = FileUtil.getOutputFileName(filename, "pdf");
         FileUtil.ensureSafety(outputFileName);
         Document document = createDocument(outputFileName, pageSize);
@@ -108,16 +108,16 @@ public class PdfUtil {
         return writeTabularFile(items, export.getPdfRowWriter(), filename, export.getPageSize());
     }
 
-    public static void writeToTable(Collection<Object> items, PdfRowWriter pdfRowWriter, Table table) {
+    public static void writeToTable(Collection<Object> items, PdfTableWriter pdfRowWriter, Table table) {
         Map<String, Object> outputConfig = new HashMap<>();
-        outputConfig.put(PdfRowWriter.TABLE, table);
+        outputConfig.put(PdfTableWriter.TABLE, table);
         pdfRowWriter.writeData(outputConfig, items);
     }
 
-    public static void writeToTable(Collection<Object> items, PdfRowWriter pdfRowWriter) {
+    public static void writeToTable(Collection<Object> items, PdfTableWriter pdfRowWriter) {
         Table table = pdfRowWriter.createTable();
         Map<String, Object> outputConfig = new HashMap<>();
-        outputConfig.put(PdfRowWriter.TABLE, table);
+        outputConfig.put(PdfTableWriter.TABLE, table);
         pdfRowWriter.writeData(outputConfig, items);
     }
 }

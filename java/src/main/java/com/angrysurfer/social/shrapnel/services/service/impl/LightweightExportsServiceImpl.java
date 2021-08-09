@@ -1,9 +1,9 @@
 package com.angrysurfer.social.shrapnel.services.service.impl;
 
 import com.angrysurfer.social.shrapnel.component.FieldSpec;
-import com.angrysurfer.social.shrapnel.component.writer.impl.CSVRowWriter;
-import com.angrysurfer.social.shrapnel.component.writer.impl.ExcelRowWriter;
-import com.angrysurfer.social.shrapnel.component.writer.impl.PdfRowWriter;
+import com.angrysurfer.social.shrapnel.component.writer.impl.CSVTableWriter;
+import com.angrysurfer.social.shrapnel.component.writer.impl.ExcelTableWriter;
+import com.angrysurfer.social.shrapnel.component.writer.impl.PdfTableWriter;
 import com.angrysurfer.social.shrapnel.services.service.LightweightExportsService;
 import com.angrysurfer.social.shrapnel.util.ExcelUtil;
 import com.angrysurfer.social.shrapnel.util.FileUtil;
@@ -25,7 +25,7 @@ public class LightweightExportsServiceImpl implements LightweightExportsService 
     public String writeCSVFile(Collection<Object> items, List<FieldSpec> columns, String filename) {
         try {
             FileUtil.ensureSafety(filename);
-            CSVRowWriter writer = new CSVRowWriter(columns);
+            CSVTableWriter writer = new CSVTableWriter(columns);
             writer.writeValues(items, filename);
         } catch (IOException e) {
             log.error(e.getMessage(), e);
@@ -39,7 +39,7 @@ public class LightweightExportsServiceImpl implements LightweightExportsService 
         LocalDateTime now = LocalDateTime.now();
         String name = String.format("%s - %s - %s - %s", sheetName, LocalDate.now().getDayOfMonth(), LocalDate.now().getMonthValue(), LocalDate.now().getYear());
         Workbook workbook = new XSSFWorkbook();
-        ExcelUtil.addSpreadSheet(workbook, name, items, new ExcelRowWriter(columns));
+        ExcelUtil.addSpreadSheet(workbook, name, items, new ExcelTableWriter(columns));
         try {
             ExcelUtil.writeWorkbookToFile(workbook, filename);
         } catch (IOException e) {
@@ -50,7 +50,7 @@ public class LightweightExportsServiceImpl implements LightweightExportsService 
     }
 
     @Override
-    public String writeExcelFile(Collection<Object> items, ExcelRowWriter writer, String sheetName, String filename) {
+    public String writeExcelFile(Collection<Object> items, ExcelTableWriter writer, String sheetName, String filename) {
         LocalDateTime now = LocalDateTime.now();
         String name = String.format("%s - %s - %s - %s", sheetName, now.getDayOfMonth(), now.getMonthValue(), now.getYear());
         Workbook workbook = new XSSFWorkbook();
@@ -67,7 +67,7 @@ public class LightweightExportsServiceImpl implements LightweightExportsService 
     @Override
     public String writeTabularPdfFile(Collection<Object> items, List<FieldSpec> columns, String filename) {
         try {
-            PdfUtil.writeTabularFile(items, new PdfRowWriter(columns), filename);
+            PdfUtil.writeTabularFile(items, new PdfTableWriter(columns), filename);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -76,7 +76,7 @@ public class LightweightExportsServiceImpl implements LightweightExportsService 
     }
 
     @Override
-    public String writeTabularPdfFile(Collection<Object> items, PdfRowWriter pdfRowWriter, String filename) {
+    public String writeTabularPdfFile(Collection<Object> items, PdfTableWriter pdfRowWriter, String filename) {
         try {
             PdfUtil.writeTabularFile(items, pdfRowWriter, filename);
         } catch (IOException e) {

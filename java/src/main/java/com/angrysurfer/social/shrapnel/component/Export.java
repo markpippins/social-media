@@ -2,8 +2,8 @@ package com.angrysurfer.social.shrapnel.component;
 
 import com.angrysurfer.social.shrapnel.component.property.PropertyAccessor;
 import com.angrysurfer.social.shrapnel.component.writer.filter.DataFilter;
-import com.angrysurfer.social.shrapnel.component.writer.impl.ExcelRowWriter;
-import com.angrysurfer.social.shrapnel.component.writer.impl.PdfRowWriter;
+import com.angrysurfer.social.shrapnel.component.writer.impl.ExcelTableWriter;
+import com.angrysurfer.social.shrapnel.component.writer.impl.PdfTableWriter;
 import com.itextpdf.kernel.geom.PageSize;
 
 import java.util.List;
@@ -19,9 +19,9 @@ public interface Export {
 
     String getName();
 
-    ExcelRowWriter getExcelRowWriter();
+    ExcelTableWriter getExcelRowWriter();
 
-    PdfRowWriter getPdfRowWriter();
+    PdfTableWriter getPdfRowWriter();
 
     PageSize getPageSize();
 

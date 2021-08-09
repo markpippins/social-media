@@ -4,7 +4,7 @@ import com.angrysurfer.social.shrapnel.component.FieldSpec;
 import com.angrysurfer.social.shrapnel.component.property.PropertyAccessor;
 import com.angrysurfer.social.shrapnel.component.property.PropertyUtilsPropertyAccessor;
 import com.angrysurfer.social.shrapnel.component.writer.DataWriter;
-import com.angrysurfer.social.shrapnel.component.writer.RowWriter;
+import com.angrysurfer.social.shrapnel.component.writer.TableWriter;
 import com.angrysurfer.social.shrapnel.component.writer.filter.DataFilterList;
 import com.angrysurfer.social.shrapnel.util.FileUtil;
 import lombok.Getter;
@@ -20,7 +20,7 @@ import java.util.Map;
 @Getter
 @Setter
 @Slf4j
-public class CSVRowWriter extends RowWriter implements DataWriter {
+public class CSVTableWriter extends TableWriter implements DataWriter {
 
     private static final String SPACE = " ";
 
@@ -34,7 +34,7 @@ public class CSVRowWriter extends RowWriter implements DataWriter {
 
     private DataFilterList filters = new DataFilterList.DataFilterListImpl();
 
-    public CSVRowWriter(List<FieldSpec> columns) {
+    public CSVTableWriter(List<FieldSpec> columns) {
         super(columns);
     }
 

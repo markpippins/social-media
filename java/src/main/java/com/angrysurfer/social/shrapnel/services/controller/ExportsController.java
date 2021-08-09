@@ -62,9 +62,9 @@ public class ExportsController {
                 ResponseEntity.notFound().build();
     }
 
-    @PostMapping(value = "/reloadConfigFromFile")
-    public ResponseEntity reloadConfigFromFile() {
-        Config.getInstance().reload();
+    @PostMapping(value = "/flushConfig")
+    public ResponseEntity flushConfig() {
+        Config.getInstance().flush();
         return ResponseEntity.ok().build();
     }
 }

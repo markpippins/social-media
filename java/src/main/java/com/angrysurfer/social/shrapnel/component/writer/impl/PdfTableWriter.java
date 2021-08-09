@@ -2,7 +2,7 @@ package com.angrysurfer.social.shrapnel.component.writer.impl;
 
 import com.angrysurfer.social.shrapnel.component.FieldSpec;
 import com.angrysurfer.social.shrapnel.component.ValueRenderer;
-import com.angrysurfer.social.shrapnel.component.writer.RowWriter;
+import com.angrysurfer.social.shrapnel.component.writer.TableWriter;
 import com.angrysurfer.social.shrapnel.component.writer.filter.DataFilterList;
 import com.angrysurfer.social.shrapnel.component.writer.style.provider.impl.CombinedStyleProvider;
 import com.angrysurfer.social.shrapnel.component.writer.style.provider.impl.PdfStyleProvider;
@@ -18,7 +18,7 @@ import java.util.*;
 @Slf4j
 @Getter
 @Setter
-public class PdfRowWriter extends RowWriter {
+public class PdfTableWriter extends TableWriter {
 
     public static String TABLE = "table";
 
@@ -30,11 +30,11 @@ public class PdfRowWriter extends RowWriter {
 
     private DataFilterList filters = new DataFilterList.DataFilterListImpl();
 
-    public PdfRowWriter(List<FieldSpec> fields) {
+    public PdfTableWriter(List<FieldSpec> fields) {
         super(fields);
     }
 
-    public PdfRowWriter(List<FieldSpec> fields, ValueRenderer valueRenderer) {
+    public PdfTableWriter(List<FieldSpec> fields, ValueRenderer valueRenderer) {
         super(fields, valueRenderer);
     }
 

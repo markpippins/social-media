@@ -3,7 +3,7 @@ package com.angrysurfer.social.shrapnel.services.service;
 import com.angrysurfer.social.dto.UserDTO;
 import com.angrysurfer.social.shrapnel.component.Export;
 import com.angrysurfer.social.shrapnel.component.property.PropertyMapAccessor;
-import com.angrysurfer.social.shrapnel.component.writer.impl.CSVRowWriter;
+import com.angrysurfer.social.shrapnel.component.writer.impl.CSVTableWriter;
 import com.angrysurfer.social.shrapnel.services.ExportRequest;
 import com.angrysurfer.social.shrapnel.services.factory.ExportFactory;
 import com.angrysurfer.social.shrapnel.services.factory.impl.JdbcTemplateExportFactory;
@@ -60,7 +60,7 @@ public interface ExportsService {
         switch (request.getFileType().toLowerCase(Locale.ROOT)) {
             case CSV_FILE:
                 Collection data = factory.getData();
-                CSVRowWriter writer = new CSVRowWriter(export.getFields());
+                CSVTableWriter writer = new CSVTableWriter(export.getFields());
                 if (factory instanceof JdbcTemplateExportFactory)
                     writer.setPropertyAccessor((new PropertyMapAccessor()));
                 filename = FileUtil.makeFileName(user, factory);

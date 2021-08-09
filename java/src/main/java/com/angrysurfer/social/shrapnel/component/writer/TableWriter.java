@@ -17,7 +17,7 @@ import java.util.*;
 @Slf4j
 @Getter
 @Setter
-public abstract class RowWriter implements DataWriter, ProxyPropertyAccessor {
+public abstract class TableWriter implements DataWriter, ProxyPropertyAccessor {
 
     public static final boolean DEBUG = false;
 
@@ -41,12 +41,12 @@ public abstract class RowWriter implements DataWriter, ProxyPropertyAccessor {
 
     private ValueCalculator valueCalculator;
 
-    public RowWriter(List<FieldSpec> fields) {
+    public TableWriter(List<FieldSpec> fields) {
         setPropertyAccessor(new PropertyUtilsPropertyAccessor());
         setFields(fields);
     }
 
-    public RowWriter(List<FieldSpec> fields, ValueRenderer valueRenderer) {
+    public TableWriter(List<FieldSpec> fields, ValueRenderer valueRenderer) {
         setPropertyAccessor(new PropertyUtilsPropertyAccessor());
         setFields(fields);
         setValueRenderer(valueRenderer);

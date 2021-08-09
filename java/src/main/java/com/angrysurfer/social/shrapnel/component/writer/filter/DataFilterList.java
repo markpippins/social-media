@@ -2,7 +2,7 @@ package com.angrysurfer.social.shrapnel.component.writer.filter;
 
 import com.angrysurfer.social.shrapnel.component.property.PropertyAccessor;
 import com.angrysurfer.social.shrapnel.component.writer.DataWriter;
-import com.angrysurfer.social.shrapnel.component.writer.RowWriter;
+import com.angrysurfer.social.shrapnel.component.writer.TableWriter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +18,7 @@ public interface DataFilterList extends List<DataFilter> {
                     if (!filter.allows(item, writer, propertyAccessor))
                         result[0] = false;
                 } catch (Exception e) {
-                    if (RowWriter.DEBUG)
+                    if (TableWriter.DEBUG)
                         writer.writeError(e);
                     else throw e;
                 }

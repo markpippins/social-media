@@ -3,8 +3,8 @@ package com.angrysurfer.social.shrapnel.component;
 import com.angrysurfer.social.shrapnel.component.property.PropertyAccessor;
 import com.angrysurfer.social.shrapnel.component.writer.filter.DataFilter;
 import com.angrysurfer.social.shrapnel.component.writer.filter.impl.StringFieldFilter;
-import com.angrysurfer.social.shrapnel.component.writer.impl.ExcelRowWriter;
-import com.angrysurfer.social.shrapnel.component.writer.impl.PdfRowWriter;
+import com.angrysurfer.social.shrapnel.component.writer.impl.ExcelTableWriter;
+import com.angrysurfer.social.shrapnel.component.writer.impl.PdfTableWriter;
 import com.angrysurfer.social.shrapnel.component.writer.style.provider.impl.CombinedStyleProvider;
 import com.itextpdf.kernel.geom.PageSize;
 import lombok.Getter;
@@ -24,9 +24,9 @@ public abstract class TabularExport implements Export {
 
     private String name;
 
-    private ExcelRowWriter excelRowWriter;
+    private ExcelTableWriter excelRowWriter;
 
-    private PdfRowWriter pdfRowWriter;
+    private PdfTableWriter pdfRowWriter;
 
     public TabularExport(String name, List<FieldSpec> fields) {
         setName(name);
@@ -46,17 +46,17 @@ public abstract class TabularExport implements Export {
     }
 
     @Override
-    public ExcelRowWriter getExcelRowWriter() {
+    public ExcelTableWriter getExcelRowWriter() {
         if (Objects.isNull(excelRowWriter))
-            excelRowWriter = new ExcelRowWriter(getFields());
+            excelRowWriter = new ExcelTableWriter(getFields());
 
         return excelRowWriter;
     }
 
     @Override
-    public PdfRowWriter getPdfRowWriter() {
+    public PdfTableWriter getPdfRowWriter() {
         if (Objects.isNull(pdfRowWriter))
-            pdfRowWriter = new PdfRowWriter(getFields());
+            pdfRowWriter = new PdfTableWriter(getFields());
 
         return pdfRowWriter;
     }

@@ -1,6 +1,7 @@
 package com.angrysurfer.social.shrapnel.util;
 
 import com.angrysurfer.social.dto.UserDTO;
+import com.angrysurfer.social.shrapnel.Config;
 import com.angrysurfer.social.shrapnel.component.Export;
 import com.angrysurfer.social.shrapnel.services.factory.ExportFactory;
 import lombok.extern.slf4j.Slf4j;
@@ -105,5 +106,11 @@ public class FileUtil {
         }
         return properties;
     }
+
+    public static String getSQL(String filename) throws IOException {
+        return Files.readString(Path.of(Config.getInstance().getProperty(Config.SQL_FOLDER) + filename + ".sql"));
+    }
+
+
 }
 

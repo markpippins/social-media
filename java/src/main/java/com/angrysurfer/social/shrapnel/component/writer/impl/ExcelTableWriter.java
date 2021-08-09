@@ -3,7 +3,7 @@ package com.angrysurfer.social.shrapnel.component.writer.impl;
 import com.angrysurfer.social.shrapnel.component.FieldSpec;
 import com.angrysurfer.social.shrapnel.component.ValueRenderer;
 import com.angrysurfer.social.shrapnel.component.writer.DataWriter;
-import com.angrysurfer.social.shrapnel.component.writer.RowWriter;
+import com.angrysurfer.social.shrapnel.component.writer.TableWriter;
 import com.angrysurfer.social.shrapnel.component.writer.filter.DataFilterList;
 import com.angrysurfer.social.shrapnel.component.writer.style.provider.ExcelStyleProvider;
 import com.angrysurfer.social.shrapnel.component.writer.style.provider.impl.CombinedStyleProvider;
@@ -20,7 +20,7 @@ import java.util.*;
 @Slf4j
 @Getter
 @Setter
-public class ExcelRowWriter extends RowWriter implements DataWriter {
+public class ExcelTableWriter extends TableWriter implements DataWriter {
 
     public static final String WORKBOOK = "workbook";
 
@@ -38,15 +38,15 @@ public class ExcelRowWriter extends RowWriter implements DataWriter {
 
     private boolean autoCreateTopLevelHeader = true;
 
-    public ExcelRowWriter(List<FieldSpec> fields) {
+    public ExcelTableWriter(List<FieldSpec> fields) {
         super(fields);
     }
 
-    public ExcelRowWriter(List<FieldSpec> fields, ValueRenderer valueRenderer) {
+    public ExcelTableWriter(List<FieldSpec> fields, ValueRenderer valueRenderer) {
         super(fields, valueRenderer);
     }
 
-    public ExcelRowWriter(List<FieldSpec> fields, ValueRenderer valueRenderer, CombinedStyleProvider styleProvider) {
+    public ExcelTableWriter(List<FieldSpec> fields, ValueRenderer valueRenderer, CombinedStyleProvider styleProvider) {
         super(fields, valueRenderer);
         setStyleProvider(styleProvider);
     }

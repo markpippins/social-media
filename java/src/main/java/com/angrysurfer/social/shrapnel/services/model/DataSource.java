@@ -20,5 +20,5 @@ public class DataSource {
     private String name;
 
     @Column(name = "query", nullable = false)
-    private String query;
+    private String queryName;
 }

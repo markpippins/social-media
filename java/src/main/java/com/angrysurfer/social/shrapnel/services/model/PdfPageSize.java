@@ -1,0 +1,34 @@
+package com.angrysurfer.social.shrapnel.services.model;
+
+import lombok.Getter;
+import lombok.Setter;
+
+import javax.persistence.*;
+
+@Getter
+@Setter
+@Entity
+@Table(name = "page_size")
+public class PdfPageSize {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false)
+    private Integer id;
+    @Column(name = "name", nullable = false)
+    private String name;
+    @Column(name = "width", nullable = false)
+    private Float width;
+    @Column(name = "height", nullable = false)
+    private Float height;
+
+    public PdfPageSize() {
+
+    }
+
+    public PdfPageSize(String name, float width, float height) {
+        setName(name);
+        setWidth(width);
+        setHeight(height);
+    }
+}

@@ -1,5 +1,6 @@
 package com.angrysurfer.social.shrapnel.services.model;
 
+import com.angrysurfer.social.shrapnel.Config;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -7,7 +8,6 @@ import javax.persistence.*;
 import java.io.File;
 import java.util.*;
 
-import static com.angrysurfer.social.shrapnel.services.factory.impl.JdbcMetaExportFactory.SQL_FOLDER;
 
 @Getter
 @Setter
@@ -19,6 +19,9 @@ public class Export {
     @ManyToOne
     @JoinColumn(name = "data_source_id")
     public DataSource dataSource;
+    @ManyToOne
+    @JoinColumn(name = "page_size_id")
+    public PdfPageSize pdfPageSize;
     //
     //
     @Id
@@ -42,7 +45,7 @@ public class Export {
 
         if (Objects.isNull(getName())
                 || Objects.isNull(getDataSource())
-                || Objects.isNull(getDataSource().getQuery()))
+                || Objects.isNull(getDataSource().getQueryName()))
             isConfigured[0] = false;
 
         Map<Integer, FieldSpec> indexMap = new HashMap<>();
@@ -55,7 +58,7 @@ public class Export {
             indexMap.put(field.getIndex(), field);
         });
 
-        File sql = new File(SQL_FOLDER + dataSource.getQuery() + ".sql");
+        File sql = new File(Config.getInstance().getProperty(Config.SQL_FOLDER) + dataSource.getQueryName() + ".sql");
         if (!sql.exists())
             isConfigured[0] = false;
 

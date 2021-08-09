@@ -1,7 +1,7 @@
 package com.angrysurfer.social.shrapnel.util;
 
 import com.angrysurfer.social.shrapnel.component.Export;
-import com.angrysurfer.social.shrapnel.component.writer.impl.ExcelRowWriter;
+import com.angrysurfer.social.shrapnel.component.writer.impl.ExcelTableWriter;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -17,19 +17,19 @@ public class ExcelUtil {
 
     static final String XLSX = "xlsx";
 
-    static Sheet createSheet(Workbook workbook, ExcelRowWriter writer, String label) {
+    static Sheet createSheet(Workbook workbook, ExcelTableWriter writer, String label) {
         Sheet sheet = workbook.createSheet(label);
         for (int i = 0; i < writer.getFields().size(); i++)
             sheet.setColumnWidth(i, 6000);
         return sheet;
     }
 
-    public static void addSpreadSheet(Workbook workbook, String label, Collection<Object> items, ExcelRowWriter writer) {
+    public static void addSpreadSheet(Workbook workbook, String label, Collection<Object> items, ExcelTableWriter writer) {
         Sheet sheet = createSheet(workbook, writer, label);
 
         Map<String, Object> config = new HashMap<>();
-        config.put(ExcelRowWriter.WORKBOOK, workbook);
-        config.put(ExcelRowWriter.SHEET, sheet);
+        config.put(ExcelTableWriter.WORKBOOK, workbook);
+        config.put(ExcelTableWriter.SHEET, sheet);
 
         writer.writeData(config, items);
     }

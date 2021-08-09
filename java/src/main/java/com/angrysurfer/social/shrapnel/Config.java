@@ -20,6 +20,8 @@ public class Config {
 
     public final static String FONTS_FOLDER = "fonts.folder";
 
+    public final static String SQL_FOLDER = "sql.folder";
+
     private static Config instance;
 
     private Map<Object, Object> configurationMap = new HashedMap<>();
@@ -31,7 +33,7 @@ public class Config {
     public static synchronized Config getInstance() {
         if (Objects.isNull(instance)) {
             instance = new Config();
-            instance.reload();
+            instance.init();
         }
 
         return instance;
@@ -39,6 +41,10 @@ public class Config {
 
     public boolean containsKey(String key) {
         return getConfigurationMap().containsKey(key);
+    }
+
+    public void flush() {
+        instance = null;
     }
 
     public Object getOrDefault(Object key, Object defaultValue) {
@@ -49,7 +55,7 @@ public class Config {
         return getConfigurationMap().get(key);
     }
 
-    public void reload() {
+    public void init() {
         FileUtil.getFileProperties(DEFAULTS).entrySet().forEach(entry -> {
             getInstance().setProperty(entry.getKey(), entry.getValue());
         });
