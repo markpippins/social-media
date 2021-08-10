@@ -1,7 +1,7 @@
 package com.angrysurfer.social.shrapnel.services.service.impl;
 
 import com.angrysurfer.social.shrapnel.component.FieldSpec;
-import com.angrysurfer.social.shrapnel.component.writer.impl.CSVTableWriter;
+import com.angrysurfer.social.shrapnel.component.writer.impl.CsvTableWriter;
 import com.angrysurfer.social.shrapnel.component.writer.impl.ExcelTableWriter;
 import com.angrysurfer.social.shrapnel.component.writer.impl.PdfTableWriter;
 import com.angrysurfer.social.shrapnel.services.service.LightweightExportsService;
@@ -25,7 +25,7 @@ public class LightweightExportsServiceImpl implements LightweightExportsService 
     public String writeCSVFile(Collection<Object> items, List<FieldSpec> columns, String filename) {
         try {
             FileUtil.ensureSafety(filename);
-            CSVTableWriter writer = new CSVTableWriter(columns);
+            CsvTableWriter writer = new CsvTableWriter(columns);
             writer.writeValues(items, filename);
         } catch (IOException e) {
             log.error(e.getMessage(), e);

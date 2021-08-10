@@ -4,9 +4,9 @@ import com.angrysurfer.social.shrapnel.component.TabularExport;
 import com.angrysurfer.social.shrapnel.component.property.PropertyMapAccessor;
 import com.angrysurfer.social.shrapnel.services.ExportRequest;
 import com.angrysurfer.social.shrapnel.services.factory.ExportFactory;
+import com.angrysurfer.social.shrapnel.services.model.ComponentCreator;
 import com.angrysurfer.social.shrapnel.services.model.Export;
 import com.angrysurfer.social.shrapnel.services.model.FieldSpec;
-import com.angrysurfer.social.shrapnel.services.repository.ComponentCreator;
 import com.itextpdf.kernel.geom.PageSize;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -42,7 +42,7 @@ public class JdbcTemplateExportFactory implements ExportFactory {
                 .collect(Collectors.toList());
 
         final PageSize pageSize = Objects.nonNull(getExport().getPdfPageSize()) ?
-                ComponentCreator.getPageSize(getExport().getPdfPageSize()) :
+                ComponentCreator.createPageSize(getExport().getPdfPageSize()) :
                 PageSize.Default;
 
         TabularExport exporter = new TabularExport(getExportName(), fields) {

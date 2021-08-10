@@ -1,8 +1,4 @@
-package com.angrysurfer.social.shrapnel.services.repository;
-
-import com.angrysurfer.social.shrapnel.services.model.FieldSpec;
-import com.angrysurfer.social.shrapnel.services.model.FieldType;
-import com.angrysurfer.social.shrapnel.services.model.PdfPageSize;
+package com.angrysurfer.social.shrapnel.services.model;
 
 public class ComponentCreator {
 
@@ -22,7 +18,7 @@ public class ComponentCreator {
         return ft;
     }
 
-    public static com.itextpdf.kernel.geom.PageSize getPageSize(PdfPageSize pdfPageSize) {
+    public static com.itextpdf.kernel.geom.PageSize createPageSize(PdfPageSize pdfPageSize) {
         return new com.itextpdf.kernel.geom.PageSize(pdfPageSize.getWidth(), pdfPageSize.getHeight());
     }
 }

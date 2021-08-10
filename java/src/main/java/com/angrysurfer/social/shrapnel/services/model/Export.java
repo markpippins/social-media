@@ -12,7 +12,7 @@ import java.util.*;
 @Getter
 @Setter
 @Entity
-@Table(name = "export_model")
+@Table(name = "export_model")//, schema = "shrapnel")
 public class Export {
     //
     //

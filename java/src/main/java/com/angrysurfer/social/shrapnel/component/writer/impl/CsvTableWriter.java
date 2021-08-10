@@ -20,7 +20,7 @@ import java.util.Map;
 @Getter
 @Setter
 @Slf4j
-public class CSVTableWriter extends TableWriter implements DataWriter {
+public class CsvTableWriter extends TableWriter implements DataWriter {
 
     private static final String SPACE = " ";
 
@@ -34,7 +34,7 @@ public class CSVTableWriter extends TableWriter implements DataWriter {
 
     private DataFilterList filters = new DataFilterList.DataFilterListImpl();
 
-    public CSVTableWriter(List<FieldSpec> columns) {
+    public CsvTableWriter(List<FieldSpec> columns) {
         super(columns);
     }
 

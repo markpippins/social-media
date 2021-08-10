@@ -10,6 +10,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity(name = "Edit")
+//@Table(schema = "social")
 public class Edit implements Serializable {
 
 	/**

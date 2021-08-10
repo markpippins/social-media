@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity(name = "Reaction")
+//@Table(schema = "social")
 public class Reaction implements Serializable {
 
 	/**

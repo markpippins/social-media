@@ -1,6 +1,6 @@
 package com.angrysurfer.social.shrapnel;
 
-import com.angrysurfer.social.shrapnel.services.model.DataSource;
+import com.angrysurfer.social.shrapnel.services.model.ComponentCreator;
 import com.angrysurfer.social.shrapnel.services.model.Export;
 import com.angrysurfer.social.shrapnel.services.model.FieldSpec;
 import com.angrysurfer.social.shrapnel.services.model.PdfPageSize;
@@ -14,8 +14,16 @@ import java.util.Arrays;
 
 @Slf4j
 @Component
+//@Configuration
+//@PropertySource({"classpath:persistence-multiple-db.properties"})
+//@EnableJpaRepositories(
+//        basePackages = "com.angrysurfer.social.shrapnel.services.model",
+//        entityManagerFactoryRef = "shrapnelEntityManager",
+//        transactionManagerRef = "shrapnelTransactionManager"
+//)
 class SpringConfig implements CommandLineRunner {
 
+    private static final String SHRAPNEL_MODEL_PACKAGE = "com.angrysurfer.social.shrapnel.services.model";
     @Resource
     FieldSpecRepository fieldSpecRepository;
 
@@ -30,6 +38,8 @@ class SpringConfig implements CommandLineRunner {
 
     @Resource
     PdfPageSizeRepository pdfPageSizeRepository;
+//    @Autowired
+//    private Environment env;
 
     @Override
     public void run(String... args) throws Exception {
@@ -67,7 +77,7 @@ class SpringConfig implements CommandLineRunner {
         Arrays.stream(com.angrysurfer.social.shrapnel.component.FieldSpec.FieldTypeEnum.values())
                 .forEach(fieldType -> fieldTypeRepository.save(ComponentCreator.createFieldType(fieldType)));
 
-        DataSource forumData = new DataSource();
+        com.angrysurfer.social.shrapnel.services.model.DataSource forumData = new com.angrysurfer.social.shrapnel.services.model.DataSource();
         forumData.setQueryName("get-forums");
         forumData.setName("forum-list");
         dataSourceRepository.save(forumData);
@@ -101,7 +111,7 @@ class SpringConfig implements CommandLineRunner {
         forumExport.setPdfPageSize(pdfPageSizeRepository.findByName("A0"));
         exportRepository.save(forumExport);
 
-        DataSource userData = new DataSource();
+        com.angrysurfer.social.shrapnel.services.model.DataSource userData = new com.angrysurfer.social.shrapnel.services.model.DataSource();
         userData.setQueryName("get-users");
         userData.setName("user-list");
         dataSourceRepository.save(userData);
@@ -145,4 +155,48 @@ class SpringConfig implements CommandLineRunner {
         userExport.setPdfPageSize(pdfPageSizeRepository.findByName("A0"));
         exportRepository.save(userExport);
     }
+
+//    @Bean
+//    public LocalContainerEntityManagerFactoryBean shrapnelEntityManager() {
+//        LocalContainerEntityManagerFactoryBean em
+//                = new LocalContainerEntityManagerFactoryBean();
+//        em.setDataSource(shrapnelDataSource());
+//        em.setPackagesToScan(
+//                new String[]{SHRAPNEL_MODEL_PACKAGE});
+//
+//        HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
+//        em.setJpaVendorAdapter(vendorAdapter);
+//        HashMap<String, Object> properties = new HashMap<>();
+//        properties.put("hibernate.hbm2ddl.auto",
+//                env.getProperty("hibernate.hbm2ddl.auto"));
+//        properties.put("hibernate.dialect",
+//                env.getProperty("hibernate.dialect"));
+//        em.setJpaPropertyMap(properties);
+//
+//        return em;
+//    }
+//
+//    @Bean
+//    public DataSource shrapnelDataSource() {
+//
+//        DriverManagerDataSource dataSource
+//                = new DriverManagerDataSource();
+//        dataSource.setDriverClassName(
+//                env.getProperty("jdbc.driverClassName"));
+//        dataSource.setUrl(env.getProperty("shrapnel.jdbc.url"));
+//        dataSource.setUsername(env.getProperty("jdbc.user"));
+//        dataSource.setPassword(env.getProperty("jdbc.pass"));
+//
+//        return dataSource;
+//    }
+//
+//    @Bean
+//    public PlatformTransactionManager shrapnelTransactionManager() {
+//
+//        JpaTransactionManager transactionManager
+//                = new JpaTransactionManager();
+//        transactionManager.setEntityManagerFactory(
+//                shrapnelEntityManager().getObject());
+//        return transactionManager;
+//    }
 }

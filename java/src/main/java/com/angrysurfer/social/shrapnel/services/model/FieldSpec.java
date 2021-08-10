@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-@Table(name = "field_spec_model")
+@Table(name = "field_spec_model")//, schema = "shrapnel")
 public class FieldSpec {
 
     @ManyToOne

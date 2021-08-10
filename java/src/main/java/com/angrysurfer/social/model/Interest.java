@@ -7,6 +7,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity()
+//@Table(schema = "social")
 public class Interest implements Serializable {
 
     /**

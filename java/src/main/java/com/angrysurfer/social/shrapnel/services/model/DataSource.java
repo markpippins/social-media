@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-@Table(name = "data_source_model")
+@Table(name = "data_source_model")//, schema = "shrapnel")
 public class DataSource {
 
     @Id

@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity(name = "Profile")
+//@Table(schema = "social")
 public class Profile implements Serializable {
 
 	/**

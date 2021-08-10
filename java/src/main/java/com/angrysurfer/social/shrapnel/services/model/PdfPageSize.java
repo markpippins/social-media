@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-@Table(name = "page_size")
+@Table(name = "page_size")//, schema = "shrapnel")
 public class PdfPageSize {
 
     @Id
