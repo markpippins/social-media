@@ -2,11 +2,13 @@ package com.angrysurfer.social.shrapnel.util;
 
 import com.angrysurfer.social.shrapnel.component.IExport;
 import com.angrysurfer.social.shrapnel.component.writer.ExcelDataWriter;
+import com.angrysurfer.social.shrapnel.services.exception.ExportRequestProcessingException;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Collection;
@@ -38,31 +40,44 @@ public class ExcelUtil {
         addSpreadSheet(workbook, FileUtil.getLabel(export), items, export.getExcelRowWriter());
     }
 
-    public static ByteArrayOutputStream generateByteArrayOutputStream(Collection<Object> data, IExport export) throws IOException {
+    public static ByteArrayOutputStream generateByteArrayOutputStream(Collection<Object> data, IExport export) {
         Workbook workbook = new XSSFWorkbook();
         addSpreadSheet(workbook, export, data);
         return generateByteArrayOutputStream(workbook);
     }
 
-    private static ByteArrayOutputStream generateByteArrayOutputStream(Workbook workbook) throws IOException {
+    private static ByteArrayOutputStream generateByteArrayOutputStream(Workbook workbook) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        workbook.write(baos);
-        workbook.close();
+        try {
+            workbook.write(baos);
+            workbook.close();
+        } catch (IOException e) {
+            throw new ExportRequestProcessingException();
+        }
         return baos;
     }
 
-    public static String writeWorkbookToFile(Workbook workbook, String filename) throws IOException {
+    public static String writeWorkbookToFile(Workbook workbook, String filename) {
         String outputFileName = FileUtil.getOutputFileName(filename, XLSX);
-        FileUtil.ensureSafety(outputFileName);
+        try {
+            FileUtil.ensureSafety(outputFileName);
+        } catch (IOException e) {
+            throw new ExportRequestProcessingException();
+        }
 
         try (FileOutputStream fos = new FileOutputStream(outputFileName)) {
             workbook.write(fos);
             workbook.close();
-            return outputFileName;
+        } catch (FileNotFoundException e) {
+            throw new ExportRequestProcessingException();
+        } catch (IOException e) {
+            throw new ExportRequestProcessingException();
         }
+
+        return outputFileName;
     }
 
-    public static String writeWorkbookToFile(Collection<Object> data, IExport export, String filename) throws IOException {
+    public static String writeWorkbookToFile(Collection<Object> data, IExport export, String filename) {
         Workbook workbook = new XSSFWorkbook();
         addSpreadSheet(workbook, export, data);
         return writeWorkbookToFile(workbook, filename);

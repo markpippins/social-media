@@ -31,17 +31,11 @@ public class ExportsController {
 
     @PostMapping(value = "/fileExport")
     public ResponseEntity<ByteArrayResource> exportFile(@RequestBody Request request) {
+        exportRequestValidator.validate(request);
         HttpHeaders headers = new HttpHeaders();
         ByteArrayResource bytes = null;
-
-        if (isValid(request))
-            try {
-                headers.add(HttpHeaders.CONTENT_DISPOSITION, String.format("attachment;filename=%s.%s", request.getName(), request.getFileType()));
-                bytes = exportsService.exportByteArrayResource(request);
-            } catch (Exception e) {
-                log.error(e.getMessage(), e);
-            }
-
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, String.format("attachment;filename=%s.%s", request.getName(), request.getFileType()));
+        bytes = exportsService.exportByteArrayResource(request);
         return Objects.nonNull(bytes) ?
                 ResponseEntity.ok().headers(headers).contentLength(bytes.contentLength()).contentType(MediaType.APPLICATION_OCTET_STREAM).body(bytes) :
                 ResponseEntity.notFound().build();
@@ -49,18 +43,10 @@ public class ExportsController {
 
     @PostMapping(value = "/streamExport")
     public ResponseEntity exportStream(@RequestBody Request request) {
+        exportRequestValidator.validate(request);
         HttpHeaders headers = new HttpHeaders();
-        ByteArrayOutputStream stream = null;
-
-        if (isValid(request))
-            try {
-                headers.add(HttpHeaders.CONTENT_DISPOSITION, String.format("attachment;filename=%s.%s", request.getName(), request.getFileType()));
-                stream = exportsService.exportByteArrayOutputStream(request);
-            } catch (Exception e) {
-                log.error(e.getMessage(), e);
-                return ResponseEntity.notFound().build();
-            }
-
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, String.format("attachment;filename=%s.%s", request.getName(), request.getFileType()));
+        ByteArrayOutputStream stream = exportsService.exportByteArrayOutputStream(request);
         return Objects.nonNull(stream) ?
                 ResponseEntity.ok().headers(headers).contentLength(stream.size()).contentType(MediaType.APPLICATION_OCTET_STREAM).body(stream.toByteArray()) :
                 ResponseEntity.notFound().build();
@@ -70,17 +56,6 @@ public class ExportsController {
     public ResponseEntity flushConfig() {
         Config.getInstance().flush();
         return ResponseEntity.ok().build();
-    }
-
-    private boolean isValid(Request request) {
-        try {
-            exportRequestValidator.validate(request);
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return false;
     }
 
 }

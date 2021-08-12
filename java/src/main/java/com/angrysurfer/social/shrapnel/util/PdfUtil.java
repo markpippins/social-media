@@ -2,6 +2,7 @@ package com.angrysurfer.social.shrapnel.util;
 
 import com.angrysurfer.social.shrapnel.component.IExport;
 import com.angrysurfer.social.shrapnel.component.writer.PdfDataWriter;
+import com.angrysurfer.social.shrapnel.services.exception.ExportRequestProcessingException;
 import com.itextpdf.io.font.FontProgram;
 import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.kernel.geom.PageSize;
@@ -13,6 +14,7 @@ import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.Table;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
@@ -24,10 +26,19 @@ public class PdfUtil {
         return createDocument(filename, PageSize.Default);
     }
 
-    public static Document createDocument(String filename, PageSize pageSize) throws IOException {
-        FileUtil.ensureSafety(filename);
+    public static Document createDocument(String filename, PageSize pageSize) {
+        try {
+            FileUtil.ensureSafety(filename);
+        } catch (IOException e) {
+            throw new ExportRequestProcessingException();
+        }
 
-        PdfWriter pdfWriter = new PdfWriter(filename, getWriterProperties());
+        PdfWriter pdfWriter = null;
+        try {
+            pdfWriter = new PdfWriter(filename, getWriterProperties());
+        } catch (FileNotFoundException e) {
+            throw new ExportRequestProcessingException();
+        }
         PdfDocument pdfDocument = new PdfDocument(pdfWriter);
         pdfDocument.setDefaultPageSize(pageSize);
         pdfDocument.addNewPage();
@@ -90,13 +101,17 @@ public class PdfUtil {
         return properties;
     }
 
-    public static String writeTabularFile(Collection<Object> items, PdfDataWriter pdfRowWriter, String filename) throws IOException {
+    public static String writeTabularFile(Collection<Object> items, PdfDataWriter pdfRowWriter, String filename) {
         return writeTabularFile(items, pdfRowWriter, filename, PageSize.Default);
     }
 
-    public static String writeTabularFile(Collection<Object> items, PdfDataWriter pdfRowWriter, String filename, PageSize pageSize) throws IOException {
+    public static String writeTabularFile(Collection<Object> items, PdfDataWriter pdfRowWriter, String filename, PageSize pageSize) {
         String outputFileName = FileUtil.getOutputFileName(filename, "pdf");
-        FileUtil.ensureSafety(outputFileName);
+        try {
+            FileUtil.ensureSafety(outputFileName);
+        } catch (IOException e) {
+            throw new ExportRequestProcessingException();
+        }
         Document document = createDocument(outputFileName, pageSize);
         writeToTable(items, pdfRowWriter);
         document.add(pdfRowWriter.getTable());
@@ -104,7 +119,7 @@ public class PdfUtil {
         return outputFileName;
     }
 
-    public static String writeTabularFile(Collection<Object> items, IExport export, String filename) throws IOException {
+    public static String writeTabularFile(Collection<Object> items, IExport export, String filename) {
         return writeTabularFile(items, export.getPdfRowWriter(), filename, export.getPdfPageSize());
     }
 

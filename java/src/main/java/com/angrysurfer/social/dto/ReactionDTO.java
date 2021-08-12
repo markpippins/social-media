@@ -30,5 +30,4 @@ public class ReactionDTO implements Serializable {
 		result.setAlias(reaction.getUser().getAlias());
 		return result;
 	}
-
 }

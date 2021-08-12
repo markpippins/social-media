@@ -18,7 +18,7 @@ public class Request {
     @NotBlank(groups = {IRequestValidation.RequestExport.class})
     private String name;
 
-    @Size(min = 3, max = 3, groups = {IRequestValidation.RequestExport.class})
+    @Size(min = 3, max = 4, groups = {IRequestValidation.RequestExport.class})
     @NotBlank(groups = {IRequestValidation.RequestExport.class})
     private String fileType;
 }
