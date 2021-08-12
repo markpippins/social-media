@@ -10,7 +10,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 @Slf4j
 @ControllerAdvice
-public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
+public class ExportExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler({InvalidExportRequestException.class})
     public ResponseEntity<String> handleInvalidExportRequest(Exception e) {
