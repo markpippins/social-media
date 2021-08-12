@@ -23,15 +23,17 @@ public class FieldSpec implements IFieldSpec {
     public FieldSpec() {
     }
 
-    public FieldSpec(String propertyName, String label, FieldTypeEnum type) {
-        setPropertyName(propertyName);
-        setLabel(label);
-        setType(type);
+    public FieldSpec(String propertyName) {
+        this(propertyName, propertyName.toUpperCase(), FieldTypeEnum.STRING);
     }
 
     public FieldSpec(String propertyName, FieldTypeEnum type) {
+        this(propertyName, propertyName.toUpperCase(), type);
+    }
+
+    public FieldSpec(String propertyName, String label, FieldTypeEnum type) {
         setPropertyName(propertyName);
-        setLabel(propertyName.toUpperCase());
+        setLabel(label);
         setType(type);
     }
 
@@ -55,5 +57,4 @@ public class FieldSpec implements IFieldSpec {
             return DEBUG ? super.getLabel() : EMPTY_STRING;
         }
     }
-
 }

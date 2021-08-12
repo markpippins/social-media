@@ -1,8 +1,8 @@
 package com.angrysurfer.social.shrapnel.util;
 
-import com.angrysurfer.social.dto.UserDTO;
 import com.angrysurfer.social.shrapnel.Config;
 import com.angrysurfer.social.shrapnel.component.IExport;
+import com.angrysurfer.social.shrapnel.component.writer.CsvDataWriter;
 import com.angrysurfer.social.shrapnel.services.factory.IExportFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ByteArrayResource;
@@ -17,6 +17,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.Map;
 import java.util.Properties;
 
@@ -60,8 +61,12 @@ public class FileUtil {
         return result;
     }
 
-    public static String makeFileName(UserDTO user, IExportFactory factory) {
-        return user.getAlias() + " - " + factory.getExportName() + " - " + LocalDateTime.now().getHour() + LocalDateTime.now().getMinute() + LocalDateTime.now().getSecond();
+    public static String makeFileName(IExportFactory factory) {
+        return String.join("-", factory.getExportName(),
+//                Objects.nonNull(starter) ? starter.trim().toLowerCase() : "",
+                Integer.toString(LocalDateTime.now().getHour()),
+                Integer.toString(LocalDateTime.now().getMinute()),
+                Integer.toString(LocalDateTime.now().getSecond()));
     }
 
     public static void removeFileAfter(String filename, long waitSeconds) {
@@ -111,6 +116,10 @@ public class FileUtil {
         return Files.readString(Path.of(Config.getInstance().getProperty(Config.SQL_FOLDER) + filename + ".sql"));
     }
 
+    public static void writeCsvFile(Collection data, IExport export, String filename) {
+        CsvDataWriter writer = new CsvDataWriter(export.getFields());
+        writer.writeValues(data, filename);
 
+    }
 }
 

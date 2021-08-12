@@ -1,12 +1,8 @@
 package com.angrysurfer.social.shrapnel.services.service;
 
-import com.angrysurfer.social.dto.UserDTO;
 import com.angrysurfer.social.shrapnel.component.IExport;
-import com.angrysurfer.social.shrapnel.component.property.PropertyMapAccessor;
-import com.angrysurfer.social.shrapnel.component.writer.CsvDataWriter;
 import com.angrysurfer.social.shrapnel.services.exception.ExportRequestProcessingException;
 import com.angrysurfer.social.shrapnel.services.factory.IExportFactory;
-import com.angrysurfer.social.shrapnel.services.factory.JdbcTemplateExportFactory;
 import com.angrysurfer.social.shrapnel.util.ExcelUtil;
 import com.angrysurfer.social.shrapnel.util.FileUtil;
 import com.angrysurfer.social.shrapnel.util.PdfUtil;
@@ -14,7 +10,6 @@ import org.springframework.core.io.ByteArrayResource;
 
 import java.io.ByteArrayOutputStream;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Collection;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -25,18 +20,18 @@ public interface IExportsService {
     String XLSX_FILE = "xlsx";
     long WAIT_SECONDS = 360;
 
-    static UserDTO user = new UserDTO() {
-        @Override
-        public String getAlias() {
-            return "system-export";
-        }
-    };
+//    static UserDTO user = new UserDTO() {
+//        @Override
+//        public String getAlias() {
+//            return "system-export";
+//        }
+//    };
 
     IExportFactory getFactory(Request request);
 
     default ByteArrayResource exportByteArrayResource(Request request) {
         IExportFactory factory = getFactory(request);
-        return Objects.nonNull(factory) ? exportByteArrayResource(request, FileUtil.makeFileName(user, factory)) : null;
+        return Objects.nonNull(factory) ? exportByteArrayResource(request, FileUtil.makeFileName(factory)) : null;
     }
 
     default ByteArrayResource exportByteArrayResource(Request request, String tempFileName) {
@@ -48,17 +43,12 @@ public interface IExportsService {
         if (Objects.nonNull(export))
             switch (request.getFileType().toLowerCase(Locale.ROOT)) {
                 case CSV_FILE:
-                    Collection data = factory.getData();
-                    CsvDataWriter writer = new CsvDataWriter(export.getFields());
-                    if (factory instanceof JdbcTemplateExportFactory)
-                        writer.setPropertyAccessor((new PropertyMapAccessor()));
-                    filename = FileUtil.makeFileName(user, factory);
-                    writer.writeValues(data, filename);
+                    filename = FileUtil.makeFileName(factory);
+                    FileUtil.writeCsvFile(factory.getData(), export, filename);
                     break;
 
                 case PDF_FILE:
-                    filename = PdfUtil.writeTabularFile(factory.getData(), export.getPdfRowWriter(), tempFileName,
-                            export.getPdfPageSize());
+                    filename = PdfUtil.writeTabularFile(factory.getData(), export, tempFileName);
                     break;
 
                 case XLSX_FILE:
@@ -75,7 +65,6 @@ public interface IExportsService {
     }
 
     default ByteArrayOutputStream exportByteArrayOutputStream(Request request) {
-
         IExportFactory factory = getFactory(request);
         IExport export = newExportInstance(request);
         if (Objects.nonNull(export))
@@ -95,7 +84,7 @@ public interface IExportsService {
         IExport export = null;
         try {
             export = factory.newInstance();
-            if (Objects.nonNull(export))
+            if (Objects.isNull(export))
                 return null;
 
             if (Objects.nonNull(request.getFilterCriteria()) && request.getFilterCriteria().size() > 0)
