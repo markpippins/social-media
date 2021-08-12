@@ -5,11 +5,10 @@ import lombok.Setter;
 
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static com.angrysurfer.social.shrapnel.component.writer.RowWriter.DEBUG;
-import static com.angrysurfer.social.shrapnel.component.writer.RowWriter.EMPTY_STRING;
+import static com.angrysurfer.social.shrapnel.component.writer.DataWriter.DEBUG;
+import static com.angrysurfer.social.shrapnel.component.writer.DataWriter.EMPTY_STRING;
 
 @Getter
 @Setter
@@ -43,11 +42,6 @@ public class FieldSpec implements IFieldSpec {
 
     public FieldSpec cloneWithNewLabel(String newLabel) {
         return new FieldSpec(getPropertyName(), newLabel, getType());
-    }
-
-    @Override
-    public String getFieldTypeName() {
-        return Objects.isNull(type) ? null : type.name();
     }
 
     public static class DebugFieldSpec extends FieldSpec {

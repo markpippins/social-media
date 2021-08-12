@@ -2,7 +2,7 @@ package com.angrysurfer.social.shrapnel.component.writer.filter;
 
 import com.angrysurfer.social.shrapnel.component.field.IFieldSpec;
 import com.angrysurfer.social.shrapnel.component.property.IPropertyAccessor;
-import com.angrysurfer.social.shrapnel.component.writer.IRowWriter;
+import com.angrysurfer.social.shrapnel.component.writer.IDataWriter;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +12,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
-import static com.angrysurfer.social.shrapnel.component.writer.RowWriter.EMPTY_STRING;
+import static com.angrysurfer.social.shrapnel.component.writer.DataWriter.EMPTY_STRING;
 
 @Getter
 @Setter
@@ -31,7 +31,7 @@ public class StringFieldFilter implements IDataFilter {
     }
 
     @Override
-    public boolean allows(Object item, IRowWriter writer, IPropertyAccessor accessor) {
+    public boolean allows(Object item, IDataWriter writer, IPropertyAccessor accessor) {
         boolean[] result = {Objects.nonNull(item)};
 
         if (result[0])

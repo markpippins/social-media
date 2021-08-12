@@ -19,7 +19,7 @@ import java.util.*;
 @Slf4j
 @Getter
 @Setter
-public class ExcelRowWriter extends RowWriter implements IRowWriter {
+public class ExcelDataWriter extends DataWriter implements IDataWriter {
 
     public static final String WORKBOOK = "workbook";
 
@@ -37,15 +37,15 @@ public class ExcelRowWriter extends RowWriter implements IRowWriter {
 
     private boolean autoCreateTopLevelHeader = true;
 
-    public ExcelRowWriter(List<IFieldSpec> fields) {
+    public ExcelDataWriter(List<IFieldSpec> fields) {
         super(fields);
     }
 
-    public ExcelRowWriter(List<IFieldSpec> fields, IValueRenderer valueRenderer) {
+    public ExcelDataWriter(List<IFieldSpec> fields, IValueRenderer valueRenderer) {
         super(fields, valueRenderer);
     }
 
-    public ExcelRowWriter(List<IFieldSpec> fields, IValueRenderer valueRenderer, CombinedStyleProvider styleProvider) {
+    public ExcelDataWriter(List<IFieldSpec> fields, IValueRenderer valueRenderer, CombinedStyleProvider styleProvider) {
         super(fields, valueRenderer);
         setStyleProvider(styleProvider);
     }

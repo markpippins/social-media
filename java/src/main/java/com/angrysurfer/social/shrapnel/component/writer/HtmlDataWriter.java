@@ -19,7 +19,7 @@ import java.util.Map;
 @Getter
 @Setter
 @Slf4j
-public class CsvRowWriter extends RowWriter implements IRowWriter {
+public class HtmlDataWriter extends DataWriter implements IDataWriter {
 
     private static final String SPACE = " ";
 
@@ -33,7 +33,7 @@ public class CsvRowWriter extends RowWriter implements IRowWriter {
 
     private IDataFilters filters = new DataFilters();
 
-    public CsvRowWriter(List<IFieldSpec> columns) {
+    public HtmlDataWriter(List<IFieldSpec> columns) {
         super(columns);
     }
 

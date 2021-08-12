@@ -1,11 +1,11 @@
 package com.angrysurfer.social.shrapnel.services.factory;
 
-import com.angrysurfer.social.shrapnel.services.ExportRequest;
 import com.angrysurfer.social.shrapnel.services.model.DataSource;
 import com.angrysurfer.social.shrapnel.services.model.Export;
 import com.angrysurfer.social.shrapnel.services.repository.DataSourceRepository;
 import com.angrysurfer.social.shrapnel.services.repository.ExportRepository;
 import com.angrysurfer.social.shrapnel.services.repository.mapping.HashMapResultSetExtractor;
+import com.angrysurfer.social.shrapnel.services.service.Request;
 import com.angrysurfer.social.shrapnel.util.FileUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -30,13 +30,13 @@ public class JdbcTemplateMetaExportFactory implements IMetaExportFactory {
     ExportRepository exportRepository;
 
     @Override
-    public boolean hasFactory(ExportRequest request) {
+    public boolean hasFactory(Request request) {
         Export export = exportRepository.findByName(request.getName());
         return Objects.nonNull(export) && export.isConfigured();
     }
 
     @Override
-    public IExportFactory newInstance(ExportRequest request) {
+    public IExportFactory newInstance(Request request) {
         final Export export = exportRepository.findByName(request.getName());
         final DataSource dataSource = dataSourceRepository.findByName(request.getName());
 

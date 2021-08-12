@@ -12,8 +12,6 @@ public interface IFieldSpec {
 
     FieldTypeEnum getType();
 
-    String getFieldTypeName();
-
     Boolean getCalculated();
 
     void setCalculated(Boolean isCalculated);

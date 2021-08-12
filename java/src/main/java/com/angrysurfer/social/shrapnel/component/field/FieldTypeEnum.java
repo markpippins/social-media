@@ -15,7 +15,6 @@ public enum FieldTypeEnum {
     STRING(8);
 
     private int code;
-    private String name;
 
     FieldTypeEnum(int code) {
         this.code = code;
@@ -27,6 +26,17 @@ public enum FieldTypeEnum {
                         "\nUnknown name '" + name + "', Allowed names are "
                                 + String.join(", ", Arrays.asList(FieldTypeEnum.values()).stream().map((FieldTypeEnum type) -> {
                             return String.join(name, "'", "'");
+                        }).collect(Collectors.toList()))));
+
+        return result;
+    }
+
+    public static FieldTypeEnum from(int code) throws IllegalArgumentException {
+        FieldTypeEnum result = Arrays.asList(FieldTypeEnum.values()).stream().filter(type -> type.getCode() == code).findFirst()
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "\nUnknown name '" + code + "', Allowed codes are "
+                                + String.join(", ", Arrays.asList(FieldTypeEnum.values()).stream().map((FieldTypeEnum type) -> {
+                            return String.join(Integer.toString(code), "'", "'");
                         }).collect(Collectors.toList()))));
 
         return result;

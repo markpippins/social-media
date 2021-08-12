@@ -14,13 +14,13 @@ import java.util.List;
 @Getter
 @Setter
 @Slf4j
-public abstract class MultiLevelExcelRowWriter extends ExcelRowWriter implements IMultiLevelTableWriter {
+public abstract class MultiLevelExcelDataWriter extends ExcelDataWriter implements IMultiLevelDataWriter {
 
     private int level = -1;
 
     private String levelPropertyName;
 
-    public MultiLevelExcelRowWriter(String levelPropertyName, List<IFieldSpec> fields, IValueRenderer valueRenderer) {
+    public MultiLevelExcelDataWriter(String levelPropertyName, List<IFieldSpec> fields, IValueRenderer valueRenderer) {
         super(fields, valueRenderer);
         setAutoCreateTopLevelHeader(false);
         setLevelPropertyName(levelPropertyName);

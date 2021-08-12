@@ -10,7 +10,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 
-import static com.angrysurfer.social.shrapnel.component.writer.RowWriter.EMPTY_STRING;
+import static com.angrysurfer.social.shrapnel.component.writer.DataWriter.EMPTY_STRING;
 
 public interface IValueRenderer {
 

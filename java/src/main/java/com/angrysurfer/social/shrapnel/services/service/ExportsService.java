@@ -1,6 +1,5 @@
 package com.angrysurfer.social.shrapnel.services.service;
 
-import com.angrysurfer.social.shrapnel.services.ExportRequest;
 import com.angrysurfer.social.shrapnel.services.factory.IExportFactory;
 import com.angrysurfer.social.shrapnel.services.factory.IMetaExportFactory;
 import lombok.Getter;
@@ -21,15 +20,15 @@ public class ExportsService implements IExportsService {
     @Resource
     List<IExportFactory> exporterFactories;
 
-    private boolean factoryRegistered(ExportRequest request) {
+    private boolean factoryRegistered(Request request) {
         return metaFactories.stream().anyMatch(fac -> fac.hasFactory(request));
     }
 
-    private IMetaExportFactory getMetaFactory(ExportRequest request) {
+    private IMetaExportFactory getMetaFactory(Request request) {
         return metaFactories.stream().filter(fac -> fac.hasFactory(request)).findFirst().orElseGet(() -> null);
     }
 
-    public IExportFactory getFactory(ExportRequest request) {
+    public IExportFactory getFactory(Request request) {
         return getExporterFactories().stream().filter(fac -> fac.getExportName().equalsIgnoreCase(request.getName())).findFirst()
                 .orElseGet(() -> factoryRegistered(request) ? getMetaFactory(request).newInstance(request) : null);
     }

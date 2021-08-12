@@ -8,7 +8,7 @@ import com.angrysurfer.social.shrapnel.component.field.FieldSpec;
 import com.angrysurfer.social.shrapnel.component.field.FieldTypeEnum;
 import com.angrysurfer.social.shrapnel.component.field.IFieldSpec;
 import com.angrysurfer.social.shrapnel.component.property.IPropertyAccessor;
-import com.angrysurfer.social.shrapnel.component.writer.IRowWriter;
+import com.angrysurfer.social.shrapnel.component.writer.IDataWriter;
 import com.angrysurfer.social.shrapnel.component.writer.filter.IDataFilter;
 import com.angrysurfer.social.shrapnel.component.writer.style.FontSource;
 import com.angrysurfer.social.shrapnel.component.writer.style.adapter.StyleAdapter;
@@ -28,7 +28,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.angrysurfer.social.shrapnel.component.writer.RowWriter.EMPTY_STRING;
+import static com.angrysurfer.social.shrapnel.component.writer.DataWriter.EMPTY_STRING;
 
 @Getter
 @Setter
@@ -192,7 +192,7 @@ public class FontConfigExport extends Export {
         List<String> filenames = new ArrayList<>();
 
         @Override
-        public boolean allows(Object item, IRowWriter writer, IPropertyAccessor accessor) {
+        public boolean allows(Object item, IDataWriter writer, IPropertyAccessor accessor) {
             File f = (File) item;
             boolean result = !filenames.contains(f.getName().toLowerCase());
             filenames.add(f.getName().toLowerCase());

@@ -1,10 +1,10 @@
 package com.angrysurfer.social.shrapnel.services.factory;
 
-import com.angrysurfer.social.shrapnel.services.ExportRequest;
+import com.angrysurfer.social.shrapnel.services.service.Request;
 
 public interface IMetaExportFactory {
 
-    boolean hasFactory(ExportRequest request);
+    boolean hasFactory(Request request);
 
-    IExportFactory newInstance(ExportRequest request);
+    IExportFactory newInstance(Request request);
 }

@@ -1,8 +1,9 @@
 package com.angrysurfer.social.shrapnel.services.controller;
 
 import com.angrysurfer.social.shrapnel.Config;
-import com.angrysurfer.social.shrapnel.services.ExportRequest;
 import com.angrysurfer.social.shrapnel.services.service.IExportsService;
+import com.angrysurfer.social.shrapnel.services.service.Request;
+import com.angrysurfer.social.shrapnel.services.service.validation.IRequestValidator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
@@ -25,12 +26,15 @@ public class ExportsController {
     @Resource
     IExportsService exportsService;
 
+    @Resource
+    IRequestValidator exportRequestValidator;
+
     @PostMapping(value = "/fileExport")
-    public ResponseEntity<ByteArrayResource> exportFile(@RequestBody ExportRequest request) {
+    public ResponseEntity<ByteArrayResource> exportFile(@RequestBody Request request) {
         HttpHeaders headers = new HttpHeaders();
         ByteArrayResource bytes = null;
 
-        if (exportsService.isValid(request))
+        if (isValid(request))
             try {
                 headers.add(HttpHeaders.CONTENT_DISPOSITION, String.format("attachment;filename=%s.%s", request.getName(), request.getFileType()));
                 bytes = exportsService.exportByteArrayResource(request);
@@ -44,11 +48,11 @@ public class ExportsController {
     }
 
     @PostMapping(value = "/streamExport")
-    public ResponseEntity exportStream(@RequestBody ExportRequest request) {
+    public ResponseEntity exportStream(@RequestBody Request request) {
         HttpHeaders headers = new HttpHeaders();
         ByteArrayOutputStream stream = null;
 
-        if (exportsService.isValid(request))
+        if (isValid(request))
             try {
                 headers.add(HttpHeaders.CONTENT_DISPOSITION, String.format("attachment;filename=%s.%s", request.getName(), request.getFileType()));
                 stream = exportsService.exportByteArrayOutputStream(request);
@@ -67,4 +71,16 @@ public class ExportsController {
         Config.getInstance().flush();
         return ResponseEntity.ok().build();
     }
+
+    private boolean isValid(Request request) {
+        try {
+            exportRequestValidator.validate(request);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
 }

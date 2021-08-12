@@ -10,7 +10,7 @@ public class ComponentCreator {
         FieldSpec result = new FieldSpec();
         result.setPropertyName(fieldSpec.getPropertyName());
         result.setLabel(fieldSpec.getLabel());
-        result.setType(FieldTypeEnum.from(fieldSpec.getFieldTypeName()));
+        result.setType(fieldSpec.getType());
         result.setIndex(fieldSpec.getIndex());
         return result;
     }

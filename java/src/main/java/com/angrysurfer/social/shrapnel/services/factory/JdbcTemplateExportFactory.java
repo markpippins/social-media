@@ -4,8 +4,8 @@ import com.angrysurfer.social.shrapnel.component.Export;
 import com.angrysurfer.social.shrapnel.component.IExport;
 import com.angrysurfer.social.shrapnel.component.field.IFieldSpec;
 import com.angrysurfer.social.shrapnel.component.property.PropertyMapAccessor;
-import com.angrysurfer.social.shrapnel.services.ExportRequest;
 import com.angrysurfer.social.shrapnel.services.model.ComponentCreator;
+import com.angrysurfer.social.shrapnel.services.service.Request;
 import com.itextpdf.kernel.geom.PageSize;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -19,11 +19,11 @@ import java.util.stream.Collectors;
 @Slf4j
 public class JdbcTemplateExportFactory implements IExportFactory {
 
-    private ExportRequest request;
+    private Request request;
 
     private com.angrysurfer.social.shrapnel.services.model.Export export;
 
-    public JdbcTemplateExportFactory(ExportRequest request, com.angrysurfer.social.shrapnel.services.model.Export export) {
+    public JdbcTemplateExportFactory(Request request, com.angrysurfer.social.shrapnel.services.model.Export export) {
         this.request = request;
         this.export = export;
     }

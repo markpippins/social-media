@@ -18,7 +18,7 @@ import java.util.*;
 @Slf4j
 @Getter
 @Setter
-public class PdfRowWriter extends RowWriter {
+public class PdfDataWriter extends DataWriter {
 
     public static String TABLE = "table";
 
@@ -30,11 +30,11 @@ public class PdfRowWriter extends RowWriter {
 
     private IDataFilters filters = new DataFilters();
 
-    public PdfRowWriter(List<IFieldSpec> fields) {
+    public PdfDataWriter(List<IFieldSpec> fields) {
         super(fields);
     }
 
-    public PdfRowWriter(List<IFieldSpec> fields, IValueRenderer valueRenderer) {
+    public PdfDataWriter(List<IFieldSpec> fields, IValueRenderer valueRenderer) {
         super(fields, valueRenderer);
     }
 

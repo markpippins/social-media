@@ -34,11 +34,6 @@ public class FieldSpec implements IFieldSpec {
 
     @Override
     public FieldTypeEnum getType() {
-        return Objects.isNull(this.fieldType) ? null : FieldTypeEnum.from(this.fieldType.getName());
-    }
-
-    @Override
-    public String getFieldTypeName() {
-        return Objects.isNull(fieldType) ? null : fieldType.getName();
+        return Objects.isNull(this.fieldType) ? null : FieldTypeEnum.from(this.fieldType.getCode());
     }
 }

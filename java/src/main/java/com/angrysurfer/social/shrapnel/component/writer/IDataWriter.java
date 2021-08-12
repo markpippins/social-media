@@ -7,7 +7,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-public interface IRowWriter {
+public interface IDataWriter {
 
     IValueCalculator getValueCalculator();
 

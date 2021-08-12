@@ -19,7 +19,7 @@ import java.util.*;
 @Slf4j
 @Getter
 @Setter
-public abstract class RowWriter implements IRowWriter, IProxyPropertyAccessor {
+public abstract class DataWriter implements IDataWriter, IProxyPropertyAccessor {
 
     public static final boolean DEBUG = false;
 
@@ -43,12 +43,12 @@ public abstract class RowWriter implements IRowWriter, IProxyPropertyAccessor {
 
     private IValueCalculator valueCalculator;
 
-    public RowWriter(List<IFieldSpec> fields) {
+    public DataWriter(List<IFieldSpec> fields) {
         setPropertyAccessor(new PropertyUtilsPropertyAccessor());
         setFields(fields);
     }
 
-    public RowWriter(List<IFieldSpec> fields, IValueRenderer valueRenderer) {
+    public DataWriter(List<IFieldSpec> fields, IValueRenderer valueRenderer) {
         setPropertyAccessor(new PropertyUtilsPropertyAccessor());
         setFields(fields);
         setValueRenderer(valueRenderer);

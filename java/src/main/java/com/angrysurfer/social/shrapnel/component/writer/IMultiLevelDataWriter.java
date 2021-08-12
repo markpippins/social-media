@@ -5,7 +5,7 @@ import com.angrysurfer.social.shrapnel.component.property.IPropertyAccessor;
 
 import java.util.List;
 
-public interface IMultiLevelTableWriter {
+public interface IMultiLevelDataWriter {
 
     List<IFieldSpec> getFieldsForLevel(int level);
 
@@ -17,7 +17,7 @@ public interface IMultiLevelTableWriter {
 
     void writeHeader();
 
-    default void beforeRow(IMultiLevelTableWriter writer, Object item, IPropertyAccessor propertyAccessor) {
+    default void beforeRow(IMultiLevelDataWriter writer, Object item, IPropertyAccessor propertyAccessor) {
         if (propertyAccessor.accessorExists(item, writer.getLevelPropertyName())) {
             int level = Integer.parseInt(propertyAccessor.getString(item, writer.getLevelPropertyName()));
             if (level == writer.getLevel())
@@ -28,7 +28,7 @@ public interface IMultiLevelTableWriter {
         }
     }
 
-    default int getCellOffset(IMultiLevelTableWriter writer, Object item, IPropertyAccessor propertyAccessor) {
+    default int getCellOffset(IMultiLevelDataWriter writer, Object item, IPropertyAccessor propertyAccessor) {
         if (propertyAccessor.accessorExists(item, writer.getLevelPropertyName())) {
             int level = Integer.parseInt(propertyAccessor.getString(item, writer.getLevelPropertyName()));
             return level - 1;
@@ -37,7 +37,7 @@ public interface IMultiLevelTableWriter {
         return 0;
     }
 
-    default boolean shouldSkip(IMultiLevelTableWriter writer, IFieldSpec field, Object item, IPropertyAccessor propertyAccessor) {
+    default boolean shouldSkip(IMultiLevelDataWriter writer, IFieldSpec field, Object item, IPropertyAccessor propertyAccessor) {
         if (propertyAccessor.accessorExists(item, writer.getLevelPropertyName())) {
             int level = Integer.parseInt(propertyAccessor.getString(item, writer.getLevelPropertyName()));
             return !writer.getFieldsForLevel(level).contains(field);
@@ -46,7 +46,7 @@ public interface IMultiLevelTableWriter {
         return false;
     }
 
-    default boolean shouldWrite(IMultiLevelTableWriter writer, IFieldSpec field, Object item, IPropertyAccessor propertyAccessor) {
+    default boolean shouldWrite(IMultiLevelDataWriter writer, IFieldSpec field, Object item, IPropertyAccessor propertyAccessor) {
         if (propertyAccessor.accessorExists(item, writer.getLevelPropertyName())) {
             int level = Integer.parseInt(propertyAccessor.getString(item, writer.getLevelPropertyName()));
             return writer.getFieldsForLevel(level).contains(field);

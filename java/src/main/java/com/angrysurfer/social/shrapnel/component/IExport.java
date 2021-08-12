@@ -2,8 +2,8 @@ package com.angrysurfer.social.shrapnel.component;
 
 import com.angrysurfer.social.shrapnel.component.field.IFieldSpec;
 import com.angrysurfer.social.shrapnel.component.property.IPropertyAccessor;
-import com.angrysurfer.social.shrapnel.component.writer.ExcelRowWriter;
-import com.angrysurfer.social.shrapnel.component.writer.PdfRowWriter;
+import com.angrysurfer.social.shrapnel.component.writer.ExcelDataWriter;
+import com.angrysurfer.social.shrapnel.component.writer.PdfDataWriter;
 import com.angrysurfer.social.shrapnel.component.writer.filter.IDataFilter;
 import com.itextpdf.kernel.geom.PageSize;
 
@@ -20,9 +20,9 @@ public interface IExport {
 
     String getName();
 
-    ExcelRowWriter getExcelRowWriter();
+    ExcelDataWriter getExcelRowWriter();
 
-    PdfRowWriter getPdfRowWriter();
+    PdfDataWriter getPdfRowWriter();
 
     PageSize getPdfPageSize();
 

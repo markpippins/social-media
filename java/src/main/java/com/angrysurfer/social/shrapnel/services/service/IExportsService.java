@@ -3,8 +3,7 @@ package com.angrysurfer.social.shrapnel.services.service;
 import com.angrysurfer.social.dto.UserDTO;
 import com.angrysurfer.social.shrapnel.component.IExport;
 import com.angrysurfer.social.shrapnel.component.property.PropertyMapAccessor;
-import com.angrysurfer.social.shrapnel.component.writer.CsvRowWriter;
-import com.angrysurfer.social.shrapnel.services.ExportRequest;
+import com.angrysurfer.social.shrapnel.component.writer.CsvDataWriter;
 import com.angrysurfer.social.shrapnel.services.factory.IExportFactory;
 import com.angrysurfer.social.shrapnel.services.factory.JdbcTemplateExportFactory;
 import com.angrysurfer.social.shrapnel.util.ExcelUtil;
@@ -33,18 +32,14 @@ public interface IExportsService {
         }
     };
 
-    IExportFactory getFactory(ExportRequest request);
+    IExportFactory getFactory(Request request);
 
-    default boolean isValid(ExportRequest request) {
-        return Objects.nonNull(getFactory(request));
-    }
-
-    default ByteArrayResource exportByteArrayResource(ExportRequest request) throws IOException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+    default ByteArrayResource exportByteArrayResource(Request request) throws IOException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         IExportFactory factory = getFactory(request);
         return Objects.nonNull(factory) ? exportByteArrayResource(request, FileUtil.makeFileName(user, factory)) : null;
     }
 
-    default ByteArrayResource exportByteArrayResource(ExportRequest request, String tempFileName) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException, IOException {
+    default ByteArrayResource exportByteArrayResource(Request request, String tempFileName) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException, IOException {
 
         IExportFactory factory = getFactory(request);
         IExport export = factory.newInstance();
@@ -60,7 +55,7 @@ public interface IExportsService {
         switch (request.getFileType().toLowerCase(Locale.ROOT)) {
             case CSV_FILE:
                 Collection data = factory.getData();
-                CsvRowWriter writer = new CsvRowWriter(export.getFields());
+                CsvDataWriter writer = new CsvDataWriter(export.getFields());
                 if (factory instanceof JdbcTemplateExportFactory)
                     writer.setPropertyAccessor((new PropertyMapAccessor()));
                 filename = FileUtil.makeFileName(user, factory);
@@ -85,7 +80,7 @@ public interface IExportsService {
         return null;
     }
 
-    default ByteArrayOutputStream exportByteArrayOutputStream(ExportRequest request) throws IOException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+    default ByteArrayOutputStream exportByteArrayOutputStream(Request request) throws IOException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
 
         IExportFactory factory = getFactory(request);
         IExport export = factory.newInstance();

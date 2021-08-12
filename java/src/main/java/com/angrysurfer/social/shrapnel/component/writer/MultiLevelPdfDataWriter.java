@@ -13,13 +13,13 @@ import java.util.List;
 @Slf4j
 @Getter
 @Setter
-public abstract class MultiLevelPdfRowWriter extends PdfRowWriter implements IMultiLevelTableWriter {
+public abstract class MultiLevelPdfDataWriter extends PdfDataWriter implements IMultiLevelDataWriter {
 
     protected int level = -1;
 
     private String levelPropertyName;
 
-    public MultiLevelPdfRowWriter(String levelPropertyName, List<IFieldSpec> fields, IValueRenderer valueRenderer) {
+    public MultiLevelPdfDataWriter(String levelPropertyName, List<IFieldSpec> fields, IValueRenderer valueRenderer) {
         super(fields, valueRenderer);
         setAutoCreateTopLevelHeader(false);
         setLevelPropertyName(levelPropertyName);
