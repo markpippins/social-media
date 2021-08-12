@@ -61,9 +61,18 @@ public class FileUtil {
         return result;
     }
 
-    public static String makeFileName(IExportFactory factory) {
+    public static String getFileName(IExportFactory factory) {
         return String.join("-", factory.getExportName(),
-//                Objects.nonNull(starter) ? starter.trim().toLowerCase() : "",
+                Integer.toString(LocalDateTime.now().getHour()),
+                Integer.toString(LocalDateTime.now().getMinute()),
+                Integer.toString(LocalDateTime.now().getSecond()));
+    }
+
+    public static String getLabel(IExport export) {
+        return String.join("-", export.getName(),
+                Integer.toString(LocalDate.now().getDayOfMonth()),
+                Integer.toString(LocalDate.now().getMonthValue()),
+                Integer.toString(LocalDate.now().getYear()),
                 Integer.toString(LocalDateTime.now().getHour()),
                 Integer.toString(LocalDateTime.now().getMinute()),
                 Integer.toString(LocalDateTime.now().getSecond()));
@@ -74,11 +83,12 @@ public class FileUtil {
             @Override
             public void run() {
                 try {
+                    log.info("Standing by to delete {}.", filename);
                     Thread.sleep(1000 * waitSeconds);
-
                 } catch (InterruptedException e) {
                     log.error(e.getMessage(), e);
                 } finally {
+                    log.info("Deleting {}...", filename);
                     File file = new File(filename);
                     file.delete();
                 }
@@ -98,10 +108,6 @@ public class FileUtil {
         return outputFileName;
     }
 
-    public static String getLabel(IExport export) {
-        return String.format("%s - %s - %s - %s", export.getName(), LocalDate.now().getDayOfMonth(), LocalDate.now().getMonthValue(), LocalDate.now().getYear());
-    }
-
     public static Map<Object, Object> getFileProperties(String propertyFile) {
         Properties properties = new Properties();
         try (InputStream input = new FileInputStream(propertyFile)) {
@@ -119,7 +125,6 @@ public class FileUtil {
     public static void writeCsvFile(Collection data, IExport export, String filename) {
         CsvDataWriter writer = new CsvDataWriter(export.getFields());
         writer.writeValues(data, filename);
-
     }
 }
 

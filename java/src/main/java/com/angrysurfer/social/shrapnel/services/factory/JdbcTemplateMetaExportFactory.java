@@ -41,6 +41,7 @@ public class JdbcTemplateMetaExportFactory implements IMetaExportFactory {
         final DataSource dataSource = dataSourceRepository.findByName(request.getName());
 
         return new JdbcTemplateExportFactory(request, export) {
+
             @Override
             public Collection getData() {
                 Collection data = Collections.EMPTY_LIST;

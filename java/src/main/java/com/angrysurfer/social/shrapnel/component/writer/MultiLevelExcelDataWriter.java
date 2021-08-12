@@ -50,7 +50,6 @@ public abstract class MultiLevelExcelDataWriter extends ExcelDataWriter implemen
     public void writeHeader() {
         Row header = getSheet().createRow(getCurrentRow());
         CellStyle headerStyle = getStyleProvider().getHeaderStyle(getWorkbook());
-
         for (int i = 0; i < getLevel() - 1; i++) {
             Cell cell = header.createCell(i);
             cell.setCellStyle(headerStyle);

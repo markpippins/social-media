@@ -2,7 +2,7 @@ package com.angrysurfer.social.shrapnel.util;
 
 import com.angrysurfer.social.shrapnel.component.IExport;
 import com.angrysurfer.social.shrapnel.component.writer.PdfDataWriter;
-import com.angrysurfer.social.shrapnel.services.exception.ExportRequestProcessingException;
+import com.angrysurfer.social.shrapnel.services.service.exception.ExportRequestProcessingException;
 import com.itextpdf.io.font.FontProgram;
 import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.kernel.geom.PageSize;
@@ -30,14 +30,14 @@ public class PdfUtil {
         try {
             FileUtil.ensureSafety(filename);
         } catch (IOException e) {
-            throw new ExportRequestProcessingException();
+            throw new ExportRequestProcessingException(e.getMessage(), e);
         }
 
         PdfWriter pdfWriter = null;
         try {
             pdfWriter = new PdfWriter(filename, getWriterProperties());
         } catch (FileNotFoundException e) {
-            throw new ExportRequestProcessingException();
+            throw new ExportRequestProcessingException(e.getMessage(), e);
         }
         PdfDocument pdfDocument = new PdfDocument(pdfWriter);
         pdfDocument.setDefaultPageSize(pageSize);
@@ -110,7 +110,7 @@ public class PdfUtil {
         try {
             FileUtil.ensureSafety(outputFileName);
         } catch (IOException e) {
-            throw new ExportRequestProcessingException();
+            throw new ExportRequestProcessingException(e.getMessage(), e);
         }
         Document document = createDocument(outputFileName, pageSize);
         writeToTable(items, pdfRowWriter);

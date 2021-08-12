@@ -1,4 +1,4 @@
-package com.angrysurfer.social.shrapnel.services.exception;
+package com.angrysurfer.social.shrapnel.services.service.exception;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -25,6 +25,6 @@ public class ExportExceptionHandler extends ResponseEntityExceptionHandler {
         StringBuilder sb = new StringBuilder();
         sb.append(e.getMessage());
         log.error(e.getMessage(), e);
-        return new ResponseEntity<>(sb.toString(), new HttpHeaders(), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(sb.toString(), new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

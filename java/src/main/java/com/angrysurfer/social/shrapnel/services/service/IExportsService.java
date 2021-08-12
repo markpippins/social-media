@@ -1,8 +1,8 @@
 package com.angrysurfer.social.shrapnel.services.service;
 
 import com.angrysurfer.social.shrapnel.component.IExport;
-import com.angrysurfer.social.shrapnel.services.exception.ExportRequestProcessingException;
 import com.angrysurfer.social.shrapnel.services.factory.IExportFactory;
+import com.angrysurfer.social.shrapnel.services.service.exception.ExportRequestProcessingException;
 import com.angrysurfer.social.shrapnel.util.ExcelUtil;
 import com.angrysurfer.social.shrapnel.util.FileUtil;
 import com.angrysurfer.social.shrapnel.util.PdfUtil;
@@ -15,9 +15,10 @@ import java.util.Objects;
 
 public interface IExportsService {
 
-    String CSV_FILE = "csv";
-    String PDF_FILE = "pdf";
-    String XLSX_FILE = "xlsx";
+    public String CSV = "csv";
+    public String PDF = "pdf";
+    public String XLSX = "xlsx";
+
     long WAIT_SECONDS = 360;
 
 //    static UserDTO user = new UserDTO() {
@@ -31,7 +32,7 @@ public interface IExportsService {
 
     default ByteArrayResource exportByteArrayResource(Request request) {
         IExportFactory factory = getFactory(request);
-        return Objects.nonNull(factory) ? exportByteArrayResource(request, FileUtil.makeFileName(factory)) : null;
+        return Objects.nonNull(factory) ? exportByteArrayResource(request, FileUtil.getFileName(factory)) : null;
     }
 
     default ByteArrayResource exportByteArrayResource(Request request, String tempFileName) {
@@ -42,16 +43,16 @@ public interface IExportsService {
 
         if (Objects.nonNull(export))
             switch (request.getFileType().toLowerCase(Locale.ROOT)) {
-                case CSV_FILE:
-                    filename = FileUtil.makeFileName(factory);
+                case CSV:
+                    filename = FileUtil.getFileName(factory);
                     FileUtil.writeCsvFile(factory.getData(), export, filename);
                     break;
 
-                case PDF_FILE:
+                case PDF:
                     filename = PdfUtil.writeTabularFile(factory.getData(), export, tempFileName);
                     break;
 
-                case XLSX_FILE:
+                case XLSX:
                     filename = ExcelUtil.writeWorkbookToFile(factory.getData(), export, tempFileName);
                     break;
             }
@@ -69,10 +70,10 @@ public interface IExportsService {
         IExport export = newExportInstance(request);
         if (Objects.nonNull(export))
             switch (request.getFileType().toLowerCase(Locale.ROOT)) {
-                case PDF_FILE:
+                case PDF:
                     return PdfUtil.generateByteArrayOutputStream(factory.getData(), export);
 
-                case XLSX_FILE:
+                case XLSX:
                     return ExcelUtil.generateByteArrayOutputStream(factory.getData(), export);
             }
 
@@ -94,7 +95,7 @@ public interface IExportsService {
 
         } catch (ClassNotFoundException | NoSuchMethodException | InvocationTargetException |
                 InstantiationException | IllegalAccessException e) {
-            throw new ExportRequestProcessingException();
+            throw new ExportRequestProcessingException(e.getMessage(), e);
         }
         return export;
     }

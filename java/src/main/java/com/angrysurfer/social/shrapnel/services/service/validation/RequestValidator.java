@@ -1,18 +1,22 @@
 package com.angrysurfer.social.shrapnel.services.service.validation;
 
-import com.angrysurfer.social.shrapnel.services.exception.InvalidExportRequestException;
+import com.angrysurfer.social.shrapnel.services.service.ExportsService;
 import com.angrysurfer.social.shrapnel.services.service.Request;
+import com.angrysurfer.social.shrapnel.services.service.exception.InvalidExportRequestException;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class RequestValidator implements IRequestValidator {
+
+    @Resource
+    ExportsService exportsService;
 
     private Validator validator;
 
@@ -26,7 +30,19 @@ public class RequestValidator implements IRequestValidator {
         Set<ConstraintViolation> violations = new HashSet<>();
         violations.addAll(this.validator.validate(request, IRequestValidation.RequestExport.class));
 
-        if (!violations.isEmpty())
-            throw new InvalidExportRequestException();
+        if (!Arrays.asList(ExportsService.CSV, ExportsService.PDF, ExportsService.XLSX).contains(request.getFileType().toUpperCase(Locale.ROOT)))
+            throw new InvalidExportRequestException("Unknown file extension: " + request.getFileType());
+
+        if (Objects.isNull(exportsService.getFactory(request)))
+            throw new InvalidExportRequestException(String.format("No factory found for {}.", request.getName()));
+
+        if (!violations.isEmpty()) {
+            StringBuilder sb = new StringBuilder();
+            violations.forEach(v -> {
+                sb.append(v.getPropertyPath()).append(" ").append(v.getMessage()).append("\n");
+            });
+
+            throw new InvalidExportRequestException(String.format("Invalid Export Request:\n ", sb.toString()));
+        }
     }
 }

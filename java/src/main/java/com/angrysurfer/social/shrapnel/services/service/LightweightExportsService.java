@@ -4,7 +4,7 @@ import com.angrysurfer.social.shrapnel.component.field.IFieldSpec;
 import com.angrysurfer.social.shrapnel.component.writer.CsvDataWriter;
 import com.angrysurfer.social.shrapnel.component.writer.ExcelDataWriter;
 import com.angrysurfer.social.shrapnel.component.writer.PdfDataWriter;
-import com.angrysurfer.social.shrapnel.services.exception.ExportRequestProcessingException;
+import com.angrysurfer.social.shrapnel.services.service.exception.ExportRequestProcessingException;
 import com.angrysurfer.social.shrapnel.util.ExcelUtil;
 import com.angrysurfer.social.shrapnel.util.FileUtil;
 import com.angrysurfer.social.shrapnel.util.PdfUtil;
@@ -26,7 +26,7 @@ public class LightweightExportsService implements ILightweightExportsService {
         try {
             FileUtil.ensureSafety(filename);
         } catch (IOException e) {
-            throw new ExportRequestProcessingException();
+            throw new ExportRequestProcessingException(e.getMessage(), e);
         }
         CsvDataWriter writer = new CsvDataWriter(fields);
         writer.writeValues(items, filename);

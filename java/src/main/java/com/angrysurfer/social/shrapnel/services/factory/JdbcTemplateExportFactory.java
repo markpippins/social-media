@@ -4,14 +4,12 @@ import com.angrysurfer.social.shrapnel.component.Export;
 import com.angrysurfer.social.shrapnel.component.IExport;
 import com.angrysurfer.social.shrapnel.component.field.IFieldSpec;
 import com.angrysurfer.social.shrapnel.component.property.PropertyMapAccessor;
-import com.angrysurfer.social.shrapnel.services.model.ComponentCreator;
 import com.angrysurfer.social.shrapnel.services.service.Request;
 import com.itextpdf.kernel.geom.PageSize;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Comparator;
-import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -35,17 +33,11 @@ public class JdbcTemplateExportFactory implements IExportFactory {
 
     @Override
     public IExport newInstance() {
-
-        List<IFieldSpec> fields = getExport().getFieldSpecs().stream()
+        return new Export(getExportName(), getExport().getFieldSpecs()
+                .stream()
                 .sorted(Comparator.comparing(IFieldSpec::getIndex))
-                .map(field -> ComponentCreator.createFieldSpec(field))
-                .collect(Collectors.toList());
+                .collect(Collectors.toList())) {
 
-        final PageSize pageSize = Objects.nonNull(getExport().getPdfPageSize()) ?
-                ComponentCreator.createPageSize(getExport().getPdfPageSize()) :
-                PageSize.Default;
-
-        Export exporter = new Export(getExportName(), fields) {
             @Override
             public void init() {
                 setPropertyAccessor(new PropertyMapAccessor());
@@ -53,11 +45,11 @@ public class JdbcTemplateExportFactory implements IExportFactory {
 
             @Override
             public PageSize getPdfPageSize() {
-                return pageSize;
+                return Objects.nonNull(getPdfPageSize()) ?
+                        new PageSize(getPdfPageSize().getWidth(), getPdfPageSize().getHeight()) :
+                        PageSize.Default;
             }
         };
-
-        return exporter;
     }
 
 }
