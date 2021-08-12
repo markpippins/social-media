@@ -1,5 +1,6 @@
 package com.angrysurfer.social.shrapnel;
 
+import com.angrysurfer.social.shrapnel.component.field.FieldTypeEnum;
 import com.angrysurfer.social.shrapnel.services.model.ComponentCreator;
 import com.angrysurfer.social.shrapnel.services.model.Export;
 import com.angrysurfer.social.shrapnel.services.model.FieldSpec;
@@ -74,7 +75,7 @@ class SpringConfig implements CommandLineRunner {
         pdfPageSizeRepository.save(new PdfPageSize("LEDGER", 1224, 792));
         pdfPageSizeRepository.save(new PdfPageSize("EXECUTIVE", 522, 756));
 
-        Arrays.stream(com.angrysurfer.social.shrapnel.component.FieldSpec.FieldTypeEnum.values())
+        Arrays.stream(FieldTypeEnum.values())
                 .forEach(fieldType -> fieldTypeRepository.save(ComponentCreator.createFieldType(fieldType)));
 
         com.angrysurfer.social.shrapnel.services.model.DataSource forumData = new com.angrysurfer.social.shrapnel.services.model.DataSource();
@@ -88,7 +89,7 @@ class SpringConfig implements CommandLineRunner {
         idSpec1.setLabel("id");
         idSpec1.setIndex(1);
         idSpec1.setFieldType(fieldTypeRepository
-                .findById(Integer.valueOf(com.angrysurfer.social.shrapnel.component.FieldSpec.FieldTypeEnum.STRING.getCode()))
+                .findById(Integer.valueOf(FieldTypeEnum.STRING.getCode()))
                 .orElseThrow(() -> new IllegalArgumentException()));
 
         idSpec1 = fieldSpecRepository.save(idSpec1);
@@ -99,7 +100,7 @@ class SpringConfig implements CommandLineRunner {
         nameSpec.setLabel("name");
         nameSpec.setIndex(2);
         nameSpec.setFieldType(fieldTypeRepository
-                .findById(Integer.valueOf(com.angrysurfer.social.shrapnel.component.FieldSpec.FieldTypeEnum.STRING.getCode()))
+                .findById(Integer.valueOf(FieldTypeEnum.STRING.getCode()))
                 .orElseThrow(() -> new IllegalArgumentException()));
         nameSpec = fieldSpecRepository.save(nameSpec);
 
@@ -122,14 +123,14 @@ class SpringConfig implements CommandLineRunner {
         idSpec2.setLabel("id");
         idSpec2.setIndex(0);
         idSpec2.setFieldType(fieldTypeRepository
-                .findById(Integer.valueOf(com.angrysurfer.social.shrapnel.component.FieldSpec.FieldTypeEnum.STRING.getCode()))
+                .findById(Integer.valueOf(FieldTypeEnum.STRING.getCode()))
                 .orElseThrow(() -> new IllegalArgumentException()));
         idSpec2 = fieldSpecRepository.save(idSpec2);
 
         FieldSpec emailSpec = new FieldSpec();
         emailSpec.setName("email");
         emailSpec.setFieldType(fieldTypeRepository
-                .findById(Integer.valueOf(com.angrysurfer.social.shrapnel.component.FieldSpec.FieldTypeEnum.STRING.getCode()))
+                .findById(Integer.valueOf(FieldTypeEnum.STRING.getCode()))
                 .orElseThrow(() -> new IllegalArgumentException()));
         emailSpec.setPropertyName("email");
         emailSpec.setLabel("email");
@@ -139,7 +140,7 @@ class SpringConfig implements CommandLineRunner {
         FieldSpec aliasSpec = new FieldSpec();
         aliasSpec.setName("alias");
         aliasSpec.setFieldType(fieldTypeRepository
-                .findById(Integer.valueOf(com.angrysurfer.social.shrapnel.component.FieldSpec.FieldTypeEnum.STRING.getCode()))
+                .findById(Integer.valueOf(FieldTypeEnum.STRING.getCode()))
                 .orElseThrow(() -> new IllegalArgumentException()));
         aliasSpec.setPropertyName("alias");
         aliasSpec.setLabel("alias");
@@ -154,6 +155,11 @@ class SpringConfig implements CommandLineRunner {
         userExport.setDataSource(userData);
         userExport.setPdfPageSize(pdfPageSizeRepository.findByName("A0"));
         exportRepository.save(userExport);
+
+//        em.name as "export",
+//                fs.property_name as property,
+//        fs.label as label,
+//                ft.name as field_type
     }
 
 //    @Bean

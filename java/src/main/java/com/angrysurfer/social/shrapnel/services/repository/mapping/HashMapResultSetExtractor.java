@@ -1,6 +1,6 @@
 package com.angrysurfer.social.shrapnel.services.repository.mapping;
 
-import com.angrysurfer.social.shrapnel.component.FieldSpec;
+import com.angrysurfer.social.shrapnel.component.field.FieldTypeEnum;
 import com.angrysurfer.social.shrapnel.services.model.Export;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
@@ -30,7 +30,7 @@ public class HashMapResultSetExtractor implements ResultSetExtractor {
 
             export.getFieldSpecs().forEach(field -> {
                 try {
-                    switch (FieldSpec.FieldTypeEnum.from(field.getFieldType().getName())) {
+                    switch (FieldTypeEnum.from(field.getFieldTypeName())) {
                         case BOOLEAN:
                             if (Objects.nonNull(rs.getString(field.getPropertyName())))
                                 values.put(field.getPropertyName(), rs.getBoolean(field.getPropertyName()));

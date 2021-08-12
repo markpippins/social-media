@@ -1,31 +1,86 @@
 package com.angrysurfer.social.shrapnel.component;
 
-import com.angrysurfer.social.shrapnel.component.property.PropertyAccessor;
-import com.angrysurfer.social.shrapnel.component.writer.filter.DataFilter;
-import com.angrysurfer.social.shrapnel.component.writer.impl.ExcelTableWriter;
-import com.angrysurfer.social.shrapnel.component.writer.impl.PdfTableWriter;
+import com.angrysurfer.social.shrapnel.component.field.IFieldSpec;
+import com.angrysurfer.social.shrapnel.component.property.IPropertyAccessor;
+import com.angrysurfer.social.shrapnel.component.writer.ExcelRowWriter;
+import com.angrysurfer.social.shrapnel.component.writer.PdfRowWriter;
+import com.angrysurfer.social.shrapnel.component.writer.filter.IDataFilter;
+import com.angrysurfer.social.shrapnel.component.writer.filter.StringFieldFilter;
+import com.angrysurfer.social.shrapnel.component.writer.style.provider.CombinedStyleProvider;
 import com.itextpdf.kernel.geom.PageSize;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
-public interface Export {
+@Slf4j
+@Getter
+@Setter
+public abstract class Export extends AbstractExport {
 
-    void addFilter(Map<String, Object> filterCriteria);
+    private ExcelRowWriter excelRowWriter;
 
-    void addFilter(DataFilter filter);
+    private PdfRowWriter pdfRowWriter;
 
-    List<FieldSpec> getFields();
+    public Export(String name, List<IFieldSpec> fields) {
+        setName(name);
+        fields.forEach(field -> getFields().add(field));
+    }
 
-    String getName();
+    @Override
+    public void addFilter(Map<String, Object> filterCriteria) {
+        getExcelRowWriter().getFilters().add(new StringFieldFilter(filterCriteria));
+        getPdfRowWriter().getFilters().add(new StringFieldFilter(filterCriteria));
+    }
 
-    ExcelTableWriter getExcelRowWriter();
+    @Override
+    public void addFilter(IDataFilter filter) {
+        getExcelRowWriter().getFilters().add(filter);
+        getPdfRowWriter().getFilters().add(filter);
+    }
 
-    PdfTableWriter getPdfRowWriter();
+    @Override
+    public ExcelRowWriter getExcelRowWriter() {
+        if (Objects.isNull(excelRowWriter))
+            excelRowWriter = new ExcelRowWriter(getFields());
 
-    PageSize getPdfPageSize();
+        return excelRowWriter;
+    }
 
-    void init();
+    @Override
+    public PdfRowWriter getPdfRowWriter() {
+        if (Objects.isNull(pdfRowWriter))
+            pdfRowWriter = new PdfRowWriter(getFields());
 
-    void setPropertyAccessor(PropertyAccessor propertyAccessor);
+        return pdfRowWriter;
+    }
+
+    @Override
+    public PageSize getPdfPageSize() {
+        return PageSize.Default;
+    }
+
+    public void setStyleProvider(CombinedStyleProvider styleProvider) {
+        getExcelRowWriter().setStyleProvider(styleProvider);
+        getPdfRowWriter().setStyleProvider(styleProvider);
+    }
+
+    public void setValueCalculator(IValueCalculator valueCalculator) {
+        getExcelRowWriter().setValueCalculator(valueCalculator);
+        getPdfRowWriter().setValueCalculator(valueCalculator);
+    }
+
+    public void setValueRenderer(IValueRenderer valueRenderer) {
+        getExcelRowWriter().setValueRenderer(valueRenderer);
+        getPdfRowWriter().setValueRenderer(valueRenderer);
+    }
+
+    @Override
+    public void setPropertyAccessor(IPropertyAccessor propertyAccessor) {
+        getExcelRowWriter().setPropertyAccessor(propertyAccessor);
+        getPdfRowWriter().setPropertyAccessor(propertyAccessor);
+    }
 }

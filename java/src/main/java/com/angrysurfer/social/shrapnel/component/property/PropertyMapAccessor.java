@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Set;
 
 @Slf4j
-public class PropertyMapAccessor implements PropertyAccessor {
+public class PropertyMapAccessor implements IPropertyAccessor {
 
     @Override
     public boolean accessorExists(Object item, String propertyName) {

@@ -2,8 +2,8 @@ package com.angrysurfer.social.shrapnel.util;
 
 import com.angrysurfer.social.dto.UserDTO;
 import com.angrysurfer.social.shrapnel.Config;
-import com.angrysurfer.social.shrapnel.component.Export;
-import com.angrysurfer.social.shrapnel.services.factory.ExportFactory;
+import com.angrysurfer.social.shrapnel.component.IExport;
+import com.angrysurfer.social.shrapnel.services.factory.IExportFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ByteArrayResource;
 
@@ -60,7 +60,7 @@ public class FileUtil {
         return result;
     }
 
-    public static String makeFileName(UserDTO user, ExportFactory factory) {
+    public static String makeFileName(UserDTO user, IExportFactory factory) {
         return user.getAlias() + " - " + factory.getExportName() + " - " + LocalDateTime.now().getHour() + LocalDateTime.now().getMinute() + LocalDateTime.now().getSecond();
     }
 
@@ -93,7 +93,7 @@ public class FileUtil {
         return outputFileName;
     }
 
-    public static String getLabel(Export export) {
+    public static String getLabel(IExport export) {
         return String.format("%s - %s - %s - %s", export.getName(), LocalDate.now().getDayOfMonth(), LocalDate.now().getMonthValue(), LocalDate.now().getYear());
     }
 

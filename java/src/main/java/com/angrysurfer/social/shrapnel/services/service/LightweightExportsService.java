@@ -1,21 +1,87 @@
 package com.angrysurfer.social.shrapnel.services.service;
 
-import com.angrysurfer.social.shrapnel.component.FieldSpec;
-import com.angrysurfer.social.shrapnel.component.writer.impl.ExcelTableWriter;
-import com.angrysurfer.social.shrapnel.component.writer.impl.PdfTableWriter;
+import com.angrysurfer.social.shrapnel.component.field.IFieldSpec;
+import com.angrysurfer.social.shrapnel.component.writer.CsvRowWriter;
+import com.angrysurfer.social.shrapnel.component.writer.ExcelRowWriter;
+import com.angrysurfer.social.shrapnel.component.writer.PdfRowWriter;
+import com.angrysurfer.social.shrapnel.util.ExcelUtil;
+import com.angrysurfer.social.shrapnel.util.FileUtil;
+import com.angrysurfer.social.shrapnel.util.PdfUtil;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
-public interface LightweightExportsService {
+@Slf4j
+public class LightweightExportsService implements ILightweightExportsService {
 
-    String writeCSVFile(Collection<Object> items, List<FieldSpec> columns, String filename);
+    @Override
+    public String writeCSVFile(Collection<Object> items, List<IFieldSpec> fields, String filename) {
+        try {
+            FileUtil.ensureSafety(filename);
+            CsvRowWriter writer = new CsvRowWriter(fields);
+            writer.writeValues(items, filename);
+        } catch (IOException e) {
+            log.error(e.getMessage(), e);
+        }
 
-    String writeExcelFile(Collection<Object> items, List<FieldSpec> columns, String sheetName, String filename);
+        return filename;
+    }
 
-    String writeExcelFile(Collection<Object> items, ExcelTableWriter writer, String sheetName, String filename);
+    @Override
+    public String writeExcelFile(Collection<Object> items, List<IFieldSpec> fields, String sheetName, String filename) {
+        LocalDateTime now = LocalDateTime.now();
+        String name = String.format("%s - %s - %s - %s", sheetName, LocalDate.now().getDayOfMonth(), LocalDate.now().getMonthValue(), LocalDate.now().getYear());
+        Workbook workbook = new XSSFWorkbook();
+        ExcelUtil.addSpreadSheet(workbook, name, items, new ExcelRowWriter(fields));
+        try {
+            ExcelUtil.writeWorkbookToFile(workbook, filename);
+        } catch (IOException e) {
+            log.error(e.getMessage(), e);
+        }
 
-    String writeTabularPdfFile(Collection<Object> items, List<FieldSpec> columns, String filename);
+        return filename;
+    }
 
-    String writeTabularPdfFile(Collection<Object> items, PdfTableWriter pdfRowWriter, String filename);
+    @Override
+    public String writeExcelFile(Collection<Object> items, ExcelRowWriter writer, String sheetName, String filename) {
+        LocalDateTime now = LocalDateTime.now();
+        String name = String.format("%s - %s - %s - %s", sheetName, now.getDayOfMonth(), now.getMonthValue(), now.getYear());
+        Workbook workbook = new XSSFWorkbook();
+        ExcelUtil.addSpreadSheet(workbook, name, items, writer);
+        try {
+            ExcelUtil.writeWorkbookToFile(workbook, filename);
+        } catch (IOException e) {
+            log.error(e.getMessage(), e);
+        }
+
+        return filename;
+    }
+
+    @Override
+    public String writeTabularPdfFile(Collection<Object> items, List<IFieldSpec> fields, String filename) {
+        try {
+            PdfUtil.writeTabularFile(items, new PdfRowWriter(fields), filename);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return filename;
+    }
+
+    @Override
+    public String writeTabularPdfFile(Collection<Object> items, PdfRowWriter pdfRowWriter, String filename) {
+        try {
+            PdfUtil.writeTabularFile(items, pdfRowWriter, filename);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return filename;
+    }
 }

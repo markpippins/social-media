@@ -1,6 +1,5 @@
 package com.angrysurfer.social.shrapnel.component.property;
 
-import com.angrysurfer.social.shrapnel.component.property.PropertyAccessor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.PropertyUtils;
 
@@ -12,7 +11,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
-public class PropertyUtilsPropertyAccessor implements PropertyAccessor {
+public class PropertyUtilsPropertyAccessor implements IPropertyAccessor {
 
     @Override
     public boolean accessorExists(Object item, String propertyName) {

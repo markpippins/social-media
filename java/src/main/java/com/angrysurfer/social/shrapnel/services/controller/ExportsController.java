@@ -2,7 +2,7 @@ package com.angrysurfer.social.shrapnel.services.controller;
 
 import com.angrysurfer.social.shrapnel.Config;
 import com.angrysurfer.social.shrapnel.services.ExportRequest;
-import com.angrysurfer.social.shrapnel.services.service.ExportsService;
+import com.angrysurfer.social.shrapnel.services.service.IExportsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
@@ -23,7 +23,7 @@ import java.util.Objects;
 public class ExportsController {
 
     @Resource
-    ExportsService exportsService;
+    IExportsService exportsService;
 
     @PostMapping(value = "/fileExport")
     public ResponseEntity<ByteArrayResource> exportFile(@RequestBody ExportRequest request) {

@@ -1,17 +1,21 @@
 package com.angrysurfer.social.shrapnel.services.model;
 
+import com.angrysurfer.social.shrapnel.component.field.FieldSpec;
+import com.angrysurfer.social.shrapnel.component.field.FieldTypeEnum;
+import com.angrysurfer.social.shrapnel.component.field.IFieldSpec;
+
 public class ComponentCreator {
 
-    public static com.angrysurfer.social.shrapnel.component.FieldSpec createFieldSpec(FieldSpec fieldSpec) {
-        com.angrysurfer.social.shrapnel.component.FieldSpec result = new com.angrysurfer.social.shrapnel.component.FieldSpec();
+    public static FieldSpec createFieldSpec(IFieldSpec fieldSpec) {
+        FieldSpec result = new FieldSpec();
         result.setPropertyName(fieldSpec.getPropertyName());
         result.setLabel(fieldSpec.getLabel());
-        result.setType(com.angrysurfer.social.shrapnel.component.FieldSpec.FieldTypeEnum.from(fieldSpec.getFieldType().getName()));
+        result.setType(FieldTypeEnum.from(fieldSpec.getFieldTypeName()));
         result.setIndex(fieldSpec.getIndex());
         return result;
     }
 
-    public static FieldType createFieldType(com.angrysurfer.social.shrapnel.component.FieldSpec.FieldTypeEnum fieldType) {
+    public static FieldType createFieldType(FieldTypeEnum fieldType) {
         FieldType ft = new FieldType();
         ft.setName(fieldType.name());
         ft.setCode(fieldType.getCode());

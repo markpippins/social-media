@@ -1,6 +1,7 @@
 package com.angrysurfer.social.shrapnel.services.model;
 
 import com.angrysurfer.social.shrapnel.Config;
+import com.angrysurfer.social.shrapnel.component.field.IFieldSpec;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -48,10 +49,10 @@ public class Export {
                 || Objects.isNull(getDataSource().getQueryName()))
             isConfigured[0] = false;
 
-        Map<Integer, FieldSpec> indexMap = new HashMap<>();
+        Map<Integer, IFieldSpec> indexMap = new HashMap<>();
         getFieldSpecs().forEach(field -> {
             if (Objects.isNull(field.getPropertyName())
-                    || Objects.isNull(field.getFieldType())
+                    || Objects.isNull(field.getFieldTypeName())
                     || Objects.isNull(field.getIndex())
                     || indexMap.containsKey(field.getIndex()))
                 isConfigured[0] = false;
