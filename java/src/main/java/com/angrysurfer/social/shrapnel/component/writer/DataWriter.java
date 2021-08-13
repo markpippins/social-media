@@ -85,55 +85,51 @@ public abstract class DataWriter implements IDataWriter, IProxyPropertyAccessor 
 
     public String getValue(Object item, IFieldSpec field) {
         if (accessorExists(item, field.getPropertyName()) || field.getCalculated())
-            try {
-                switch (field.getType()) {
-                    case BOOLEAN:
-                        Boolean bool = getBoolean(item, field.getPropertyName());
-                        return shouldOnlyRender(field) ?
-                                getValueRenderer().render(field, bool) :
-                                extendedGetValue(item, field, bool);
+            switch (field.getType()) {
+                case BOOLEAN:
+                    Boolean bool = getBoolean(item, field.getPropertyName());
+                    return shouldOnlyRender(field) ?
+                            getValueRenderer().render(field, bool) :
+                            extendedGetValue(item, field, bool);
 
-                    case CALENDAR:
-                        Calendar calendar = getCalendar(item, field.getPropertyName());
-                        return shouldOnlyRender(field) ?
-                                getValueRenderer().render(field, calendar) :
-                                extendedGetValue(item, field, calendar);
+                case CALENDAR:
+                    Calendar calendar = getCalendar(item, field.getPropertyName());
+                    return shouldOnlyRender(field) ?
+                            getValueRenderer().render(field, calendar) :
+                            extendedGetValue(item, field, calendar);
 
-                    case DATE:
-                        Date date = getDate(item, field.getPropertyName());
-                        return shouldOnlyRender(field) ?
-                                getValueRenderer().render(field, date) :
-                                extendedGetValue(item, field, date);
+                case DATE:
+                    Date date = getDate(item, field.getPropertyName());
+                    return shouldOnlyRender(field) ?
+                            getValueRenderer().render(field, date) :
+                            extendedGetValue(item, field, date);
 
-                    case DOUBLE:
-                        Double dbl = getDouble(item, field.getPropertyName());
-                        return shouldOnlyRender(field) ?
-                                getValueRenderer().render(field, dbl) :
-                                extendedGetValue(item, field, dbl);
+                case DOUBLE:
+                    Double dbl = getDouble(item, field.getPropertyName());
+                    return shouldOnlyRender(field) ?
+                            getValueRenderer().render(field, dbl) :
+                            extendedGetValue(item, field, dbl);
 
-                    case LOCALDATE:
-                        LocalDate localDate = getLocalDate(item, field.getPropertyName());
-                        return shouldOnlyRender(field) ?
-                                getValueRenderer().render(field, localDate) :
-                                extendedGetValue(item, field, localDate);
+                case LOCALDATE:
+                    LocalDate localDate = getLocalDate(item, field.getPropertyName());
+                    return shouldOnlyRender(field) ?
+                            getValueRenderer().render(field, localDate) :
+                            extendedGetValue(item, field, localDate);
 
-                    case LOCALDATETIME:
-                        LocalDateTime localDateTime = getLocalDateTime(item, field.getPropertyName());
-                        return shouldOnlyRender(field) ?
-                                getValueRenderer().render(field, localDateTime) :
-                                extendedGetValue(item, field, localDateTime);
+                case LOCALDATETIME:
+                    LocalDateTime localDateTime = getLocalDateTime(item, field.getPropertyName());
+                    return shouldOnlyRender(field) ?
+                            getValueRenderer().render(field, localDateTime) :
+                            extendedGetValue(item, field, localDateTime);
 
-                    case RICHTEXT:
-                        break;
+                case RICHTEXT:
+                    break;
 
-                    case STRING:
-                        String string = getString(item, field.getPropertyName());
-                        return shouldOnlyRender(field) ?
-                                getValueRenderer().render(field, string) :
-                                extendedGetValue(item, field, string);
-                }
-            } catch (Exception e) {
-                log.error(e.getMessage(), e);
+                case STRING:
+                    String string = getString(item, field.getPropertyName());
+                    return shouldOnlyRender(field) ?
+                            getValueRenderer().render(field, string) :
+                            extendedGetValue(item, field, string);
             }
 
         return EMPTY_STRING;
@@ -142,8 +138,8 @@ public abstract class DataWriter implements IDataWriter, IProxyPropertyAccessor 
     private String extendedGetValue(Object item, IFieldSpec field, Object value) {
         return shouldOnlyCalculate(field) ?
                 safeString(getValueCalculator().calculateValue(field, item)) :
-                shouldCalculateAndRender(field) ? getValueRenderer()
-                        .renderCalculatedValue(field, safeString(getValueCalculator().calculateValue(field, item))) :
+                shouldCalculateAndRender(field) ?
+                        getValueRenderer().renderCalculatedValue(field, safeString(getValueCalculator().calculateValue(field, item))) :
                         Objects.nonNull(value) ? value.toString() : EMPTY_STRING;
     }
 

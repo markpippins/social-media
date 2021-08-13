@@ -18,21 +18,13 @@ public class StyleAdapter extends Style {
     public void absorb(Style style) {
         for (int index = 0; index < MAX_PROPERTY_INDEX; index++)
             if (style.hasProperty(index))
-                try {
-                    setProperty(index, style.getProperty(index));
-                } catch (Exception e) {
-                    log.error(e.getMessage(), e);
-                }
+                setProperty(index, style.getProperty(index));
 
         if (style instanceof StyleAdapter) {
             StyleAdapter adapter = (StyleAdapter) style;
             for (int index = 0; index < MAX_PROPERTY_INDEX; index++)
                 if (adapter.hasExtendedProperty(index))
-                    try {
-                        setProperty(index, adapter.getExtendedProperty(index));
-                    } catch (Exception e) {
-                        log.error(e.getMessage(), e);
-                    }
+                    setExtendedProperty(index, adapter.getExtendedProperty(index));
         }
     }
 

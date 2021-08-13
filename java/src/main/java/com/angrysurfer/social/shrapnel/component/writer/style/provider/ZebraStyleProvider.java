@@ -60,6 +60,7 @@ public class ZebraStyleProvider extends CombinedStyleProvider {
 
     @Override
     public void onWorkbookSet(Workbook workbook) {
+        super.onWorkbookSet(workbook);
         getDarkStyleProvider().onWorkbookSet(workbook);
     }
 }

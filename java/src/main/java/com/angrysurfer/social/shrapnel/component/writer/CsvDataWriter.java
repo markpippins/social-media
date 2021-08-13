@@ -5,6 +5,7 @@ import com.angrysurfer.social.shrapnel.component.property.IPropertyAccessor;
 import com.angrysurfer.social.shrapnel.component.property.PropertyUtilsPropertyAccessor;
 import com.angrysurfer.social.shrapnel.component.writer.filter.DataFilters;
 import com.angrysurfer.social.shrapnel.component.writer.filter.IDataFilters;
+import com.angrysurfer.social.shrapnel.services.service.exception.ExportRequestProcessingException;
 import com.angrysurfer.social.shrapnel.util.FileUtil;
 import lombok.Getter;
 import lombok.Setter;
@@ -37,6 +38,11 @@ public class CsvDataWriter extends DataWriter implements IDataWriter {
         super(columns);
     }
 
+    public CsvDataWriter(List<IFieldSpec> columns, String delimiter) {
+        super(columns);
+        setDelimiter(delimiter);
+    }
+
     @Override
     public void writeData(Map<String, Object> outputConfig, Collection<Object> items) {
         String filename = outputConfig.get(FileUtil.FILENAME).toString();
@@ -61,13 +67,13 @@ public class CsvDataWriter extends DataWriter implements IDataWriter {
                 try {
                     fileWriter.write(line.toString().concat("\n"));
                 } catch (IOException e) {
-                    log.error(e.getMessage(), e);
+                    throw new ExportRequestProcessingException(e.getMessage(), e);
                 }
             });
             fileWriter.flush();
             fileWriter.close();
         } catch (IOException e) {
-            log.error(e.getMessage(), e);
+            throw new ExportRequestProcessingException(e.getMessage(), e);
         }
     }
 }

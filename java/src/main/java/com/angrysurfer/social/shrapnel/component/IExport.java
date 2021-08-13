@@ -26,6 +26,4 @@ public interface IExport {
     PageSize getPdfPageSize();
 
     void init();
-
-//    void setPropertyAccessor(IPropertyAccessor propertyAccessor);
 }

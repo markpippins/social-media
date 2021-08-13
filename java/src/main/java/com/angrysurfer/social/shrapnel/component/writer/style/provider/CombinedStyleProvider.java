@@ -16,7 +16,7 @@ import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-
+@Slf4j
 public class CombinedStyleProvider extends StyleProvider implements IExcelStyleProvider {
 
     private static final String DEFAULT_FONT = "Courier";
@@ -27,7 +27,7 @@ public class CombinedStyleProvider extends StyleProvider implements IExcelStyleP
     private boolean headerDefaultsAccessed = false;
 
     protected void apply(Workbook workbook, StyleAdapter adapter, CellStyle style) {
-
+        log.info("in apply.");
     }
 
     private XSSFCellStyle createCellStyle(Workbook workbook) {

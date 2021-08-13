@@ -6,6 +6,7 @@ import com.angrysurfer.social.shrapnel.component.writer.filter.DataFilters;
 import com.angrysurfer.social.shrapnel.component.writer.filter.IDataFilters;
 import com.angrysurfer.social.shrapnel.component.writer.style.provider.CombinedStyleProvider;
 import com.angrysurfer.social.shrapnel.component.writer.style.provider.IExcelStyleProvider;
+import com.angrysurfer.social.shrapnel.services.service.exception.ExportRequestProcessingException;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -135,7 +136,7 @@ public class ExcelDataWriter extends DataWriter implements IDataWriter {
             log.error(e.getMessage(), e);
             if (DEBUG)
                 writeError(e);
-            else throw e;
+            throw new ExportRequestProcessingException(e.getMessage(), e);
         }
     }
 
@@ -160,10 +161,12 @@ public class ExcelDataWriter extends DataWriter implements IDataWriter {
                 writeCell(field, item, cell);
             }
         });
+
         incrementRow();
     }
 
     protected void writeDisclaimer() {
+
         // incrementRow();
     }
 
@@ -172,6 +175,7 @@ public class ExcelDataWriter extends DataWriter implements IDataWriter {
         Row header = getSheet().createRow(getCurrentRow());
         getFields().forEach(field -> createHeaderCell(field, header, index[0]++).setCellValue(Objects.nonNull(field.getLabel()) ?
                 field.getLabel() : field.getPropertyName().toUpperCase(Locale.ROOT)));
+
         incrementRow();
     }
 

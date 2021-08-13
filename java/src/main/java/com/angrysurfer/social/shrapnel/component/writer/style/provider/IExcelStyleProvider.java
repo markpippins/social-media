@@ -26,10 +26,6 @@ public interface IExcelStyleProvider {
     default void onWorkbookSet(Workbook workbook) {
     }
 
-    ;
-
     default void onSheetSet(Sheet sheet) {
     }
-
-    ;
 }

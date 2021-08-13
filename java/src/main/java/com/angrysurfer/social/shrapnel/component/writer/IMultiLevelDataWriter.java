@@ -29,29 +29,19 @@ public interface IMultiLevelDataWriter {
     }
 
     default int getCellOffset(IMultiLevelDataWriter writer, Object item, IPropertyAccessor propertyAccessor) {
-        if (propertyAccessor.accessorExists(item, writer.getLevelPropertyName())) {
-            int level = Integer.parseInt(propertyAccessor.getString(item, writer.getLevelPropertyName()));
-            return level - 1;
-        }
-
-        return 0;
+        return propertyAccessor.accessorExists(item, writer.getLevelPropertyName()) ?
+                Integer.parseInt(propertyAccessor.getString(item, writer.getLevelPropertyName())) - 1 : 0;
     }
 
     default boolean shouldSkip(IMultiLevelDataWriter writer, IFieldSpec field, Object item, IPropertyAccessor propertyAccessor) {
-        if (propertyAccessor.accessorExists(item, writer.getLevelPropertyName())) {
-            int level = Integer.parseInt(propertyAccessor.getString(item, writer.getLevelPropertyName()));
-            return !writer.getFieldsForLevel(level).contains(field);
-        }
-
-        return false;
+        return propertyAccessor.accessorExists(item, writer.getLevelPropertyName()) ?
+                !writer.getFieldsForLevel(Integer.parseInt(propertyAccessor.getString(item, writer.getLevelPropertyName()))).contains(field) :
+                false;
     }
 
     default boolean shouldWrite(IMultiLevelDataWriter writer, IFieldSpec field, Object item, IPropertyAccessor propertyAccessor) {
-        if (propertyAccessor.accessorExists(item, writer.getLevelPropertyName())) {
-            int level = Integer.parseInt(propertyAccessor.getString(item, writer.getLevelPropertyName()));
-            return writer.getFieldsForLevel(level).contains(field);
-        }
-
-        return true;
+        return propertyAccessor.accessorExists(item, writer.getLevelPropertyName()) ?
+                writer.getFieldsForLevel(Integer.parseInt(propertyAccessor.getString(item, writer.getLevelPropertyName()))).contains(field) :
+                true;
     }
 }
