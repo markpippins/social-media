@@ -129,6 +129,7 @@ public class ExcelDataWriter extends DataWriter implements IDataWriter {
         try {
             items.stream().filter(item -> getFilters().allow(item, this, getPropertyAccessor()))
                     .forEach(item -> {
+                        inspect(item);
                         beforeRow(item);
                         writeDataRow(item, getSheet().createRow(getCurrentRow()));
                     });

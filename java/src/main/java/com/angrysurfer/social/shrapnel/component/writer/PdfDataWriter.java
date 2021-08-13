@@ -104,8 +104,9 @@ public class PdfDataWriter extends DataWriter {
             writeHeaderRow();
 
         final int[] rowNum = {0};
-        items.stream().filter(item -> getFilters().allow(item, this, this))
+        items.stream().filter(item -> getFilters().allow(item, this, getPropertyAccessor()))
                 .forEach(item -> {
+                    inspect(item);
                     beforeRow(item);
                     writeDataRow(item, rowNum[0]++).forEach(getTable()::addCell);
                 });
