@@ -4,6 +4,7 @@ import com.angrysurfer.social.shrapnel.Config;
 import com.angrysurfer.social.shrapnel.component.IExport;
 import com.angrysurfer.social.shrapnel.component.writer.CsvDataWriter;
 import com.angrysurfer.social.shrapnel.services.factory.IExportFactory;
+import com.angrysurfer.social.shrapnel.services.service.exception.ExportRequestProcessingException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ByteArrayResource;
 
@@ -49,15 +50,13 @@ public class FileUtil {
 
     public static ByteArrayResource getByteArrayResource(String filename) {
         ByteArrayResource result = null;
-
+        File file = new File(filename);
+        Path path = Paths.get(file.getAbsolutePath());
         try {
-            File file = new File(filename);
-            Path path = Paths.get(file.getAbsolutePath());
             result = new ByteArrayResource(Files.readAllBytes(path));
         } catch (IOException e) {
-            log.error(e.getMessage(), e);
+            throw new ExportRequestProcessingException(e.getMessage(), e);
         }
-
         return result;
     }
 

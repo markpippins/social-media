@@ -33,6 +33,10 @@ public class JdbcTemplateExportFactory implements IExportFactory {
 
     @Override
     public IExport newInstance() {
+        PageSize pageSize = Objects.nonNull(getExport().getPdfPageSize()) ?
+                new PageSize(getExport().getPdfPageSize().getWidth(), getExport().getPdfPageSize().getHeight()) :
+                PageSize.Default;
+
         return new Export(getExportName(), getExport().getFieldSpecs()
                 .stream()
                 .sorted(Comparator.comparing(IFieldSpec::getIndex))
@@ -45,9 +49,7 @@ public class JdbcTemplateExportFactory implements IExportFactory {
 
             @Override
             public PageSize getPdfPageSize() {
-                return Objects.nonNull(getPdfPageSize()) ?
-                        new PageSize(getPdfPageSize().getWidth(), getPdfPageSize().getHeight()) :
-                        PageSize.Default;
+                return pageSize;
             }
         };
     }

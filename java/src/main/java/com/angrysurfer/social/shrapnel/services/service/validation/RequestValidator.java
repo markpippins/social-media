@@ -30,19 +30,16 @@ public class RequestValidator implements IRequestValidator {
         Set<ConstraintViolation> violations = new HashSet<>();
         violations.addAll(this.validator.validate(request, IRequestValidation.RequestExport.class));
 
-        if (!Arrays.asList(ExportsService.CSV, ExportsService.PDF, ExportsService.XLSX).contains(request.getFileType().toUpperCase(Locale.ROOT)))
-            throw new InvalidExportRequestException("Unknown file extension: " + request.getFileType());
-
-        if (Objects.isNull(exportsService.getFactory(request)))
-            throw new InvalidExportRequestException(String.format("No factory found for {}.", request.getName()));
-
         if (!violations.isEmpty()) {
             StringBuilder sb = new StringBuilder();
-            violations.forEach(v -> {
-                sb.append(v.getPropertyPath()).append(" ").append(v.getMessage()).append("\n");
-            });
-
-            throw new InvalidExportRequestException(String.format("Invalid Export Request:\n ", sb.toString()));
+            violations.forEach(v -> sb.append(v.getPropertyPath()).append(" ").append(v.getMessage()).append("\n"));
+            throw new InvalidExportRequestException(String.format("Invalid Export Request:\n%s", sb.toString()));
         }
+
+        if (!Arrays.asList(ExportsService.CSV, ExportsService.PDF, ExportsService.XLSX).contains(request.getFileType().toLowerCase(Locale.ROOT)))
+            throw new InvalidExportRequestException(String.format("Unknown file extension: %s.", request.getFileType()));
+
+        if (Objects.isNull(exportsService.getFactory(request)))
+            throw new InvalidExportRequestException(String.format("No factory found for %s.", request.getName()));
     }
 }

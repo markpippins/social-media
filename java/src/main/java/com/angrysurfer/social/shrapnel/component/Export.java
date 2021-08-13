@@ -7,7 +7,6 @@ import com.angrysurfer.social.shrapnel.component.writer.PdfDataWriter;
 import com.angrysurfer.social.shrapnel.component.writer.filter.IDataFilter;
 import com.angrysurfer.social.shrapnel.component.writer.filter.StringFieldFilter;
 import com.angrysurfer.social.shrapnel.component.writer.style.provider.CombinedStyleProvider;
-import com.itextpdf.kernel.geom.PageSize;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -58,9 +57,9 @@ public abstract class Export extends AbstractExport {
         return pdfRowWriter;
     }
 
-    @Override
-    public PageSize getPdfPageSize() {
-        return PageSize.Default;
+    public void setPropertyAccessor(IPropertyAccessor propertyAccessor) {
+        getExcelRowWriter().setPropertyAccessor(propertyAccessor);
+        getPdfRowWriter().setPropertyAccessor(propertyAccessor);
     }
 
     public void setStyleProvider(CombinedStyleProvider styleProvider) {
@@ -76,11 +75,5 @@ public abstract class Export extends AbstractExport {
     public void setValueRenderer(IValueRenderer valueRenderer) {
         getExcelRowWriter().setValueRenderer(valueRenderer);
         getPdfRowWriter().setValueRenderer(valueRenderer);
-    }
-
-    @Override
-    public void setPropertyAccessor(IPropertyAccessor propertyAccessor) {
-        getExcelRowWriter().setPropertyAccessor(propertyAccessor);
-        getPdfRowWriter().setPropertyAccessor(propertyAccessor);
     }
 }
