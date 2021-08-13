@@ -27,7 +27,6 @@ public class PropertyUtilsPropertyAccessor implements IPropertyAccessor {
         return result;
     }
 
-
     @Override
     public Boolean getBoolean(Object item, String propertyName) {
         try {

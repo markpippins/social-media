@@ -37,7 +37,7 @@ public class FieldSpec implements IFieldSpec {
         setType(type);
     }
 
-    public static List<FieldSpec> createColumnSpecs(List<String> properties) {
+    public static List<FieldSpec> createFieldSpecs(List<String> properties) {
         return properties.stream().map(property -> new FieldSpec(property, property.toUpperCase(Locale.ROOT), FieldTypeEnum.STRING))
                 .collect(Collectors.toList());
     }

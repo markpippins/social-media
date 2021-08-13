@@ -3,6 +3,7 @@ package com.angrysurfer.social.shrapnel.component.writer.style.provider;
 import com.angrysurfer.social.shrapnel.component.field.IFieldSpec;
 import com.angrysurfer.social.shrapnel.component.writer.style.adapter.StyleAdapter;
 import com.itextpdf.layout.Style;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.IndexedColors;
@@ -16,6 +17,7 @@ import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+
 @Slf4j
 public class CombinedStyleProvider extends StyleProvider implements IExcelStyleProvider {
 

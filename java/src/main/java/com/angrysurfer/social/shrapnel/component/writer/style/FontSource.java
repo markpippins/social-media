@@ -16,8 +16,8 @@ import java.util.stream.Stream;
 @Slf4j
 public class FontSource {
 
-    static boolean destroyOnError = Config.getInstance().containsKey(Config.DESTROY_ON_ERROR) ?
-            Boolean.parseBoolean(Config.getInstance().getProperty(Config.DESTROY_ON_ERROR).toString()) : false;
+    static boolean deleteOnError = Config.getInstance().containsKey(Config.DELETE_ON_ERROR) ?
+            Boolean.parseBoolean(Config.getInstance().getProperty(Config.DELETE_ON_ERROR).toString()) : false;
 
     public static boolean fontFileExists(String fontName) throws IOException {
 
@@ -49,7 +49,7 @@ public class FontSource {
         } catch (Exception e) {
             log.error(e.getMessage(), e);
 
-            if (destroyOnError) {
+            if (deleteOnError) {
                 log.info("marking {} for deletion.", fontFileName);
                 File f = new File(fontFileName);
                 if (f.exists() && f.isFile())

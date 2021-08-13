@@ -16,7 +16,7 @@ public class Config {
 
     public static final String DEFAULTS = "java/src/main/resources/shrapnel.properties";
 
-    public static final String DESTROY_ON_ERROR = "destroyOnError";
+    public static final String DELETE_ON_ERROR = "deleteOnError";
 
     public final static String FONTS_FOLDER = "fonts.folder";
 
