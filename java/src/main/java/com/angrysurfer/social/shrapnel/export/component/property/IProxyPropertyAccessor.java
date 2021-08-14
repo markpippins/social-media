@@ -8,47 +8,47 @@ import java.util.Set;
 
 public interface IProxyPropertyAccessor extends IPropertyAccessor {
 
-    IPropertyAccessor getPropertyAccessor();
+	IPropertyAccessor getPropertyAccessor();
 
-    void setPropertyAccessor(IPropertyAccessor propertyAccessor);
+	void setPropertyAccessor(IPropertyAccessor propertyAccessor);
 
-    default Set<String> getPropertyNames(Object item) {
-        return getPropertyAccessor().getPropertyNames(item);
-    }
+	default boolean accessorExists(Object item, String propertyName) {
+		return getPropertyAccessor().accessorExists(item, propertyName);
+	}
 
-    default boolean accessorExists(Object item, String propertyName) {
-        return getPropertyAccessor().accessorExists(item, propertyName);
-    }
+	default Boolean getBoolean(Object item, String propertyName) {
+		return getPropertyAccessor().getBoolean(item, propertyName);
+	}
 
-    default void inspect(Object value) {
-        getPropertyAccessor().inspect(value);
-    }
+	default Double getDouble(Object item, String propertyName) {
+		return getPropertyAccessor().getDouble(item, propertyName);
+	}
 
-    default Boolean getBoolean(Object item, String propertyName) {
-        return getPropertyAccessor().getBoolean(item, propertyName);
-    }
+	default Calendar getCalendar(Object item, String propertyName) {
+		return getPropertyAccessor().getCalendar(item, propertyName);
+	}
 
-    default Double getDouble(Object item, String propertyName) {
-        return getPropertyAccessor().getDouble(item, propertyName);
-    }
+	default Date getDate(Object item, String propertyName) {
+		return getPropertyAccessor().getDate(item, propertyName);
+	}
 
-    default Calendar getCalendar(Object item, String propertyName) {
-        return getPropertyAccessor().getCalendar(item, propertyName);
-    }
+	default LocalDate getLocalDate(Object item, String propertyName) {
+		return getPropertyAccessor().getLocalDate(item, propertyName);
+	}
 
-    default Date getDate(Object item, String propertyName) {
-        return getPropertyAccessor().getDate(item, propertyName);
-    }
+	default LocalDateTime getLocalDateTime(Object item, String propertyName) {
+		return getPropertyAccessor().getLocalDateTime(item, propertyName);
+	}
 
-    default LocalDate getLocalDate(Object item, String propertyName) {
-        return getPropertyAccessor().getLocalDate(item, propertyName);
-    }
+	default String getString(Object item, String propertyName) {
+		return getPropertyAccessor().getString(item, propertyName);
+	}
 
-    default LocalDateTime getLocalDateTime(Object item, String propertyName) {
-        return getPropertyAccessor().getLocalDateTime(item, propertyName);
-    }
+	default Set< String > getPropertyNames(Object item) {
+		return getPropertyAccessor().getPropertyNames(item);
+	}
 
-    default String getString(Object item, String propertyName) {
-        return getPropertyAccessor().getString(item, propertyName);
-    }
+	default void inspect(Object value) {
+		getPropertyAccessor().inspect(value);
+	}
 }

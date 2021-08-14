@@ -14,36 +14,40 @@ import static com.angrysurfer.social.shrapnel.export.component.writer.DataWriter
 @Setter
 public class Field implements IField {
 
-    private String propertyName;
-    private String label;
-    private Integer index;
-    private FieldTypeEnum type;
-    private Boolean calculated = false;
+	private String propertyName;
 
-    public Field(String propertyName, String label, FieldTypeEnum type) {
-        setPropertyName(propertyName);
-        setLabel(label);
-        setType(type);
-    }
+	private String label;
 
-    public static List<Field> createFieldSpecs(List<String> properties) {
-        return properties.stream().map(property -> new Field(property, property.toUpperCase(Locale.ROOT), FieldTypeEnum.STRING))
-                .collect(Collectors.toList());
-    }
+	private Integer index;
 
-    public Field cloneWithNewLabel(String newLabel) {
-        return new Field(getPropertyName(), newLabel, getType());
-    }
+	private FieldTypeEnum type;
 
-    public static class DebugField extends Field {
+	private Boolean calculated = false;
 
-        public DebugField(String propertyName, String headerLabel, FieldTypeEnum type) {
-            super(propertyName, headerLabel, type);
-        }
+	public Field(String propertyName, String label, FieldTypeEnum type) {
+		setPropertyName(propertyName);
+		setLabel(label);
+		setType(type);
+	}
 
-        @Override
-        public String getLabel() {
-            return DEBUG ? super.getLabel() : EMPTY_STRING;
-        }
-    }
+	public static List< Field > createFieldSpecs(List< String > properties) {
+		return properties.stream().map(property -> new Field(property, property.toUpperCase(Locale.ROOT), FieldTypeEnum.STRING))
+				.collect(Collectors.toList());
+	}
+
+	public Field cloneWithNewLabel(String newLabel) {
+		return new Field(getPropertyName(), newLabel, getType());
+	}
+
+	public static class DebugField extends Field {
+
+		public DebugField(String propertyName, String headerLabel, FieldTypeEnum type) {
+			super(propertyName, headerLabel, type);
+		}
+
+		@Override
+		public String getLabel() {
+			return DEBUG ? super.getLabel() : EMPTY_STRING;
+		}
+	}
 }

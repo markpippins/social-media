@@ -10,19 +10,19 @@ import java.util.Collections;
 
 public interface IExportFactory {
 
-    default Collection<Object> getData() {
-        return Collections.EMPTY_LIST;
-    }
+	default Collection getData() {
+		return Collections.EMPTY_LIST;
+	}
 
-    String getExportName();
+	String getExportName();
 
-    default Class getExportClass() {
-        return Export.class;
-    }
+	default Class getExportClass() {
+		return Export.class;
+	}
 
-    default IExport newInstance() throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
-        Class<?> clazz = Class.forName(getExportClass().getCanonicalName());
-        Constructor<?> ctor = clazz.getConstructor();
-        return (IExport) ctor.newInstance(new Object[]{});
-    }
+	default IExport newInstance() throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+		Class< ? > clazz = Class.forName(getExportClass().getCanonicalName());
+		Constructor< ? > ctor = clazz.getConstructor();
+		return (IExport) ctor.newInstance(new Object[]{ });
+	}
 }

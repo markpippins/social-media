@@ -101,11 +101,11 @@ public class PdfUtil {
         return properties;
     }
 
-    public static String writeTabularFile(Collection<Object> items, PdfDataWriter pdfRowWriter, String filename) {
+    public static String writeTabularFile(Collection items, PdfDataWriter pdfRowWriter, String filename) {
         return writeTabularFile(items, pdfRowWriter, filename, PageSize.Default);
     }
 
-    public static String writeTabularFile(Collection<Object> items, PdfDataWriter pdfRowWriter, String filename, PageSize pageSize) {
+    public static String writeTabularFile(Collection items, PdfDataWriter pdfRowWriter, String filename, PageSize pageSize) {
         String outputFileName = FileUtil.getOutputFileName(filename, "pdf");
         try {
             FileUtil.ensureSafety(outputFileName);

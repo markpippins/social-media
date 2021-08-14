@@ -14,22 +14,22 @@ import java.util.List;
 @Service
 public class ExportsService implements IExportsService {
 
-    @Resource
-    List<IMetaExportFactory> metaFactories;
+	@Resource
+	List< IMetaExportFactory > metaFactories;
 
-    @Resource
-    List<IExportFactory> exporterFactories;
+	@Resource
+	List< IExportFactory > exporterFactories;
 
-    private boolean factoryRegistered(Request request) {
-        return metaFactories.stream().anyMatch(fac -> fac.hasFactory(request));
-    }
+	private boolean factoryRegistered(Request request) {
+		return metaFactories.stream().anyMatch(fac -> fac.hasFactory(request));
+	}
 
-    private IMetaExportFactory getMetaFactory(Request request) {
-        return metaFactories.stream().filter(fac -> fac.hasFactory(request)).findFirst().orElseGet(() -> null);
-    }
+	private IMetaExportFactory getMetaFactory(Request request) {
+		return metaFactories.stream().filter(fac -> fac.hasFactory(request)).findFirst().orElseGet(() -> null);
+	}
 
-    public IExportFactory getFactory(Request request) {
-        return getExporterFactories().stream().filter(fac -> fac.getExportName().equalsIgnoreCase(request.getName())).findFirst()
-                .orElseGet(() -> factoryRegistered(request) ? getMetaFactory(request).newInstance(request) : null);
-    }
+	public IExportFactory getFactory(Request request) {
+		return getExporterFactories().stream().filter(fac -> fac.getExportName().equalsIgnoreCase(request.getName())).findFirst()
+				.orElseGet(() -> factoryRegistered(request) ? getMetaFactory(request).newInstance(request) : null);
+	}
 }

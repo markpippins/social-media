@@ -1,6 +1,7 @@
 package com.angrysurfer.social.shrapnel.export;
 
 import com.angrysurfer.social.shrapnel.export.component.field.IField;
+import com.angrysurfer.social.shrapnel.export.component.field.IFields;
 import com.angrysurfer.social.shrapnel.export.component.writer.ExcelDataWriter;
 import com.angrysurfer.social.shrapnel.export.component.writer.PdfDataWriter;
 import com.angrysurfer.social.shrapnel.export.component.writer.filter.IDataFilter;
@@ -15,7 +16,7 @@ public interface IExport {
 
     void addFilter(IDataFilter filter);
 
-    List<IField> getFields();
+    IFields getFields();
 
     String getName();
 

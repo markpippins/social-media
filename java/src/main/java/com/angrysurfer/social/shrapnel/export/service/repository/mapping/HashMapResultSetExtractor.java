@@ -13,75 +13,75 @@ import java.util.*;
 @Slf4j
 public class HashMapResultSetExtractor implements ResultSetExtractor {
 
-    private final Export export;
+	private final Export export;
 
-    boolean useTimeStampForLocalDate = true;
+	boolean useTimeStampForLocalDate = true;
 
-    public HashMapResultSetExtractor(Export export) {
-        this.export = export;
-    }
+	public HashMapResultSetExtractor(Export export) {
+		this.export = export;
+	}
 
-    @Override
-    public Collection extractData(ResultSet rs) throws SQLException, DataAccessException {
+	@Override
+	public Collection extractData(ResultSet rs) throws SQLException, DataAccessException {
 
-        Collection<HashMap<String, Object>> results = new ArrayList();
-        while (rs.next()) {
-            HashMap<String, Object> values = new HashMap();
+		Collection< HashMap< String, Object > > results = new ArrayList();
+		while (rs.next()) {
+			HashMap< String, Object > values = new HashMap();
 
-            export.getFields().forEach(field -> {
-                try {
-                    switch (FieldTypeEnum.from(field.fieldType.getCode())) {
-                        case BOOLEAN:
-                            if (Objects.nonNull(rs.getString(field.getPropertyName())))
-                                values.put(field.getPropertyName(), rs.getBoolean(field.getPropertyName()));
-                            break;
+			export.getFields().forEach(field -> {
+				try {
+					switch (FieldTypeEnum.from(field.fieldType.getCode())) {
+						case BOOLEAN:
+							if (Objects.nonNull(rs.getString(field.getPropertyName())))
+								values.put(field.getPropertyName(), rs.getBoolean(field.getPropertyName()));
+							break;
 
-                        case CALENDAR:
-                            if (Objects.nonNull(rs.getString(field.getPropertyName()))) {
-                                Calendar cal = new GregorianCalendar();
-                                cal.setTime(rs.getDate(field.getPropertyName()));
-                                values.put(field.getPropertyName(), cal);
-                            }
-                            break;
+						case CALENDAR:
+							if (Objects.nonNull(rs.getString(field.getPropertyName()))) {
+								Calendar cal = new GregorianCalendar();
+								cal.setTime(rs.getDate(field.getPropertyName()));
+								values.put(field.getPropertyName(), cal);
+							}
+							break;
 
-                        case DATE:
-                            if (Objects.nonNull(rs.getString(field.getPropertyName())))
-                                values.put(field.getPropertyName(), new Date(rs.getDate(field.getPropertyName()).getTime()));
-                            break;
+						case DATE:
+							if (Objects.nonNull(rs.getString(field.getPropertyName())))
+								values.put(field.getPropertyName(), new Date(rs.getDate(field.getPropertyName()).getTime()));
+							break;
 
-                        case DOUBLE:
-                            if (Objects.nonNull(rs.getString(field.getPropertyName())))
-                                values.put(field.getPropertyName(), rs.getDouble(field.getPropertyName()));
-                            break;
+						case DOUBLE:
+							if (Objects.nonNull(rs.getString(field.getPropertyName())))
+								values.put(field.getPropertyName(), rs.getDouble(field.getPropertyName()));
+							break;
 
-                        case LOCALDATE:
-                            if (Objects.nonNull(rs.getString(field.getPropertyName())))
-                                values.put(field.getPropertyName(), rs.getDate(field.getPropertyName()).toLocalDate());
-                            break;
+						case LOCALDATE:
+							if (Objects.nonNull(rs.getString(field.getPropertyName())))
+								values.put(field.getPropertyName(), rs.getDate(field.getPropertyName()).toLocalDate());
+							break;
 
-                        case LOCALDATETIME:
-                            if (Objects.nonNull(rs.getString(field.getPropertyName())))
-                                if (useTimeStampForLocalDate)
-                                    values.put(field.getPropertyName(), rs.getTimestamp(field.getPropertyName()).toLocalDateTime());
-                                else
-                                    values.put(field.getPropertyName(), rs.getDate(field.getPropertyName()).getTime());
-                            break;
+						case LOCALDATETIME:
+							if (Objects.nonNull(rs.getString(field.getPropertyName())))
+								if (useTimeStampForLocalDate)
+									values.put(field.getPropertyName(), rs.getTimestamp(field.getPropertyName()).toLocalDateTime());
+								else
+									values.put(field.getPropertyName(), rs.getDate(field.getPropertyName()).getTime());
+							break;
 
-                        case RICHTEXT:
+						case RICHTEXT:
 
-                        case STRING:
-                            if (Objects.nonNull(rs.getString(field.getPropertyName())))
-                                values.put(field.getPropertyName(), rs.getString(field.getPropertyName()));
-                            break;
-                    }
-                } catch (SQLException e) {
-                    log.error(e.getMessage(), e);
-                }
-            });
+						case STRING:
+							if (Objects.nonNull(rs.getString(field.getPropertyName())))
+								values.put(field.getPropertyName(), rs.getString(field.getPropertyName()));
+							break;
+					}
+				} catch (SQLException e) {
+					log.error(e.getMessage(), e);
+				}
+			});
 
-            results.add(values);
-        }
+			results.add(values);
+		}
 
-        return results;
-    }
+		return results;
+	}
 }

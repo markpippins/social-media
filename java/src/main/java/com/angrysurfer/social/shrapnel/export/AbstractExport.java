@@ -1,6 +1,7 @@
 package com.angrysurfer.social.shrapnel.export;
 
 import com.angrysurfer.social.shrapnel.export.component.field.Fields;
+import com.angrysurfer.social.shrapnel.export.component.field.IFields;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -12,5 +13,5 @@ public abstract class AbstractExport implements IExport {
 
     private String name;
 
-    private Fields fields = new Fields();
+    private IFields fields = new Fields();
 }

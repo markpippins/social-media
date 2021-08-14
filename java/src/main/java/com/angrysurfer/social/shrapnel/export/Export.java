@@ -3,12 +3,15 @@ package com.angrysurfer.social.shrapnel.export;
 import com.angrysurfer.social.shrapnel.export.component.IValueCalculator;
 import com.angrysurfer.social.shrapnel.export.component.IValueRenderer;
 import com.angrysurfer.social.shrapnel.export.component.field.IField;
+import com.angrysurfer.social.shrapnel.export.component.field.IFields;
 import com.angrysurfer.social.shrapnel.export.component.property.IPropertyAccessor;
+import com.angrysurfer.social.shrapnel.export.component.property.PropertyMapAccessor;
 import com.angrysurfer.social.shrapnel.export.component.writer.ExcelDataWriter;
 import com.angrysurfer.social.shrapnel.export.component.writer.PdfDataWriter;
 import com.angrysurfer.social.shrapnel.export.component.writer.filter.IDataFilter;
 import com.angrysurfer.social.shrapnel.export.component.writer.filter.StringFieldFilter;
 import com.angrysurfer.social.shrapnel.export.component.writer.style.provider.CombinedStyleProvider;
+import com.itextpdf.kernel.geom.PageSize;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +32,21 @@ public abstract class Export extends AbstractExport {
     public Export(String name, List<IField> fields) {
         setName(name);
         fields.forEach(field -> getFields().add(field));
+    }
+
+    public Export(String name, List<IField> fields, IPropertyAccessor propertyAccessor) {
+        this(name, fields);
+        fields.forEach(field -> getFields().add(field));
+    }
+
+    public Export(String name, IFields fields) {
+        setName(name);
+        setFields(fields);
+    }
+
+    public Export(String name, IFields fields, IPropertyAccessor propertyAccessor) {
+        this(name, fields);
+        setPropertyAccessor(propertyAccessor);
     }
 
     @Override

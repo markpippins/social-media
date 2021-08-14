@@ -17,40 +17,42 @@ import java.util.stream.Collectors;
 @Slf4j
 public class JdbcTemplateExportFactory implements IExportFactory {
 
-    private Request request;
+	private Request request;
 
-    private com.angrysurfer.social.shrapnel.export.service.model.Export export;
+	private com.angrysurfer.social.shrapnel.export.service.model.Export export;
 
-    public JdbcTemplateExportFactory(Request request, com.angrysurfer.social.shrapnel.export.service.model.Export export) {
-        this.request = request;
-        this.export = export;
-    }
+	public JdbcTemplateExportFactory(Request request, com.angrysurfer.social.shrapnel.export.service.model.Export export) {
+		this.request = request;
+		this.export = export;
+	}
 
-    @Override
-    public String getExportName() {
-        return request.getName();
-    }
+	@Override
+	public String getExportName() {
+		return request.getName();
+	}
 
-    @Override
-    public IExport newInstance() {
-        PageSize pageSize = Objects.nonNull(getExport().getPdfPageSize()) ?
-                new PageSize(getExport().getPdfPageSize().getWidth(), getExport().getPdfPageSize().getHeight()) :
-                PageSize.Default;
+	@Override
+	public IExport newInstance() {
+		PageSize pageSize = Objects.nonNull(getExport().getPdfPageSize()) ?
+				                    new PageSize(getExport().getPdfPageSize().getWidth(), getExport().getPdfPageSize().getHeight()) :
+				                    getExport().hasCustomHeight() ?
+						                    new PageSize(getExport().getCustomWidth(), getExport().getCustomHeight()) :
+						                    PageSize.LETTER;
 
-        return new Export(getExportName(), getExport().getFields()
-                .stream()
-                .sorted(Comparator.comparing(IField::getIndex))
-                .collect(Collectors.toList())) {
+		return new Export(getExportName(), getExport().getFields()
+				.stream()
+				.sorted(Comparator.comparing(IField::getIndex))
+				.collect(Collectors.toList())) {
 
-            @Override
-            public void init() {
-                setPropertyAccessor(new PropertyMapAccessor());
-            }
+			@Override
+			public PageSize getPdfPageSize() {
+				return pageSize;
+			}
 
-            @Override
-            public PageSize getPdfPageSize() {
-                return pageSize;
-            }
-        };
-    }
+			@Override
+			public void init() {
+				setPropertyAccessor(new PropertyMapAccessor());
+			}
+		};
+	}
 }

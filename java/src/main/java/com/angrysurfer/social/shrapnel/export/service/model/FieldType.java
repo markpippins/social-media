@@ -11,13 +11,13 @@ import javax.persistence.Table;
 @Getter
 @Setter
 @Entity
-@Table(name = "field_type_model")//, schema = "shrapnel")
+@Table( name = "field_type_model" )//, schema = "shrapnel")
 public class FieldType {
 
-    @Id
-    @Column(name = "code", nullable = false)
-    private Integer code;
+	@Id
+	@Column( name = "code", nullable = false )
+	private Integer code;
 
-    @Column(name = "name", nullable = false)
-    private String name;
+	@Column( name = "name", nullable = false )
+	private String name;
 }

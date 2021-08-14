@@ -15,31 +15,31 @@ import java.util.*;
 @Service
 public class RequestValidator implements IRequestValidator {
 
-    @Resource
-    ExportsService exportsService;
+	@Resource
+	ExportsService exportsService;
 
-    private Validator validator;
+	private Validator validator;
 
-    @PostConstruct
-    private void initialize() {
-        this.validator = Validation.buildDefaultValidatorFactory().getValidator();
-    }
+	@PostConstruct
+	private void initialize() {
+		this.validator = Validation.buildDefaultValidatorFactory().getValidator();
+	}
 
     public void validate(Request request) {
 
-        Set<ConstraintViolation> violations = new HashSet<>();
-        violations.addAll(this.validator.validate(request, IRequestValidation.RequestExport.class));
+		Set< ConstraintViolation > violations = new HashSet<>();
+		violations.addAll(this.validator.validate(request, IRequestValidation.RequestExport.class));
 
-        if (!violations.isEmpty()) {
-            StringBuilder sb = new StringBuilder();
-            violations.forEach(v -> sb.append(v.getPropertyPath()).append(" ").append(v.getMessage()).append("\n"));
-            throw new InvalidExportRequestException(String.format("Invalid Export Request:\n%s", sb.toString()));
-        }
+		if (!violations.isEmpty()) {
+			StringBuilder sb = new StringBuilder();
+			violations.forEach(v -> sb.append(v.getPropertyPath()).append(" ").append(v.getMessage()).append("\n"));
+			throw new InvalidExportRequestException(String.format("Invalid Export Request:\n%s", sb.toString()));
+		}
 
-        if (!Arrays.asList(ExportsService.CSV, ExportsService.PDF, ExportsService.XLSX).contains(request.getFileType().toLowerCase(Locale.ROOT)))
-            throw new InvalidExportRequestException(String.format("Unknown file extension: %s.", request.getFileType()));
+		if (!Arrays.asList(ExportsService.CSV, ExportsService.PDF, ExportsService.XLSX).contains(request.getFileType().toLowerCase(Locale.ROOT)))
+			throw new InvalidExportRequestException(String.format("Unknown file extension: %s.", request.getFileType()));
 
-        if (Objects.isNull(exportsService.getFactory(request)))
-            throw new InvalidExportRequestException(String.format("No factory found for %s.", request.getName()));
-    }
+		if (Objects.isNull(exportsService.getFactory(request)))
+			throw new InvalidExportRequestException(String.format("No factory found for %s.", request.getName()));
+	}
 }
