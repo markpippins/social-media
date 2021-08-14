@@ -1,9 +1,8 @@
-package com.angrysurfer.social.shrapnel.export.service.model;
+package com.angrysurfer.social.shrapnel.export.service.model.export;
 
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Table;
 import javax.persistence.*;
 
 @Getter

@@ -1,6 +1,7 @@
 package com.angrysurfer.social.shrapnel.export.service.model;
 
 import com.angrysurfer.social.shrapnel.export.component.field.FieldTypeEnum;
+import com.angrysurfer.social.shrapnel.export.service.model.export.FieldType;
 
 public class ComponentCreator {
 

@@ -25,105 +25,119 @@ import java.util.Properties;
 @Slf4j
 public class FileUtil {
 
-    public static final String FILENAME = "filename";
+	public static final String FILENAME = "filename";
 
-    public static boolean ensureSafety(String filename) throws IOException {
-        boolean safe = true;
+	public static boolean ensureSafety(String filename) {
+		boolean safe = true;
 
-        File file = new File(filename);
-        if (!file.getParentFile().exists())
-            safe = file.getParentFile().mkdirs();
+		File file = new File(filename);
+		if (!file.getParentFile().exists())
+			safe = file.getParentFile().mkdirs();
 
-        if (safe && file.exists())
-            try {
-                safe = file.delete();
-            } catch (Exception e) {
-                log.error(e.getMessage(), e);
-                safe = false;
-            }
+		Exception thrown = null;
+		if (safe && file.exists())
+			try {
+				safe = file.delete();
+			} catch (Exception e) {
+				thrown = e;
+				log.error(e.getMessage(), e);
+				safe = false;
+			}
 
-        if (!safe)
-            throw new IOException(String.format("%s is in use by another process of there is a permissions error.", filename));
+		if (!safe)
+			throw new ExportRequestProcessingException(String.format("%s is in use by another process of there is a permissions error.", filename), thrown);
 
-        return safe;
-    }
+		return safe;
+	}
 
-    public static ByteArrayResource getByteArrayResource(String filename) {
-        ByteArrayResource result = null;
-        File file = new File(filename);
-        Path path = Paths.get(file.getAbsolutePath());
-        try {
-            result = new ByteArrayResource(Files.readAllBytes(path));
-        } catch (IOException e) {
-            throw new ExportRequestProcessingException(e.getMessage(), e);
-        }
-        return result;
-    }
+	public static ByteArrayResource getByteArrayResource(String filename) {
+		ByteArrayResource result = null;
+		File file = new File(filename);
+		Path path = Paths.get(file.getAbsolutePath());
+		try {
+			result = new ByteArrayResource(Files.readAllBytes(path));
+		} catch (IOException e) {
+			log.error(e.getMessage(), e);
+			throw new ExportRequestProcessingException(e.getMessage(), e);
+		}
+		return result;
+	}
 
-    public static String getFileName(IExportFactory factory) {
-        return String.join("-", factory.getExportName(),
-                Integer.toString(LocalDateTime.now().getHour()),
-                Integer.toString(LocalDateTime.now().getMinute()),
-                Integer.toString(LocalDateTime.now().getSecond()));
-    }
+	public static String getFileName(IExportFactory factory) {
+		return String.join("-", factory.getExportName(),
+				Integer.toString(LocalDateTime.now().getHour()),
+				Integer.toString(LocalDateTime.now().getMinute()),
+				Integer.toString(LocalDateTime.now().getSecond()));
+	}
 
-    public static String getLabel(IExport export) {
-        return String.join("-", export.getName(),
-                Integer.toString(LocalDate.now().getDayOfMonth()),
-                Integer.toString(LocalDate.now().getMonthValue()),
-                Integer.toString(LocalDate.now().getYear()),
-                Integer.toString(LocalDateTime.now().getHour()),
-                Integer.toString(LocalDateTime.now().getMinute()),
-                Integer.toString(LocalDateTime.now().getSecond()));
-    }
+	public static String getLabel(IExport export) {
+		return String.join("-", export.getName(),
+				Integer.toString(LocalDate.now().getDayOfMonth()),
+				Integer.toString(LocalDate.now().getMonthValue()),
+				Integer.toString(LocalDate.now().getYear()),
+				Integer.toString(LocalDateTime.now().getHour()),
+				Integer.toString(LocalDateTime.now().getMinute()),
+				Integer.toString(LocalDateTime.now().getSecond()));
+	}
 
-    public static void removeFileAfter(String filename, long waitSeconds) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    log.info("Standing by to delete {}.", filename);
-                    Thread.sleep(1000 * waitSeconds);
-                } catch (InterruptedException e) {
-                    log.error(e.getMessage(), e);
-                } finally {
-                    log.info("Deleting {}...", filename);
-                    File file = new File(filename);
-                    file.delete();
-                }
-            }
-        }).start();
-    }
+	public static void removeFileAfter(String filename, long waitSeconds) {
+		new Thread(new Runnable() {
 
-    public static String getOutputFileName(String filename, String ext) {
+			@Override
+			public void run() {
+				try {
+					log.info("Standing by to delete {}.", filename);
+					Thread.sleep(1000 * waitSeconds);
+				} catch (InterruptedException e) {
+					log.error(e.getMessage(), e);
+				} finally {
+					log.info("Deleting {}...", filename);
+					File file = new File(filename);
+					try {
+						file.delete();
+					} catch (Exception e) {
+						log.error(e.getMessage(), e);
+					}
+				}
+			}
+		}).start();
+	}
 
-        File file = new File(".");
-        String path = file.getAbsolutePath();
-        String tail = ".".concat(ext);
-        String outputFileName = path.substring(0, path.length() - 1) + "exports" + FileSystems.getDefault().getSeparator() + filename;
-        if (!outputFileName.endsWith(tail))
-            outputFileName = outputFileName + tail;
+	public static String getOutputFileName(String filename, String ext) {
 
-        return outputFileName;
-    }
+		File file = new File(".");
+		String path = file.getAbsolutePath();
+		String tail = ".".concat(ext);
+		String outputFileName = path.substring(0, path.length() - 1) + "exports" + FileSystems.getDefault().getSeparator() + filename;
+		if (!outputFileName.endsWith(tail))
+			outputFileName = outputFileName + tail;
 
-    public static Map<Object, Object> getFileProperties(String propertyFile) {
-        Properties properties = new Properties();
-        try (InputStream input = new FileInputStream(propertyFile)) {
-            properties.load(input);
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-        }
-        return properties;
-    }
+		return outputFileName;
+	}
 
-    public static String getSQL(String filename) throws IOException {
-        return Files.readString(Path.of(Config.getInstance().getProperty(Config.SQL_FOLDER) + filename + ".sql"));
-    }
+	public static Map< Object, Object > getFileProperties(String propertyFile) {
+		Properties properties = new Properties();
+		try (InputStream input = new FileInputStream(propertyFile)) {
+			properties.load(input);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw new ExportRequestProcessingException(e.getMessage(), e);
+		}
+		return properties;
+	}
 
-    public static void writeCsvFile(Collection data, IExport export, String filename) {
-        CsvDataWriter writer = new CsvDataWriter(export.getFields());
-        writer.writeValues(data, filename);
-    }
+	public static String getSQL(String filename) {
+		try {
+			return Files.readString(Path.of(Config.getInstance().getProperty(Config.SQL_FOLDER) + filename + ".sql"));
+		} catch (IOException e) {
+			log.error(e.getMessage(), e);
+			throw new ExportRequestProcessingException(e.getMessage(), e);
+		}
+	}
+
+	public static void writeCsvFile(Collection data, IExport export, String filename) {
+		CsvDataWriter writer = new CsvDataWriter(export.getFields());
+		writer.writeValues(data, filename);
+	}
 }
 

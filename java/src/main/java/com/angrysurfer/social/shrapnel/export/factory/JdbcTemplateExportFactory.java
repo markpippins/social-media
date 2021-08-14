@@ -19,9 +19,9 @@ public class JdbcTemplateExportFactory implements IExportFactory {
 
 	private Request request;
 
-	private com.angrysurfer.social.shrapnel.export.service.model.Export export;
+	private com.angrysurfer.social.shrapnel.export.service.model.export.Export export;
 
-	public JdbcTemplateExportFactory(Request request, com.angrysurfer.social.shrapnel.export.service.model.Export export) {
+	public JdbcTemplateExportFactory(Request request, com.angrysurfer.social.shrapnel.export.service.model.export.Export export) {
 		this.request = request;
 		this.export = export;
 	}

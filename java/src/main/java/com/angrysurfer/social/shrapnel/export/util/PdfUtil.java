@@ -22,117 +22,108 @@ import java.util.Map;
 
 public class PdfUtil {
 
-    public static Document createDocument(String filename) throws IOException {
-        return createDocument(filename, PageSize.Default);
-    }
+	public static Document createDocument(String filename) throws IOException {
+		return createDocument(filename, PageSize.Default);
+	}
 
-    public static Document createDocument(String filename, PageSize pageSize) {
-        try {
-            FileUtil.ensureSafety(filename);
-        } catch (IOException e) {
-            throw new ExportRequestProcessingException(e.getMessage(), e);
-        }
+	public static Document createDocument(String filename, PageSize pageSize) {
+		FileUtil.ensureSafety(filename);
+		PdfWriter pdfWriter = null;
+		try {
+			pdfWriter = new PdfWriter(filename, getWriterProperties());
+		} catch (FileNotFoundException e) {
+			throw new ExportRequestProcessingException(e.getMessage(), e);
+		}
+		PdfDocument pdfDocument = new PdfDocument(pdfWriter);
+		pdfDocument.setDefaultPageSize(pageSize);
+		pdfDocument.addNewPage();
 
-        PdfWriter pdfWriter = null;
-        try {
-            pdfWriter = new PdfWriter(filename, getWriterProperties());
-        } catch (FileNotFoundException e) {
-            throw new ExportRequestProcessingException(e.getMessage(), e);
-        }
-        PdfDocument pdfDocument = new PdfDocument(pdfWriter);
-        pdfDocument.setDefaultPageSize(pageSize);
-        pdfDocument.addNewPage();
+		return new Document(pdfDocument);
+	}
 
-        return new Document(pdfDocument);
-    }
+	public static Document createDocument(ByteArrayOutputStream baos, PageSize pageSize) {
+		PdfWriter pdfWriter = new PdfWriter(baos, getWriterProperties());
+		PdfDocument pdfDocument = new PdfDocument(pdfWriter);
+		pdfDocument.setDefaultPageSize(pageSize);
+		pdfDocument.addNewPage();
 
-    public static Document createDocument(ByteArrayOutputStream baos, PageSize pageSize) {
-        PdfWriter pdfWriter = new PdfWriter(baos, getWriterProperties());
-        PdfDocument pdfDocument = new PdfDocument(pdfWriter);
-        pdfDocument.setDefaultPageSize(pageSize);
-        pdfDocument.addNewPage();
+		return new Document(pdfDocument);
+	}
 
-        return new Document(pdfDocument);
-    }
+	public static Document createDocument(ByteArrayOutputStream baos) {
+		return createDocument(baos, PageSize.Default);
+	}
 
-    public static Document createDocument(ByteArrayOutputStream baos) {
-        return createDocument(baos, PageSize.Default);
-    }
+	public static String getFontName(Object obj) {
+		String fontName = null;
 
-    public static String getFontName(Object obj) {
-        String fontName = null;
+		if (obj instanceof String)
+			return obj.toString();
 
-        if (obj instanceof String)
-            return obj.toString();
+		if (obj instanceof PdfFont) {
+			PdfFont pdfFont = (PdfFont) obj;
+			FontProgram fontProgram = pdfFont.getFontProgram();
+			fontName = fontProgram.toString();
+		}
 
-        if (obj instanceof PdfFont) {
-            PdfFont pdfFont = (PdfFont) obj;
-            FontProgram fontProgram = pdfFont.getFontProgram();
-            fontName = fontProgram.toString();
-        }
+		return fontName;
+	}
 
-        return fontName;
-    }
+	public static ByteArrayOutputStream generateByteArrayOutputStream(Collection< Object > items, PdfDataWriter pdfRowWriter, PageSize pageSize) {
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		Document document = createDocument(baos, pageSize);
+		writeToTable(items, pdfRowWriter);
+		document.add(pdfRowWriter.getTable());
+		document.close();
+		return baos;
+	}
 
-    public static ByteArrayOutputStream generateByteArrayOutputStream(Collection<Object> items, PdfDataWriter pdfRowWriter, PageSize pageSize) {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        Document document = createDocument(baos, pageSize);
-        writeToTable(items, pdfRowWriter);
-        document.add(pdfRowWriter.getTable());
-        document.close();
-        return baos;
-    }
+	public static ByteArrayOutputStream generateByteArrayOutputStream(Collection< Object > items, IExport export) {
+		return generateByteArrayOutputStream(items, export.getPdfRowWriter(), export.getPdfPageSize());
+	}
 
-    public static ByteArrayOutputStream generateByteArrayOutputStream(Collection<Object> items, IExport export) {
-        return generateByteArrayOutputStream(items, export.getPdfRowWriter(), export.getPdfPageSize());
-    }
+	public static ByteArrayOutputStream generateByteArrayOutputStream(Collection< Object > items, PdfDataWriter pdfRowWriter) {
+		return generateByteArrayOutputStream(items, pdfRowWriter, PageSize.Default);
+	}
 
-    public static ByteArrayOutputStream generateByteArrayOutputStream(Collection<Object> items, PdfDataWriter pdfRowWriter) {
-        return generateByteArrayOutputStream(items, pdfRowWriter, PageSize.Default);
-    }
+	static WriterProperties getWriterProperties() {
+		return getWriterProperties(PdfVersion.PDF_2_0);
+	}
 
-    static WriterProperties getWriterProperties() {
-        return getWriterProperties(PdfVersion.PDF_2_0);
-    }
+	static WriterProperties getWriterProperties(PdfVersion pdfVersion) {
+		WriterProperties properties = new WriterProperties();
+		properties.setPdfVersion(pdfVersion);
+		return properties;
+	}
 
-    static WriterProperties getWriterProperties(PdfVersion pdfVersion) {
-        WriterProperties properties = new WriterProperties();
-        properties.setPdfVersion(pdfVersion);
-        return properties;
-    }
+	public static String writeTabularFile(Collection items, PdfDataWriter pdfRowWriter, String filename) {
+		return writeTabularFile(items, pdfRowWriter, filename, PageSize.Default);
+	}
 
-    public static String writeTabularFile(Collection items, PdfDataWriter pdfRowWriter, String filename) {
-        return writeTabularFile(items, pdfRowWriter, filename, PageSize.Default);
-    }
+	public static String writeTabularFile(Collection items, PdfDataWriter pdfRowWriter, String filename, PageSize pageSize) {
+		String outputFileName = FileUtil.getOutputFileName(filename, "pdf");
+		FileUtil.ensureSafety(outputFileName);
+		Document document = createDocument(outputFileName, pageSize);
+		writeToTable(items, pdfRowWriter);
+		document.add(pdfRowWriter.getTable());
+		document.close();
+		return outputFileName;
+	}
 
-    public static String writeTabularFile(Collection items, PdfDataWriter pdfRowWriter, String filename, PageSize pageSize) {
-        String outputFileName = FileUtil.getOutputFileName(filename, "pdf");
-        try {
-            FileUtil.ensureSafety(outputFileName);
-        } catch (IOException e) {
-            throw new ExportRequestProcessingException(e.getMessage(), e);
-        }
-        Document document = createDocument(outputFileName, pageSize);
-        writeToTable(items, pdfRowWriter);
-        document.add(pdfRowWriter.getTable());
-        document.close();
-        return outputFileName;
-    }
+	public static String writeTabularFile(Collection< Object > items, IExport export, String filename) {
+		return writeTabularFile(items, export.getPdfRowWriter(), filename, export.getPdfPageSize());
+	}
 
-    public static String writeTabularFile(Collection<Object> items, IExport export, String filename) {
-        return writeTabularFile(items, export.getPdfRowWriter(), filename, export.getPdfPageSize());
-    }
+	public static void writeToTable(Collection< Object > items, PdfDataWriter pdfRowWriter, Table table) {
+		Map< String, Object > outputConfig = new HashMap<>();
+		outputConfig.put(PdfDataWriter.TABLE, table);
+		pdfRowWriter.writeData(outputConfig, items);
+	}
 
-    public static void writeToTable(Collection<Object> items, PdfDataWriter pdfRowWriter, Table table) {
-        Map<String, Object> outputConfig = new HashMap<>();
-        outputConfig.put(PdfDataWriter.TABLE, table);
-        pdfRowWriter.writeData(outputConfig, items);
-    }
-
-    public static void writeToTable(Collection<Object> items, PdfDataWriter pdfRowWriter) {
-        Table table = pdfRowWriter.createTable();
-        Map<String, Object> outputConfig = new HashMap<>();
-        outputConfig.put(PdfDataWriter.TABLE, table);
-        pdfRowWriter.writeData(outputConfig, items);
-    }
+	public static void writeToTable(Collection< Object > items, PdfDataWriter pdfRowWriter) {
+		Table table = pdfRowWriter.createTable();
+		Map< String, Object > outputConfig = new HashMap<>();
+		outputConfig.put(PdfDataWriter.TABLE, table);
+		pdfRowWriter.writeData(outputConfig, items);
+	}
 }

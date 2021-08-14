@@ -17,69 +17,65 @@ import java.util.Map;
 
 public class ExcelUtil {
 
-    static final String XLSX = "xlsx";
+	static final String XLSX = "xlsx";
 
-    static Sheet createSheet(Workbook workbook, ExcelDataWriter writer, String label) {
-        Sheet sheet = workbook.createSheet(label);
-        for (int i = 0; i < writer.getFields().size(); i++)
-            sheet.setColumnWidth(i, 6000);
-        return sheet;
-    }
+	static Sheet createSheet(Workbook workbook, ExcelDataWriter writer, String label) {
+		Sheet sheet = workbook.createSheet(label);
+		for (int i = 0; i < writer.getFields().size(); i++)
+			sheet.setColumnWidth(i, 6000);
+		return sheet;
+	}
 
-    public static void addSpreadSheet(Workbook workbook, String label, Collection<Object> items, ExcelDataWriter writer) {
-        Sheet sheet = createSheet(workbook, writer, label);
+	public static void addSpreadSheet(Workbook workbook, String label, Collection< Object > items, ExcelDataWriter writer) {
+		Sheet sheet = createSheet(workbook, writer, label);
 
-        Map<String, Object> config = new HashMap<>();
-        config.put(ExcelDataWriter.WORKBOOK, workbook);
-        config.put(ExcelDataWriter.SHEET, sheet);
+		Map< String, Object > config = new HashMap<>();
+		config.put(ExcelDataWriter.WORKBOOK, workbook);
+		config.put(ExcelDataWriter.SHEET, sheet);
 
-        writer.writeData(config, items);
-    }
+		writer.writeData(config, items);
+	}
 
-    public static void addSpreadSheet(Workbook workbook, IExport export, Collection<Object> items) {
-        addSpreadSheet(workbook, FileUtil.getLabel(export), items, export.getExcelRowWriter());
-    }
+	public static void addSpreadSheet(Workbook workbook, IExport export, Collection< Object > items) {
+		addSpreadSheet(workbook, FileUtil.getLabel(export), items, export.getExcelRowWriter());
+	}
 
-    public static ByteArrayOutputStream generateByteArrayOutputStream(Collection<Object> data, IExport export) {
-        Workbook workbook = new XSSFWorkbook();
-        addSpreadSheet(workbook, export, data);
-        return generateByteArrayOutputStream(workbook);
-    }
+	public static ByteArrayOutputStream generateByteArrayOutputStream(Collection< Object > data, IExport export) {
+		Workbook workbook = new XSSFWorkbook();
+		addSpreadSheet(workbook, export, data);
+		return generateByteArrayOutputStream(workbook);
+	}
 
-    private static ByteArrayOutputStream generateByteArrayOutputStream(Workbook workbook) {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        try {
-            workbook.write(baos);
-            workbook.close();
-        } catch (IOException e) {
-            throw new ExportRequestProcessingException(e.getMessage(), e);
-        }
-        return baos;
-    }
+	private static ByteArrayOutputStream generateByteArrayOutputStream(Workbook workbook) {
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		try {
+			workbook.write(baos);
+			workbook.close();
+		} catch (IOException e) {
+			throw new ExportRequestProcessingException(e.getMessage(), e);
+		}
+		return baos;
+	}
 
-    public static String writeWorkbookToFile(Workbook workbook, String filename) {
-        String outputFileName = FileUtil.getOutputFileName(filename, XLSX);
-        try {
-            FileUtil.ensureSafety(outputFileName);
-        } catch (IOException e) {
-            throw new ExportRequestProcessingException(e.getMessage(), e);
-        }
+	public static String writeWorkbookToFile(Workbook workbook, String filename) {
+		String outputFileName = FileUtil.getOutputFileName(filename, XLSX);
+		FileUtil.ensureSafety(outputFileName);
 
-        try (FileOutputStream fos = new FileOutputStream(outputFileName)) {
-            workbook.write(fos);
-            workbook.close();
-        } catch (FileNotFoundException e) {
-            throw new ExportRequestProcessingException(e.getMessage(), e);
-        } catch (IOException e) {
-            throw new ExportRequestProcessingException(e.getMessage(), e);
-        }
+		try (FileOutputStream fos = new FileOutputStream(outputFileName)) {
+			workbook.write(fos);
+			workbook.close();
+		} catch (FileNotFoundException e) {
+			throw new ExportRequestProcessingException(e.getMessage(), e);
+		} catch (IOException e) {
+			throw new ExportRequestProcessingException(e.getMessage(), e);
+		}
 
-        return outputFileName;
-    }
+		return outputFileName;
+	}
 
-    public static String writeWorkbookToFile(Collection<Object> data, IExport export, String filename) {
-        Workbook workbook = new XSSFWorkbook();
-        addSpreadSheet(workbook, export, data);
-        return writeWorkbookToFile(workbook, filename);
-    }
+	public static String writeWorkbookToFile(Collection< Object > data, IExport export, String filename) {
+		Workbook workbook = new XSSFWorkbook();
+		addSpreadSheet(workbook, export, data);
+		return writeWorkbookToFile(workbook, filename);
+	}
 }

@@ -1,6 +1,5 @@
 package com.angrysurfer.social.shrapnel.export.service.model.qbe;
 
-import com.angrysurfer.social.shrapnel.export.service.model.Field;
 import lombok.Getter;
 import lombok.Setter;
 

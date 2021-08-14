@@ -2,13 +2,14 @@ package com.angrysurfer.social.shrapnel;
 
 import com.angrysurfer.social.shrapnel.export.component.field.FieldTypeEnum;
 import com.angrysurfer.social.shrapnel.export.service.model.ComponentCreator;
-import com.angrysurfer.social.shrapnel.export.service.model.Export;
-import com.angrysurfer.social.shrapnel.export.service.model.Field;
-import com.angrysurfer.social.shrapnel.export.service.model.PdfPageSize;
+import com.angrysurfer.social.shrapnel.export.service.model.export.Export;
+import com.angrysurfer.social.shrapnel.export.service.model.export.Field;
+import com.angrysurfer.social.shrapnel.export.service.model.export.PdfPageSize;
+import com.angrysurfer.social.shrapnel.export.service.model.export.DataSource;
 import com.angrysurfer.social.shrapnel.export.service.model.qbe.Column;
 import com.angrysurfer.social.shrapnel.export.service.model.qbe.Join;
 import com.angrysurfer.social.shrapnel.export.service.model.qbe.Table;
-import com.angrysurfer.social.shrapnel.export.service.repository.*;
+import com.angrysurfer.social.shrapnel.export.service.repository.export.*;
 import com.angrysurfer.social.shrapnel.export.service.repository.qbe.ColumnRepository;
 import com.angrysurfer.social.shrapnel.export.service.repository.qbe.JoinRepository;
 import com.angrysurfer.social.shrapnel.export.service.repository.qbe.QueryRepository;
@@ -100,7 +101,7 @@ class SpringConfig implements CommandLineRunner {
 		Arrays.stream(FieldTypeEnum.values())
 				.forEach(fieldType -> fieldTypeRepository.save(ComponentCreator.createFieldType(fieldType)));
 
-		com.angrysurfer.social.shrapnel.export.service.model.DataSource forumData = new com.angrysurfer.social.shrapnel.export.service.model.DataSource();
+		DataSource forumData = new DataSource();
 		forumData.setQueryName("get-forums");
 		forumData.setName("forum-list");
 		dataSourceRepository.save(forumData);
@@ -134,7 +135,7 @@ class SpringConfig implements CommandLineRunner {
 		forumExport.setPdfPageSize(pdfPageSizeRepository.findByName("A0"));
 		exportRepository.save(forumExport);
 
-		com.angrysurfer.social.shrapnel.export.service.model.DataSource userData = new com.angrysurfer.social.shrapnel.export.service.model.DataSource();
+		DataSource userData = new DataSource();
 		userData.setQueryName("get-users");
 		userData.setName("user-list");
 		dataSourceRepository.save(userData);
