@@ -1,19 +1,19 @@
 package com.angrysurfer.social.shrapnel.example;
 
 import com.angrysurfer.social.shrapnel.Config;
-import com.angrysurfer.social.shrapnel.component.Export;
-import com.angrysurfer.social.shrapnel.component.IValueCalculator;
-import com.angrysurfer.social.shrapnel.component.IValueRenderer;
-import com.angrysurfer.social.shrapnel.component.field.Field;
-import com.angrysurfer.social.shrapnel.component.field.FieldTypeEnum;
-import com.angrysurfer.social.shrapnel.component.field.IField;
-import com.angrysurfer.social.shrapnel.component.property.IPropertyAccessor;
-import com.angrysurfer.social.shrapnel.component.writer.IDataWriter;
-import com.angrysurfer.social.shrapnel.component.writer.filter.IDataFilter;
-import com.angrysurfer.social.shrapnel.component.writer.style.FontSource;
-import com.angrysurfer.social.shrapnel.component.writer.style.adapter.StyleAdapter;
-import com.angrysurfer.social.shrapnel.component.writer.style.provider.ZebraStyleProvider;
-import com.angrysurfer.social.shrapnel.services.factory.IExportFactory;
+import com.angrysurfer.social.shrapnel.export.Export;
+import com.angrysurfer.social.shrapnel.export.component.IValueCalculator;
+import com.angrysurfer.social.shrapnel.export.component.IValueRenderer;
+import com.angrysurfer.social.shrapnel.export.component.field.Field;
+import com.angrysurfer.social.shrapnel.export.component.field.FieldTypeEnum;
+import com.angrysurfer.social.shrapnel.export.component.field.IField;
+import com.angrysurfer.social.shrapnel.export.component.property.IPropertyAccessor;
+import com.angrysurfer.social.shrapnel.export.component.writer.IDataWriter;
+import com.angrysurfer.social.shrapnel.export.component.writer.filter.IDataFilter;
+import com.angrysurfer.social.shrapnel.export.component.writer.style.FontSource;
+import com.angrysurfer.social.shrapnel.export.component.writer.style.adapter.StyleAdapter;
+import com.angrysurfer.social.shrapnel.export.component.writer.style.provider.ZebraStyleProvider;
+import com.angrysurfer.social.shrapnel.export.factory.IExportFactory;
 import com.itextpdf.kernel.color.Color;
 import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.kernel.geom.PageSize;
@@ -28,7 +28,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.angrysurfer.social.shrapnel.component.writer.DataWriter.EMPTY_STRING;
+import static com.angrysurfer.social.shrapnel.export.component.writer.DataWriter.EMPTY_STRING;
 
 @Getter
 @Setter
@@ -144,13 +144,8 @@ public class FontConfigExport extends Export {
             return Arrays.stream(new File(file.getAbsolutePath().substring(0, file.getAbsolutePath().length() - 1)
                             + Config.getInstance().getProperty(Config.FONTS_FOLDER)).listFiles())
                     .filter(f -> f.getPath().toLowerCase(Locale.ROOT).endsWith(".ttf"))
-                    .sorted(new Comparator<File>() {
-                        @Override
-                        public int compare(File file1, File file2) {
-                            return file1.getAbsolutePath().toLowerCase(Locale.ROOT)
-                                    .compareTo(file2.getAbsolutePath().toLowerCase(Locale.ROOT));
-                        }
-                    })
+                    .sorted((File file1, File file2) -> file1.getAbsolutePath().toLowerCase(Locale.ROOT)
+                            .compareTo(file2.getAbsolutePath().toLowerCase(Locale.ROOT)))
                     .collect(Collectors.toList());
         }
 

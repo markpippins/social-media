@@ -1,12 +1,12 @@
 package com.angrysurfer.social;
 
-import com.angrysurfer.social.model.*;
-import com.angrysurfer.social.model.Reaction.ReactionType;
-import com.angrysurfer.social.repository.*;
-import com.angrysurfer.social.service.ForumService;
-import com.angrysurfer.social.service.PostService;
-import com.angrysurfer.social.service.QuoteService;
-import com.angrysurfer.social.service.ReactionService;
+import com.angrysurfer.social.media.model.*;
+import com.angrysurfer.social.media.model.Reaction.ReactionType;
+import com.angrysurfer.social.media.repository.*;
+import com.angrysurfer.social.media.service.ForumService;
+import com.angrysurfer.social.media.service.PostService;
+import com.angrysurfer.social.media.service.QuoteService;
+import com.angrysurfer.social.media.service.ReactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
