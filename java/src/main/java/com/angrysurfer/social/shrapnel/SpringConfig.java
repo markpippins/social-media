@@ -1,11 +1,11 @@
 package com.angrysurfer.social.shrapnel;
 
 import com.angrysurfer.social.shrapnel.export.component.field.FieldTypeEnum;
-import com.angrysurfer.social.shrapnel.export.service.model.ComponentCreator;
+import com.angrysurfer.social.shrapnel.export.service.ComponentsService;
+import com.angrysurfer.social.shrapnel.export.service.model.export.DataSource;
 import com.angrysurfer.social.shrapnel.export.service.model.export.Export;
 import com.angrysurfer.social.shrapnel.export.service.model.export.Field;
 import com.angrysurfer.social.shrapnel.export.service.model.export.PdfPageSize;
-import com.angrysurfer.social.shrapnel.export.service.model.export.DataSource;
 import com.angrysurfer.social.shrapnel.export.service.model.qbe.Column;
 import com.angrysurfer.social.shrapnel.export.service.model.qbe.Join;
 import com.angrysurfer.social.shrapnel.export.service.model.qbe.Table;
@@ -61,9 +61,8 @@ class SpringConfig implements CommandLineRunner {
 	@Resource
 	JoinRepository joinRepository;
 
-//    @Autowired
-
-//    private Environment env;
+	@Resource
+	ComponentsService componentsService;
 
 	@Override
 	public void run(String... args) throws Exception {
@@ -99,7 +98,7 @@ class SpringConfig implements CommandLineRunner {
 		pdfPageSizeRepository.save(new PdfPageSize("EXECUTIVE", 522, 756));
 
 		Arrays.stream(FieldTypeEnum.values())
-				.forEach(fieldType -> fieldTypeRepository.save(ComponentCreator.createFieldType(fieldType)));
+				.forEach(fieldType -> fieldTypeRepository.save(componentsService.createFieldType(fieldType)));
 
 		DataSource forumData = new DataSource();
 		forumData.setQueryName("get-forums");
@@ -187,16 +186,19 @@ class SpringConfig implements CommandLineRunner {
 		Column personId = new Column();
 		personId.setName("id");
 		personId.setTable(people);
+		personId.setIndex(0);
 		columnRepository.save(personId);
 
 		Column alias = new Column();
 		alias.setName("alias");
 		alias.setTable(people);
+		alias.setIndex(1);
 		columnRepository.save(alias);
 
 		Column email = new Column();
 		email.setName("email");
 		email.setTable(people);
+		email.setIndex(3);
 		columnRepository.save(email);
 
 		people.getColumns().add(personId);
@@ -212,16 +214,19 @@ class SpringConfig implements CommandLineRunner {
 		Column postId = new Column();
 		postId.setName("id");
 		postId.setTable(posts);
+		postId.setIndex(0);
 		columnRepository.save(postId);
 
 		Column postedById = new Column();
 		postedById.setName("posted_by_id");
 		postedById.setTable(posts);
+		postedById.setIndex(1);
 		columnRepository.save(postedById);
 
 		Column text = new Column();
 		text.setName("text");
 		text.setTable(posts);
+		text.setIndex(2);
 		columnRepository.save(text);
 
 		Join join = new Join();
@@ -230,7 +235,7 @@ class SpringConfig implements CommandLineRunner {
 		joinRepository.save(join);
 
 		com.angrysurfer.social.shrapnel.export.service.model.qbe.Query query = new com.angrysurfer.social.shrapnel.export.service.model.qbe.Query();
-		query.setName("get-people");
+		query.setName("get-posts");
 		query.setSchema("sample");
 		query.getColumns().add(personId);
 		query.getColumns().add(alias);
@@ -243,6 +248,7 @@ class SpringConfig implements CommandLineRunner {
 		queryRepository.save(query);
 
 		log.info(query.getSQL());
+		Export export = componentsService.createExport(query);
 	}
 }
 

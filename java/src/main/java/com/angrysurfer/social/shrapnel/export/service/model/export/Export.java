@@ -49,23 +49,25 @@ public class Export {
 
 		final boolean[] isConfigured = { true };
 
-		if (Objects.isNull(getName())
-				    || Objects.isNull(getDataSource())
-				    || Objects.isNull(getDataSource().getQueryName()))
+		if (Objects.isNull(getName()) ||
+				    (Objects.isNull(getDataSource()) && Objects.isNull(getDataSource().getQueryName())))
 			isConfigured[ 0 ] = false;
 
 		Map< Integer, IField > indexMap = new HashMap<>();
 		getFields().forEach(field -> {
 			if (Objects.isNull(field.getPropertyName())
+//					    || indexMap.containsKey(field.getIndex())
 					    || Objects.isNull(field.getType())
-					    || Objects.isNull(field.getIndex())
-					    || indexMap.containsKey(field.getIndex()))
+					    || Objects.isNull(field.getIndex()))
 				isConfigured[ 0 ] = false;
-			indexMap.put(field.getIndex(), field);
+//  			indexMap.put(field.getIndex(), field);
 		});
 
-		File sql = new File(Config.getInstance().getProperty(Config.SQL_FOLDER) + dataSource.getQueryName() + ".sql");
-		if (!sql.exists())
+		if (Objects.isNull(getDataSource().getQuery())) {
+			File sql = new File(Config.getInstance().getProperty(Config.SQL_FOLDER) + getDataSource().getQueryName() + ".sql");
+			if (!sql.exists())
+				isConfigured[ 0 ] = false;
+		} else if (Objects.isNull(getDataSource().getQuery().getSQL()))
 			isConfigured[ 0 ] = false;
 
 		return isConfigured[ 0 ];

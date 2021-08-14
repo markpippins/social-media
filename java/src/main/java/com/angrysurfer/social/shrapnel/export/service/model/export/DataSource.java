@@ -23,6 +23,6 @@ public class DataSource {
 	@Column(name = "name", nullable = false)
 	private String name;
 
-	@Column(name = "query", nullable = false)
+	@Column(name = "query", nullable = true)
 	private String queryName;
 }

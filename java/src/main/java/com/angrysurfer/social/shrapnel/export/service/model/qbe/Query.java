@@ -85,13 +85,17 @@ public class Query {
 			return "\n";
 
 		StringBuffer where = new StringBuffer(WHERE);
-//		where.append("\t");
 		where.append(String.join(AND, getJoins().stream()
 				.sorted((j1, j2) -> j1.getJoinColumnA().getTable().getName()
 						.compareTo(j2.getJoinColumnB().getTable().getName()))
-				.map(j -> getEqualsStatement(j)).collect(Collectors.toList())));
+				.map(j -> getComparisonSQL(j)).collect(Collectors.toList())));
 
 		return where.toString();
+	}
+
+	private String getComparisonSQL(Join join) {
+		// switch(join.getTye())
+		return getEqualsStatement(join);
 	}
 
 	private String getEqualsStatement(Join join) {
@@ -108,7 +112,6 @@ public class Query {
 	}
 
 	private String getTableName(com.angrysurfer.social.shrapnel.export.service.model.qbe.Column column, boolean prefix) {
-
 		return prefix ? column.getTable().getSchema() + "." + column.getTable().getName() + " " +
 				                column.getTable().getName().replace("_", "") + "_" :
 				       column.getTable().getName().replace("_", "") + "_";

@@ -27,4 +27,8 @@ public class Column {
 	@ManyToOne
 	@JoinColumn(name = "table_id")
 	private Table table;
+
+	@javax.persistence.Column(name = "field_index", nullable = false)
+	private Integer index;
+
 }
