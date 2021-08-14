@@ -6,6 +6,7 @@ import com.angrysurfer.social.shrapnel.export.service.model.Export;
 import com.angrysurfer.social.shrapnel.export.service.model.Field;
 import com.angrysurfer.social.shrapnel.export.service.model.PdfPageSize;
 import com.angrysurfer.social.shrapnel.export.service.model.qbe.Column;
+import com.angrysurfer.social.shrapnel.export.service.model.qbe.Join;
 import com.angrysurfer.social.shrapnel.export.service.model.qbe.Table;
 import com.angrysurfer.social.shrapnel.export.service.repository.*;
 import com.angrysurfer.social.shrapnel.export.service.repository.qbe.ColumnRepository;
@@ -208,6 +209,31 @@ class SpringConfig implements CommandLineRunner {
 		people.getColumns().add(email);
 		tableRepository.save(people);
 
+		Table orders = new Table();
+		orders.setSchema("sample");
+		orders.setName("orders");
+		tableRepository.save(orders);
+
+		Column orderId = new Column();
+		orderId.setName("order_id");
+		orderId.setTable(orders);
+		columnRepository.save(orderId);
+
+		Column buyerId = new Column();
+		buyerId.setName("id");
+		buyerId.setTable(orders);
+		columnRepository.save(buyerId);
+
+		Column orderSummary = new Column();
+		orderSummary.setName("order_summary");
+		orderSummary.setTable(orders);
+		columnRepository.save(orderSummary);
+
+		Join join = new Join();
+		join.setJoinColumnA(id);
+		join.setJoinColumnB(buyerId);
+		joinRepository.save(join);
+
 		com.angrysurfer.social.shrapnel.export.service.model.qbe.Query query = new com.angrysurfer.social.shrapnel.export.service.model.qbe.Query();
 		query.setName("get-people");
 		query.setSchema("sample");
@@ -215,6 +241,9 @@ class SpringConfig implements CommandLineRunner {
 		query.getColumns().add(first);
 		query.getColumns().add(last);
 		query.getColumns().add(email);
+		query.getColumns().add(orderId);
+		query.getColumns().add(orderSummary);
+		query.getJoins().add(join);
 
 		queryRepository.save(query);
 
