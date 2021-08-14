@@ -180,24 +180,19 @@ class SpringConfig implements CommandLineRunner {
 		exportRepository.save(userExport);
 
 		Table people = new Table();
-		people.setSchema("sample");
-		people.setName("people");
+		people.setSchema("social");
+		people.setName("user");
 		tableRepository.save(people);
 
 		Column personId = new Column();
-		personId.setName("person_id");
+		personId.setName("id");
 		personId.setTable(people);
 		columnRepository.save(personId);
 
-		Column first = new Column();
-		first.setName("first");
-		first.setTable(people);
-		columnRepository.save(first);
-
-		Column last = new Column();
-		last.setName("last");
-		last.setTable(people);
-		columnRepository.save(last);
+		Column alias = new Column();
+		alias.setName("alias");
+		alias.setTable(people);
+		columnRepository.save(alias);
 
 		Column email = new Column();
 		email.setName("email");
@@ -205,46 +200,44 @@ class SpringConfig implements CommandLineRunner {
 		columnRepository.save(email);
 
 		people.getColumns().add(personId);
-		people.getColumns().add(first);
-		people.getColumns().add(last);
+		people.getColumns().add(alias);
 		people.getColumns().add(email);
 		tableRepository.save(people);
 
-		Table orders = new Table();
-		orders.setSchema("sample");
-		orders.setName("orders");
-		tableRepository.save(orders);
+		Table posts = new Table();
+		posts.setSchema("social");
+		posts.setName("post");
+		tableRepository.save(posts);
 
-		Column orderId = new Column();
-		orderId.setName("order_id");
-		orderId.setTable(orders);
-		columnRepository.save(orderId);
+		Column postId = new Column();
+		postId.setName("id");
+		postId.setTable(posts);
+		columnRepository.save(postId);
 
-		Column buyerId = new Column();
-		buyerId.setName("buyer_id");
-		buyerId.setTable(orders);
-		columnRepository.save(buyerId);
+		Column postedById = new Column();
+		postedById.setName("posted_by_id");
+		postedById.setTable(posts);
+		columnRepository.save(postedById);
 
-		Column orderSummary = new Column();
-		orderSummary.setName("order_summary");
-		orderSummary.setTable(orders);
-		columnRepository.save(orderSummary);
+		Column text = new Column();
+		text.setName("text");
+		text.setTable(posts);
+		columnRepository.save(text);
 
 		Join join = new Join();
 		join.setJoinColumnA(personId);
-		join.setJoinColumnB(buyerId);
+		join.setJoinColumnB(postedById);
 		joinRepository.save(join);
 
 		com.angrysurfer.social.shrapnel.export.service.model.qbe.Query query = new com.angrysurfer.social.shrapnel.export.service.model.qbe.Query();
 		query.setName("get-people");
 		query.setSchema("sample");
 		query.getColumns().add(personId);
-		query.getColumns().add(first);
-		query.getColumns().add(last);
+		query.getColumns().add(alias);
 		query.getColumns().add(email);
-		query.getColumns().add(orderId);
-		query.getColumns().add(buyerId);
-		query.getColumns().add(orderSummary);
+		query.getColumns().add(postId);
+		query.getColumns().add(postedById);
+		query.getColumns().add(text);
 		query.getJoins().add(join);
 
 		queryRepository.save(query);
