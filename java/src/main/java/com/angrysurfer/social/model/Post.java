@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity(name = "Post")
+//@Table(schema = "social")
 public class Post extends AbstractContent {
 
 	/**

@@ -9,7 +9,7 @@ import java.util.Set;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
 
-	Set<Comment> findByPostId(Long postId);
+    Set<Comment> findByPostId(Long postId);
 
-	Page<Comment> findByPostId(Long postId, Pageable pageable);
+    Page<Comment> findByPostId(Long postId, Pageable pageable);
 }
