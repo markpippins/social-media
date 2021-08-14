@@ -15,7 +15,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.HashSet;
 import java.util.Locale;
+import java.util.Set;
 
 @Service
 public class ComponentsService {
@@ -53,6 +55,14 @@ public class ComponentsService {
     public Export createExport(Query query) {
         Export export = new Export();
         export.setName(query.getName());
+        export.setFields(createFields(query));
+        export.setDataSource(createDataSource(query));
+        exportRepository.save(export);
+        return export;
+    }
+
+    private Set< Field> createFields(Query query) {
+        Set<Field> fields = new HashSet<>();
 
         query.getColumns().forEach(column -> {
             Field field = new Field();
@@ -66,18 +76,18 @@ public class ComponentsService {
                     .orElseThrow(() -> new IllegalArgumentException()));
 
             fieldSpecRepository.save(field);
-            export.getFields().add(field);
+            fields.add(field);
         });
 
+        return fields;
+    }
+
+    private DataSource createDataSource(Query query) {
         DataSource ds = new DataSource();
         ds.setName(query.getName());
         ds.setQuery(query);
         dataSourceRepository.save(ds);
-
-        export.setDataSource(ds);
-        exportRepository.save(export);
-
-        return export;
+        return ds;
     }
 
     public FieldType createFieldType(FieldTypeEnum fieldType) {
