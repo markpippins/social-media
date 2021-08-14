@@ -1,6 +1,6 @@
 package com.angrysurfer.social.shrapnel.component.writer.style.provider;
 
-import com.angrysurfer.social.shrapnel.component.field.IFieldSpec;
+import com.angrysurfer.social.shrapnel.component.field.IField;
 import com.angrysurfer.social.shrapnel.component.writer.style.adapter.StyleAdapter;
 import com.itextpdf.layout.Style;
 import lombok.extern.slf4j.Slf4j;
@@ -41,7 +41,7 @@ public class CombinedStyleProvider extends StyleProvider implements IExcelStyleP
     }
 
     @Override
-    public XSSFCellStyle getCellStyle(Object item, Workbook workbook, IFieldSpec field, int row) {
+    public XSSFCellStyle getCellStyle(Object item, Workbook workbook, IField field, int row) {
         if (Objects.isNull(workbook))
             throw new NullPointerException("CellStyle instance cannot be accessed without a Workbook");
 
@@ -66,7 +66,7 @@ public class CombinedStyleProvider extends StyleProvider implements IExcelStyleP
     }
 
     @Override
-    public XSSFCellStyle getHeaderStyle(Workbook workbook, IFieldSpec field) {
+    public XSSFCellStyle getHeaderStyle(Workbook workbook, IField field) {
         if (Objects.isNull(workbook))
             throw new NullPointerException("CellStyle instance cannot be accessed without a Workbook");
 

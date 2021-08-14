@@ -1,7 +1,7 @@
 package com.angrysurfer.social.shrapnel.component.writer;
 
 import com.angrysurfer.social.shrapnel.component.IValueRenderer;
-import com.angrysurfer.social.shrapnel.component.field.IFieldSpec;
+import com.angrysurfer.social.shrapnel.component.field.IField;
 import com.itextpdf.layout.element.Cell;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,7 +19,7 @@ public abstract class MultiLevelPdfDataWriter extends PdfDataWriter implements I
 
     private String levelPropertyName;
 
-    public MultiLevelPdfDataWriter(String levelPropertyName, List<IFieldSpec> fields, IValueRenderer valueRenderer) {
+    public MultiLevelPdfDataWriter(String levelPropertyName, List<IField> fields, IValueRenderer valueRenderer) {
         super(fields, valueRenderer);
         setAutoCreateTopLevelHeader(false);
         setLevelPropertyName(levelPropertyName);
@@ -36,12 +36,12 @@ public abstract class MultiLevelPdfDataWriter extends PdfDataWriter implements I
     }
 
     @Override
-    public boolean shouldSkip(IFieldSpec field, Object item) {
+    public boolean shouldSkip(IField field, Object item) {
         return super.shouldSkip(field, item) || shouldSkip(this, field, item, getPropertyAccessor());
     }
 
     @Override
-    public boolean shouldWrite(IFieldSpec field, Object item) {
+    public boolean shouldWrite(IField field, Object item) {
         return super.shouldWrite(field, item) && shouldWrite(this, field, item, getPropertyAccessor());
     }
 

@@ -2,7 +2,7 @@ package com.angrysurfer.social.shrapnel.services.factory;
 
 import com.angrysurfer.social.shrapnel.component.Export;
 import com.angrysurfer.social.shrapnel.component.IExport;
-import com.angrysurfer.social.shrapnel.component.field.IFieldSpec;
+import com.angrysurfer.social.shrapnel.component.field.IField;
 import com.angrysurfer.social.shrapnel.component.property.PropertyMapAccessor;
 import com.angrysurfer.social.shrapnel.services.service.Request;
 import com.itextpdf.kernel.geom.PageSize;
@@ -37,9 +37,9 @@ public class JdbcTemplateExportFactory implements IExportFactory {
                 new PageSize(getExport().getPdfPageSize().getWidth(), getExport().getPdfPageSize().getHeight()) :
                 PageSize.Default;
 
-        return new Export(getExportName(), getExport().getFieldSpecs()
+        return new Export(getExportName(), getExport().getFields()
                 .stream()
-                .sorted(Comparator.comparing(IFieldSpec::getIndex))
+                .sorted(Comparator.comparing(IField::getIndex))
                 .collect(Collectors.toList())) {
 
             @Override

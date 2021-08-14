@@ -1,7 +1,7 @@
 package com.angrysurfer.social.shrapnel.component.writer;
 
 import com.angrysurfer.social.shrapnel.component.IValueCalculator;
-import com.angrysurfer.social.shrapnel.component.field.IFieldSpec;
+import com.angrysurfer.social.shrapnel.component.field.IField;
 
 import java.util.Collection;
 import java.util.List;
@@ -11,9 +11,9 @@ public interface IDataWriter {
 
     IValueCalculator getValueCalculator();
 
-    List<IFieldSpec> getFields();
+    List<IField> getFields();
 
-    default IFieldSpec getField(String propertyName) {
+    default IField getField(String propertyName) {
         return getFields().stream()
                 .filter(field -> field.getPropertyName().equalsIgnoreCase(propertyName))
                 .findFirst().orElse(null);

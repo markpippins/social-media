@@ -2,9 +2,9 @@ package com.angrysurfer.social.shrapnel.component.writer;
 
 import com.angrysurfer.social.shrapnel.component.IValueCalculator;
 import com.angrysurfer.social.shrapnel.component.IValueRenderer;
-import com.angrysurfer.social.shrapnel.component.field.FieldSpec;
+import com.angrysurfer.social.shrapnel.component.field.Field;
 import com.angrysurfer.social.shrapnel.component.field.FieldTypeEnum;
-import com.angrysurfer.social.shrapnel.component.field.IFieldSpec;
+import com.angrysurfer.social.shrapnel.component.field.IField;
 import com.angrysurfer.social.shrapnel.component.property.IPropertyAccessor;
 import com.angrysurfer.social.shrapnel.component.property.IProxyPropertyAccessor;
 import com.angrysurfer.social.shrapnel.component.property.PropertyUtilsPropertyAccessor;
@@ -26,29 +26,29 @@ public abstract class DataWriter implements IDataWriter, IProxyPropertyAccessor 
     public static final String EMPTY_STRING = "";
     public static final String EMPTY_QUOTES = "''";
 
-    public static final IFieldSpec DATA_NULL_VALUE = new FieldSpec.DebugFieldSpec("dataNullValue", "<< NULL >>", FieldTypeEnum.STRING);
-    public static final IFieldSpec DATA_PADDING_LEFT = new FieldSpec.DebugFieldSpec("dataPaddingLeft", "<< DATA <<", FieldTypeEnum.STRING);
-    public static final IFieldSpec DATA_PADDING_RIGHT = new FieldSpec.DebugFieldSpec("dataPaddingRight", ">> DATA >>", FieldTypeEnum.STRING);
-    public static final IFieldSpec HEADER_PADDING_LEFT = new FieldSpec.DebugFieldSpec("hdrPaddingLeft", "<< HDR <<", FieldTypeEnum.STRING);
-    public static final IFieldSpec HEADER_PADDING_RIGHT = new FieldSpec.DebugFieldSpec("hdrPaddingRight", ">> HDR >>", FieldTypeEnum.STRING);
+    public static final IField DATA_NULL_VALUE = new Field.DebugField("dataNullValue", "<< NULL >>", FieldTypeEnum.STRING);
+    public static final IField DATA_PADDING_LEFT = new Field.DebugField("dataPaddingLeft", "<< DATA <<", FieldTypeEnum.STRING);
+    public static final IField DATA_PADDING_RIGHT = new Field.DebugField("dataPaddingRight", ">> DATA >>", FieldTypeEnum.STRING);
+    public static final IField HEADER_PADDING_LEFT = new Field.DebugField("hdrPaddingLeft", "<< HDR <<", FieldTypeEnum.STRING);
+    public static final IField HEADER_PADDING_RIGHT = new Field.DebugField("hdrPaddingRight", ">> HDR >>", FieldTypeEnum.STRING);
 
-    public static List<IFieldSpec> PADDING_COLUMNS = Arrays.asList(DATA_NULL_VALUE, DATA_PADDING_LEFT, DATA_PADDING_RIGHT,
+    public static List<IField> PADDING_COLUMNS = Arrays.asList(DATA_NULL_VALUE, DATA_PADDING_LEFT, DATA_PADDING_RIGHT,
             HEADER_PADDING_LEFT, HEADER_PADDING_RIGHT);
 
     private IPropertyAccessor propertyAccessor;
 
-    private List<IFieldSpec> fields;
+    private List<IField> fields;
 
     private IValueRenderer valueRenderer;
 
     private IValueCalculator valueCalculator;
 
-    public DataWriter(List<IFieldSpec> fields) {
+    public DataWriter(List<IField> fields) {
         setPropertyAccessor(new PropertyUtilsPropertyAccessor());
         setFields(fields);
     }
 
-    public DataWriter(List<IFieldSpec> fields, IValueRenderer valueRenderer) {
+    public DataWriter(List<IField> fields, IValueRenderer valueRenderer) {
         setPropertyAccessor(new PropertyUtilsPropertyAccessor());
         setFields(fields);
         setValueRenderer(valueRenderer);
@@ -70,12 +70,12 @@ public abstract class DataWriter implements IDataWriter, IProxyPropertyAccessor 
             valueRenderer = new IValueRenderer() {
 
                 @Override
-                public boolean canRender(IFieldSpec field) {
+                public boolean canRender(IField field) {
                     return false;
                 }
 
                 @Override
-                public String renderCalculatedValue(IFieldSpec field, Object value) {
+                public String renderCalculatedValue(IField field, Object value) {
                     return EMPTY_STRING;
                 }
             };
@@ -83,7 +83,7 @@ public abstract class DataWriter implements IDataWriter, IProxyPropertyAccessor 
         return valueRenderer;
     }
 
-    public String getValue(Object item, IFieldSpec field) {
+    public String getValue(Object item, IField field) {
         if (accessorExists(item, field.getPropertyName()) || field.getCalculated())
             switch (field.getType()) {
                 case BOOLEAN:
@@ -135,7 +135,7 @@ public abstract class DataWriter implements IDataWriter, IProxyPropertyAccessor 
         return EMPTY_STRING;
     }
 
-    private String extendedGetValue(Object item, IFieldSpec field, Object value) {
+    private String extendedGetValue(Object item, IField field, Object value) {
         return shouldOnlyCalculate(field) ?
                 safeString(getValueCalculator().calculateValue(field, item)) :
                 shouldCalculateAndRender(field) ?
@@ -147,23 +147,23 @@ public abstract class DataWriter implements IDataWriter, IProxyPropertyAccessor 
         return Objects.nonNull(value) ? value.toString() : EMPTY_STRING;
     }
 
-    protected boolean shouldCalculateAndRender(IFieldSpec field) {
+    protected boolean shouldCalculateAndRender(IField field) {
         return getValueRenderer().canRender(field) && field.getCalculated();
     }
 
-    protected boolean shouldOnlyCalculate(IFieldSpec field) {
+    protected boolean shouldOnlyCalculate(IField field) {
         return field.getCalculated() && !getValueRenderer().canRender(field);
     }
 
-    protected boolean shouldOnlyRender(IFieldSpec field) {
+    protected boolean shouldOnlyRender(IField field) {
         return !field.getCalculated() && getValueRenderer().canRender(field);
     }
 
-    public boolean shouldSkip(IFieldSpec field, Object item) {
+    public boolean shouldSkip(IField field, Object item) {
         return Objects.isNull(field.getPropertyName());
     }
 
-    public boolean shouldWrite(IFieldSpec field, Object item) {
+    public boolean shouldWrite(IField field, Object item) {
         return Objects.nonNull(field.getPropertyName());
     }
 }

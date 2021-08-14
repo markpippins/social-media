@@ -4,9 +4,9 @@ import com.angrysurfer.social.shrapnel.Config;
 import com.angrysurfer.social.shrapnel.component.Export;
 import com.angrysurfer.social.shrapnel.component.IValueCalculator;
 import com.angrysurfer.social.shrapnel.component.IValueRenderer;
-import com.angrysurfer.social.shrapnel.component.field.FieldSpec;
+import com.angrysurfer.social.shrapnel.component.field.Field;
 import com.angrysurfer.social.shrapnel.component.field.FieldTypeEnum;
-import com.angrysurfer.social.shrapnel.component.field.IFieldSpec;
+import com.angrysurfer.social.shrapnel.component.field.IField;
 import com.angrysurfer.social.shrapnel.component.property.IPropertyAccessor;
 import com.angrysurfer.social.shrapnel.component.writer.IDataWriter;
 import com.angrysurfer.social.shrapnel.component.writer.filter.IDataFilter;
@@ -34,14 +34,14 @@ import static com.angrysurfer.social.shrapnel.component.writer.DataWriter.EMPTY_
 @Setter
 @Slf4j
 public class FontConfigExport extends Export {
-    static List<IFieldSpec> FIELDS = new ArrayList();
+    static List<IField> FIELDS = new ArrayList();
 
     static String NAME = "font-list";
 
-    static IFieldSpec id = new FieldSpec("id", "id", FieldTypeEnum.STRING);
-    static IFieldSpec sample = new FieldSpec("name", "Sample", FieldTypeEnum.STRING);
-    static IFieldSpec path = new FieldSpec("path", "path", FieldTypeEnum.STRING);
-    static IFieldSpec fontname = new FieldSpec("fontname", "fontname", FieldTypeEnum.STRING);
+    static IField id = new Field("id", "id", FieldTypeEnum.STRING);
+    static IField sample = new Field("name", "Sample", FieldTypeEnum.STRING);
+    static IField path = new Field("path", "path", FieldTypeEnum.STRING);
+    static IField fontname = new Field("fontname", "fontname", FieldTypeEnum.STRING);
 
     static {
         id.setCalculated(true);
@@ -83,7 +83,7 @@ public class FontConfigExport extends Export {
 //        }
 
         @Override
-        public StyleAdapter getCellStyle(Object item, IFieldSpec field, int row) {
+        public StyleAdapter getCellStyle(Object item, IField field, int row) {
 
             StyleAdapter style = super.getCellStyle(item, field, row);
             if (Objects.nonNull(field) && field.getPropertyName().equals("name"))
@@ -106,7 +106,7 @@ public class FontConfigExport extends Export {
 
     static class FontListValueRenderer implements IValueRenderer {
         @Override
-        public String render(IFieldSpec field, String value) {
+        public String render(IField field, String value) {
             if (field.getPropertyName().equals("name"))
                 try {
                     PdfFont font = FontSource.getPdfFont2(value.toString());
@@ -125,12 +125,12 @@ public class FontConfigExport extends Export {
         }
 
         @Override
-        public boolean canRender(IFieldSpec field) {
+        public boolean canRender(IField field) {
             return Arrays.asList("path", "name").contains(field.getPropertyName());
         }
 
         @Override
-        public String renderCalculatedValue(IFieldSpec field, Object value) {
+        public String renderCalculatedValue(IField field, Object value) {
             return Objects.nonNull(value) ? value.toString() : EMPTY_STRING;
         }
     }
@@ -169,7 +169,7 @@ public class FontConfigExport extends Export {
         private int count = 0;
 
         @Override
-        public Object calculateValue(IFieldSpec field, Object item) {
+        public Object calculateValue(IField field, Object item) {
             if (field.getPropertyName().equalsIgnoreCase("fontname")) {
                 String fontName = ((File) item).getName();
                 try {

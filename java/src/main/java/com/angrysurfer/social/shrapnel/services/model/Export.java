@@ -1,7 +1,7 @@
 package com.angrysurfer.social.shrapnel.services.model;
 
 import com.angrysurfer.social.shrapnel.Config;
-import com.angrysurfer.social.shrapnel.component.field.IFieldSpec;
+import com.angrysurfer.social.shrapnel.component.field.IField;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -39,7 +39,7 @@ public class Export {
     @JoinTable(name = "export_model_field_spec", joinColumns = {@JoinColumn(name = "model_id")}, inverseJoinColumns = {
             @JoinColumn(name = "field_spec_id")})
     @Getter
-    private Set<FieldSpec> fieldSpecs = new HashSet<>();
+    private Set<Field> fields = new HashSet<>();
 
     public boolean isConfigured() {
         final boolean[] isConfigured = {true};
@@ -49,8 +49,8 @@ public class Export {
                 || Objects.isNull(getDataSource().getQueryName()))
             isConfigured[0] = false;
 
-        Map<Integer, IFieldSpec> indexMap = new HashMap<>();
-        getFieldSpecs().forEach(field -> {
+        Map<Integer, IField> indexMap = new HashMap<>();
+        getFields().forEach(field -> {
             if (Objects.isNull(field.getPropertyName())
                     || Objects.isNull(field.getType())
                     || Objects.isNull(field.getIndex())

@@ -2,9 +2,9 @@ package com.angrysurfer.social.shrapnel.component.field;
 
 import java.util.List;
 
-public interface IFieldSpecs extends List<IFieldSpec> {
+public interface IFields extends List<IField> {
 
-    default void addFieldSpec(IFieldSpec fieldSpec) {
+    default void addFieldSpec(IField fieldSpec) {
         fieldSpec.setIndex(size());
         add(fieldSpec);
     }

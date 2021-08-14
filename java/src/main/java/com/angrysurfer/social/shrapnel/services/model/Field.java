@@ -1,7 +1,7 @@
 package com.angrysurfer.social.shrapnel.services.model;
 
 import com.angrysurfer.social.shrapnel.component.field.FieldTypeEnum;
-import com.angrysurfer.social.shrapnel.component.field.IFieldSpec;
+import com.angrysurfer.social.shrapnel.component.field.IField;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,7 +12,7 @@ import java.util.Objects;
 @Setter
 @Entity
 @Table(name = "field_spec_model")//, schema = "shrapnel")
-public class FieldSpec implements IFieldSpec {
+public class Field implements IField {
 
     @ManyToOne
     @JoinColumn(name = "field_type_id")

@@ -1,9 +1,9 @@
 package com.angrysurfer.social.shrapnel.services.repository;
 
-import com.angrysurfer.social.shrapnel.services.model.FieldSpec;
+import com.angrysurfer.social.shrapnel.services.model.Field;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface FieldSpecRepository extends JpaRepository<FieldSpec, Long> {
+public interface FieldSpecRepository extends JpaRepository<Field, Long> {
 
-    FieldSpec findByName(String name);
+    Field findByName(String name);
 }

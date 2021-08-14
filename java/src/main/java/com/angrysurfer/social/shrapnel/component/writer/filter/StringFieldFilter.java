@@ -1,6 +1,6 @@
 package com.angrysurfer.social.shrapnel.component.writer.filter;
 
-import com.angrysurfer.social.shrapnel.component.field.IFieldSpec;
+import com.angrysurfer.social.shrapnel.component.field.IField;
 import com.angrysurfer.social.shrapnel.component.property.IPropertyAccessor;
 import com.angrysurfer.social.shrapnel.component.writer.IDataWriter;
 import lombok.Getter;
@@ -36,7 +36,7 @@ public class StringFieldFilter implements IDataFilter {
 
         if (result[0])
             getFilterCriteria().forEach((propertyName, criteria) -> {
-                IFieldSpec field = writer.getField(propertyName);
+                IField field = writer.getField(propertyName);
                 if (Objects.isNull(criteria) || Objects.isNull(field))
                     throw new IllegalArgumentException();
 

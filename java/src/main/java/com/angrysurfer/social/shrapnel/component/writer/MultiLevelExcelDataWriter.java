@@ -1,7 +1,7 @@
 package com.angrysurfer.social.shrapnel.component.writer;
 
 import com.angrysurfer.social.shrapnel.component.IValueRenderer;
-import com.angrysurfer.social.shrapnel.component.field.IFieldSpec;
+import com.angrysurfer.social.shrapnel.component.field.IField;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +20,7 @@ public abstract class MultiLevelExcelDataWriter extends ExcelDataWriter implemen
 
     private String levelPropertyName;
 
-    public MultiLevelExcelDataWriter(String levelPropertyName, List<IFieldSpec> fields, IValueRenderer valueRenderer) {
+    public MultiLevelExcelDataWriter(String levelPropertyName, List<IField> fields, IValueRenderer valueRenderer) {
         super(fields, valueRenderer);
         setAutoCreateTopLevelHeader(false);
         setLevelPropertyName(levelPropertyName);
@@ -37,12 +37,12 @@ public abstract class MultiLevelExcelDataWriter extends ExcelDataWriter implemen
     }
 
     @Override
-    public boolean shouldSkip(IFieldSpec field, Object item) {
+    public boolean shouldSkip(IField field, Object item) {
         return super.shouldSkip(field, item) || shouldSkip(this, field, item, this);
     }
 
     @Override
-    public boolean shouldWrite(IFieldSpec field, Object item) {
+    public boolean shouldWrite(IField field, Object item) {
         return super.shouldWrite(field, item) || shouldSkip(this, field, item, this);
     }
 

@@ -1,6 +1,6 @@
 package com.angrysurfer.social.shrapnel.services.service;
 
-import com.angrysurfer.social.shrapnel.component.field.IFieldSpec;
+import com.angrysurfer.social.shrapnel.component.field.IField;
 import com.angrysurfer.social.shrapnel.component.writer.CsvDataWriter;
 import com.angrysurfer.social.shrapnel.component.writer.ExcelDataWriter;
 import com.angrysurfer.social.shrapnel.component.writer.PdfDataWriter;
@@ -22,7 +22,7 @@ import java.util.List;
 public class LightweightExportsService implements ILightweightExportsService {
 
     @Override
-    public String writeCSVFile(Collection<Object> items, List<IFieldSpec> fields, String filename) {
+    public String writeCSVFile(Collection<Object> items, List<IField> fields, String filename) {
         try {
             FileUtil.ensureSafety(filename);
         } catch (IOException e) {
@@ -34,7 +34,7 @@ public class LightweightExportsService implements ILightweightExportsService {
     }
 
     @Override
-    public String writeExcelFile(Collection<Object> items, List<IFieldSpec> fields, String sheetName, String filename) {
+    public String writeExcelFile(Collection<Object> items, List<IField> fields, String sheetName, String filename) {
         LocalDateTime now = LocalDateTime.now();
         String name = String.format("%s - %s - %s - %s", sheetName, LocalDate.now().getDayOfMonth(), LocalDate.now().getMonthValue(), LocalDate.now().getYear());
         Workbook workbook = new XSSFWorkbook();
@@ -54,7 +54,7 @@ public class LightweightExportsService implements ILightweightExportsService {
     }
 
     @Override
-    public String writeTabularPdfFile(Collection<Object> items, List<IFieldSpec> fields, String filename) {
+    public String writeTabularPdfFile(Collection<Object> items, List<IField> fields, String filename) {
         PdfUtil.writeTabularFile(items, new PdfDataWriter(fields), filename);
         return filename;
     }

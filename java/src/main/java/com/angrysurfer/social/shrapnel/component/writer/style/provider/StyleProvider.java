@@ -1,6 +1,6 @@
 package com.angrysurfer.social.shrapnel.component.writer.style.provider;
 
-import com.angrysurfer.social.shrapnel.component.field.IFieldSpec;
+import com.angrysurfer.social.shrapnel.component.field.IField;
 import com.angrysurfer.social.shrapnel.component.writer.style.adapter.CellStyleAdapter;
 import com.angrysurfer.social.shrapnel.component.writer.style.adapter.HeaderCellStyleAdapter;
 import com.angrysurfer.social.shrapnel.component.writer.style.adapter.StyleAdapter;
@@ -20,11 +20,11 @@ public class StyleProvider implements IStyleProvider {
     private StyleAdapter defaultCellStyleAdapter;
     private StyleAdapter defaultHeaderStyleAdapter;
 
-    private Map<IFieldSpec, StyleAdapter> cellStyles = new HashMap<>();
-    private Map<IFieldSpec, StyleAdapter> headerStyles = new HashMap<>();
+    private Map<IField, StyleAdapter> cellStyles = new HashMap<>();
+    private Map<IField, StyleAdapter> headerStyles = new HashMap<>();
 
     @Override
-    public StyleAdapter getCellStyle(Object item, IFieldSpec field, int row) {
+    public StyleAdapter getCellStyle(Object item, IField field, int row) {
         if (Objects.nonNull(field) && cellStyles.containsKey(field))
             return cellStyles.get(field);
 
@@ -59,7 +59,7 @@ public class StyleProvider implements IStyleProvider {
     }
 
     @Override
-    public StyleAdapter getHeaderStyle(IFieldSpec field) {
+    public StyleAdapter getHeaderStyle(IField field) {
         if (Objects.nonNull(field) && headerStyles.containsKey(field))
             return headerStyles.get(field);
 

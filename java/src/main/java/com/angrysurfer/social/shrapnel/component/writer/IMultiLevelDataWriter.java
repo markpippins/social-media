@@ -1,13 +1,13 @@
 package com.angrysurfer.social.shrapnel.component.writer;
 
-import com.angrysurfer.social.shrapnel.component.field.IFieldSpec;
+import com.angrysurfer.social.shrapnel.component.field.IField;
 import com.angrysurfer.social.shrapnel.component.property.IPropertyAccessor;
 
 import java.util.List;
 
 public interface IMultiLevelDataWriter {
 
-    List<IFieldSpec> getFieldsForLevel(int level);
+    List<IField> getFieldsForLevel(int level);
 
     int getLevel();
 
@@ -33,13 +33,13 @@ public interface IMultiLevelDataWriter {
                 Integer.parseInt(propertyAccessor.getString(item, writer.getLevelPropertyName())) - 1 : 0;
     }
 
-    default boolean shouldSkip(IMultiLevelDataWriter writer, IFieldSpec field, Object item, IPropertyAccessor propertyAccessor) {
+    default boolean shouldSkip(IMultiLevelDataWriter writer, IField field, Object item, IPropertyAccessor propertyAccessor) {
         return propertyAccessor.accessorExists(item, writer.getLevelPropertyName()) ?
                 !writer.getFieldsForLevel(Integer.parseInt(propertyAccessor.getString(item, writer.getLevelPropertyName()))).contains(field) :
                 false;
     }
 
-    default boolean shouldWrite(IMultiLevelDataWriter writer, IFieldSpec field, Object item, IPropertyAccessor propertyAccessor) {
+    default boolean shouldWrite(IMultiLevelDataWriter writer, IField field, Object item, IPropertyAccessor propertyAccessor) {
         return propertyAccessor.accessorExists(item, writer.getLevelPropertyName()) ?
                 writer.getFieldsForLevel(Integer.parseInt(propertyAccessor.getString(item, writer.getLevelPropertyName()))).contains(field) :
                 true;

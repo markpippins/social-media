@@ -1,6 +1,6 @@
 package com.angrysurfer.social.shrapnel.component.writer.style.provider;
 
-import com.angrysurfer.social.shrapnel.component.field.IFieldSpec;
+import com.angrysurfer.social.shrapnel.component.field.IField;
 import com.angrysurfer.social.shrapnel.component.writer.style.adapter.StyleAdapter;
 import com.itextpdf.kernel.color.Color;
 import lombok.Getter;
@@ -47,13 +47,13 @@ public class ZebraStyleProvider extends CombinedStyleProvider {
     }
 
     @Override
-    public StyleAdapter getCellStyle(Object item, IFieldSpec field, int row) {
+    public StyleAdapter getCellStyle(Object item, IField field, int row) {
         return row % 2 == 1 ? getDarkStyleProvider().getCellStyle(item, field, row) :
                 super.getCellStyle(item, field, row);
     }
 
     @Override
-    public XSSFCellStyle getCellStyle(Object item, Workbook workbook, IFieldSpec field, int row) {
+    public XSSFCellStyle getCellStyle(Object item, Workbook workbook, IField field, int row) {
         return row % 2 == 0 ? getDarkStyleProvider().getCellStyle(item, workbook, field, row) :
                 super.getCellStyle(item, workbook, field, row);
     }

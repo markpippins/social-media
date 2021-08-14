@@ -12,7 +12,7 @@ import static com.angrysurfer.social.shrapnel.component.writer.DataWriter.EMPTY_
 
 @Getter
 @Setter
-public class FieldSpec implements IFieldSpec {
+public class Field implements IField {
 
     private String propertyName;
     private String label;
@@ -20,35 +20,35 @@ public class FieldSpec implements IFieldSpec {
     private FieldTypeEnum type;
     private Boolean calculated = false;
 
-    public FieldSpec() {
+    public Field() {
     }
 
-    public FieldSpec(String propertyName) {
+    public Field(String propertyName) {
         this(propertyName, propertyName.toUpperCase(), FieldTypeEnum.STRING);
     }
 
-    public FieldSpec(String propertyName, FieldTypeEnum type) {
+    public Field(String propertyName, FieldTypeEnum type) {
         this(propertyName, propertyName.toUpperCase(), type);
     }
 
-    public FieldSpec(String propertyName, String label, FieldTypeEnum type) {
+    public Field(String propertyName, String label, FieldTypeEnum type) {
         setPropertyName(propertyName);
         setLabel(label);
         setType(type);
     }
 
-    public static List<FieldSpec> createFieldSpecs(List<String> properties) {
-        return properties.stream().map(property -> new FieldSpec(property, property.toUpperCase(Locale.ROOT), FieldTypeEnum.STRING))
+    public static List<Field> createFieldSpecs(List<String> properties) {
+        return properties.stream().map(property -> new Field(property, property.toUpperCase(Locale.ROOT), FieldTypeEnum.STRING))
                 .collect(Collectors.toList());
     }
 
-    public FieldSpec cloneWithNewLabel(String newLabel) {
-        return new FieldSpec(getPropertyName(), newLabel, getType());
+    public Field cloneWithNewLabel(String newLabel) {
+        return new Field(getPropertyName(), newLabel, getType());
     }
 
-    public static class DebugFieldSpec extends FieldSpec {
+    public static class DebugField extends Field {
 
-        public DebugFieldSpec(String propertyName, String headerLabel, FieldTypeEnum type) {
+        public DebugField(String propertyName, String headerLabel, FieldTypeEnum type) {
             super(propertyName, headerLabel, type);
         }
 

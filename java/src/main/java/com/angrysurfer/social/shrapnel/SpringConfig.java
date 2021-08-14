@@ -3,7 +3,7 @@ package com.angrysurfer.social.shrapnel;
 import com.angrysurfer.social.shrapnel.component.field.FieldTypeEnum;
 import com.angrysurfer.social.shrapnel.services.model.ComponentCreator;
 import com.angrysurfer.social.shrapnel.services.model.Export;
-import com.angrysurfer.social.shrapnel.services.model.FieldSpec;
+import com.angrysurfer.social.shrapnel.services.model.Field;
 import com.angrysurfer.social.shrapnel.services.model.PdfPageSize;
 import com.angrysurfer.social.shrapnel.services.repository.*;
 import lombok.extern.slf4j.Slf4j;
@@ -83,7 +83,7 @@ class SpringConfig implements CommandLineRunner {
         forumData.setName("forum-list");
         dataSourceRepository.save(forumData);
 
-        FieldSpec idSpec1 = new FieldSpec();
+        Field idSpec1 = new Field();
         idSpec1.setName("id");
         idSpec1.setPropertyName("id");
         idSpec1.setLabel("id");
@@ -94,7 +94,7 @@ class SpringConfig implements CommandLineRunner {
 
         idSpec1 = fieldSpecRepository.save(idSpec1);
 
-        FieldSpec nameSpec = new FieldSpec();
+        Field nameSpec = new Field();
         nameSpec.setName("name");
         nameSpec.setPropertyName("name");
         nameSpec.setLabel("name");
@@ -106,8 +106,8 @@ class SpringConfig implements CommandLineRunner {
 
         Export forumExport = new Export();
         forumExport.setName("forum-list");
-        forumExport.getFieldSpecs().add(idSpec1);
-        forumExport.getFieldSpecs().add(nameSpec);
+        forumExport.getFields().add(idSpec1);
+        forumExport.getFields().add(nameSpec);
         forumExport.setDataSource(forumData);
         forumExport.setPdfPageSize(pdfPageSizeRepository.findByName("A0"));
         exportRepository.save(forumExport);
@@ -117,7 +117,7 @@ class SpringConfig implements CommandLineRunner {
         userData.setName("user-list");
         dataSourceRepository.save(userData);
 
-        FieldSpec idSpec2 = new FieldSpec();
+        Field idSpec2 = new Field();
         idSpec2.setName("id");
         idSpec2.setPropertyName("id");
         idSpec2.setLabel("id");
@@ -127,7 +127,7 @@ class SpringConfig implements CommandLineRunner {
                 .orElseThrow(() -> new IllegalArgumentException()));
         idSpec2 = fieldSpecRepository.save(idSpec2);
 
-        FieldSpec emailSpec = new FieldSpec();
+        Field emailSpec = new Field();
         emailSpec.setName("email");
         emailSpec.setFieldType(fieldTypeRepository
                 .findById(Integer.valueOf(FieldTypeEnum.STRING.getCode()))
@@ -137,7 +137,7 @@ class SpringConfig implements CommandLineRunner {
         emailSpec.setIndex(3);
         emailSpec = fieldSpecRepository.save(emailSpec);
 
-        FieldSpec aliasSpec = new FieldSpec();
+        Field aliasSpec = new Field();
         aliasSpec.setName("alias");
         aliasSpec.setFieldType(fieldTypeRepository
                 .findById(Integer.valueOf(FieldTypeEnum.STRING.getCode()))
@@ -149,9 +149,9 @@ class SpringConfig implements CommandLineRunner {
 
         Export userExport = new Export();
         userExport.setName("user-list");
-        userExport.getFieldSpecs().add(idSpec2);
-        userExport.getFieldSpecs().add(aliasSpec);
-        userExport.getFieldSpecs().add(emailSpec);
+        userExport.getFields().add(idSpec2);
+        userExport.getFields().add(aliasSpec);
+        userExport.getFields().add(emailSpec);
         userExport.setDataSource(userData);
         userExport.setPdfPageSize(pdfPageSizeRepository.findByName("A0"));
         exportRepository.save(userExport);

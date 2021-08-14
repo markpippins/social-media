@@ -1,6 +1,6 @@
 package com.angrysurfer.social.shrapnel.component.writer;
 
-import com.angrysurfer.social.shrapnel.component.field.IFieldSpec;
+import com.angrysurfer.social.shrapnel.component.field.IField;
 import com.angrysurfer.social.shrapnel.component.property.IPropertyAccessor;
 import com.angrysurfer.social.shrapnel.component.property.PropertyUtilsPropertyAccessor;
 import com.angrysurfer.social.shrapnel.component.writer.filter.DataFilters;
@@ -29,11 +29,11 @@ public class HtmlDataWriter extends DataWriter implements IDataWriter {
 
     private IPropertyAccessor propertyAccessor = new PropertyUtilsPropertyAccessor();
 
-    private List<IFieldSpec> columns;
+    private List<IField> columns;
 
     private IDataFilters filters = new DataFilters();
 
-    public HtmlDataWriter(List<IFieldSpec> columns) {
+    public HtmlDataWriter(List<IField> columns) {
         super(columns);
     }
 

@@ -28,7 +28,7 @@ public class HashMapResultSetExtractor implements ResultSetExtractor {
         while (rs.next()) {
             HashMap<String, Object> values = new HashMap();
 
-            export.getFieldSpecs().forEach(field -> {
+            export.getFields().forEach(field -> {
                 try {
                     switch (FieldTypeEnum.from(field.fieldType.getCode())) {
                         case BOOLEAN:

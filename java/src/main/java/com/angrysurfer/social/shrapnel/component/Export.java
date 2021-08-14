@@ -1,6 +1,6 @@
 package com.angrysurfer.social.shrapnel.component;
 
-import com.angrysurfer.social.shrapnel.component.field.IFieldSpec;
+import com.angrysurfer.social.shrapnel.component.field.IField;
 import com.angrysurfer.social.shrapnel.component.property.IPropertyAccessor;
 import com.angrysurfer.social.shrapnel.component.writer.ExcelDataWriter;
 import com.angrysurfer.social.shrapnel.component.writer.PdfDataWriter;
@@ -24,7 +24,7 @@ public abstract class Export extends AbstractExport {
 
     private PdfDataWriter pdfRowWriter;
 
-    public Export(String name, List<IFieldSpec> fields) {
+    public Export(String name, List<IField> fields) {
         setName(name);
         fields.forEach(field -> getFields().add(field));
     }

@@ -1,7 +1,7 @@
 package com.angrysurfer.social.shrapnel.component.writer;
 
 import com.angrysurfer.social.shrapnel.component.IValueRenderer;
-import com.angrysurfer.social.shrapnel.component.field.IFieldSpec;
+import com.angrysurfer.social.shrapnel.component.field.IField;
 import com.angrysurfer.social.shrapnel.component.writer.filter.DataFilters;
 import com.angrysurfer.social.shrapnel.component.writer.filter.IDataFilters;
 import com.angrysurfer.social.shrapnel.component.writer.style.provider.CombinedStyleProvider;
@@ -38,15 +38,15 @@ public class ExcelDataWriter extends DataWriter implements IDataWriter {
 
     private boolean autoCreateTopLevelHeader = true;
 
-    public ExcelDataWriter(List<IFieldSpec> fields) {
+    public ExcelDataWriter(List<IField> fields) {
         super(fields);
     }
 
-    public ExcelDataWriter(List<IFieldSpec> fields, IValueRenderer valueRenderer) {
+    public ExcelDataWriter(List<IField> fields, IValueRenderer valueRenderer) {
         super(fields, valueRenderer);
     }
 
-    public ExcelDataWriter(List<IFieldSpec> fields, IValueRenderer valueRenderer, CombinedStyleProvider styleProvider) {
+    public ExcelDataWriter(List<IField> fields, IValueRenderer valueRenderer, CombinedStyleProvider styleProvider) {
         super(fields, valueRenderer);
         setStyleProvider(styleProvider);
     }
@@ -54,7 +54,7 @@ public class ExcelDataWriter extends DataWriter implements IDataWriter {
     protected void beforeRow(Object item) {
     }
 
-    protected Cell createHeaderCell(IFieldSpec field, Row header, int index) {
+    protected Cell createHeaderCell(IField field, Row header, int index) {
         Cell cell = header.createCell(index);
         cell.setCellStyle(getStyleProvider().getHeaderStyle(getWorkbook(), field));
         return cell;
@@ -113,7 +113,7 @@ public class ExcelDataWriter extends DataWriter implements IDataWriter {
         getStyleProvider().onWorkbookSet(workbook);
     }
 
-    protected void writeCell(IFieldSpec field, Object item, Cell cell) {
+    protected void writeCell(IField field, Object item, Cell cell) {
         if (accessorExists(item, field.getPropertyName()) || field.getCalculated())
             cell.setCellValue(getValue(item, field));
     }

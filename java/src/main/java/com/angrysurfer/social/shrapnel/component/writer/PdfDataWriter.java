@@ -1,7 +1,7 @@
 package com.angrysurfer.social.shrapnel.component.writer;
 
 import com.angrysurfer.social.shrapnel.component.IValueRenderer;
-import com.angrysurfer.social.shrapnel.component.field.IFieldSpec;
+import com.angrysurfer.social.shrapnel.component.field.IField;
 import com.angrysurfer.social.shrapnel.component.writer.filter.DataFilters;
 import com.angrysurfer.social.shrapnel.component.writer.filter.IDataFilters;
 import com.angrysurfer.social.shrapnel.component.writer.style.provider.CombinedStyleProvider;
@@ -30,11 +30,11 @@ public class PdfDataWriter extends DataWriter {
 
     private IDataFilters filters = new DataFilters();
 
-    public PdfDataWriter(List<IFieldSpec> fields) {
+    public PdfDataWriter(List<IField> fields) {
         super(fields);
     }
 
-    public PdfDataWriter(List<IFieldSpec> fields, IValueRenderer valueRenderer) {
+    public PdfDataWriter(List<IField> fields, IValueRenderer valueRenderer) {
         super(fields, valueRenderer);
     }
 
@@ -42,7 +42,7 @@ public class PdfDataWriter extends DataWriter {
 
     }
 
-    protected Cell createCell(Object item, IFieldSpec field, int row) {
+    protected Cell createCell(Object item, IField field, int row) {
         Cell cell = new Cell();
 
         if (Objects.nonNull(getStyleProvider().getCellStyle(item, field, row)))
@@ -56,7 +56,7 @@ public class PdfDataWriter extends DataWriter {
         return cell;
     }
 
-    protected Cell createHeaderCell(IFieldSpec field) {
+    protected Cell createHeaderCell(IField field) {
         Cell cell = new Cell();
 
         if (Objects.nonNull(getStyleProvider().getHeaderStyle(field)))

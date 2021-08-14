@@ -1,6 +1,6 @@
 package com.angrysurfer.social.shrapnel.component.field;
 
-public interface IFieldSpec {
+public interface IField {
 
     String getPropertyName();
 
