@@ -23,6 +23,8 @@ public class Query {
 
 	public static String AND = " AND ";
 
+	private static String EQUALS = " = ";
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@javax.persistence.Column(name = "id", nullable = false)
@@ -48,7 +50,11 @@ public class Query {
 
 	@Transient
 	public String getSQL() {
-		return getSelect() + getFrom();
+		StringBuffer sql = new StringBuffer();
+		sql.append(getSelect());
+		sql.append(getFrom());
+		sql.append(getWhere());
+		return sql.toString();
 	}
 
 	private String getSelect() {
@@ -65,7 +71,8 @@ public class Query {
 		StringBuffer from = new StringBuffer(FROM);
 		from.append("\t");
 		from.append(String.join(",\n\t\t", getColumns().stream()
-				.sorted((c1, c2) -> c1.getTable().getName().compareTo(c2.getTable().getName()))
+				.sorted((c1, c2) -> c1.getTable().getName()
+						.compareTo(c2.getTable().getName()))
 				.map(c -> getTableName(c, true))
 				.distinct()
 				.collect(Collectors.toList())));
@@ -73,10 +80,37 @@ public class Query {
 		return from.toString();
 	}
 
+	private String getWhere() {
+		if (getJoins().size() == 0)
+			return "\n";
+
+		StringBuffer where = new StringBuffer(WHERE);
+//		where.append("\t");
+		where.append(String.join(AND, getJoins().stream()
+				.sorted((j1, j2) -> j1.getJoinColumnA().getTable().getName()
+						.compareTo(j2.getJoinColumnB().getTable().getName()))
+				.map(j -> getEqualsStatement(j)).collect(Collectors.toList())));
+
+		return where.toString();
+	}
+
+	private String getEqualsStatement(Join join) {
+		StringBuffer equals = new StringBuffer();
+		equals.append("\t");
+		equals.append(getTableName(join.getJoinColumnA(), false));
+		equals.append(".");
+		equals.append(join.getJoinColumnA().getName());
+		equals.append(EQUALS);
+		equals.append(getTableName(join.getJoinColumnB(), false));
+		equals.append(".");
+		equals.append(join.getJoinColumnB().getName());
+		return equals.toString();
+	}
+
 	private String getTableName(com.angrysurfer.social.shrapnel.export.service.model.qbe.Column column, boolean prefix) {
 
 		return prefix ? column.getTable().getSchema() + "." + column.getTable().getName() + " " +
-				       column.getTable().getName().replace("_", "") + "_" :
+				                column.getTable().getName().replace("_", "") + "_" :
 				       column.getTable().getName().replace("_", "") + "_";
 	}
 }

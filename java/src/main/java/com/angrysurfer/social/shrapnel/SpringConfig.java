@@ -183,10 +183,10 @@ class SpringConfig implements CommandLineRunner {
 		people.setName("people");
 		tableRepository.save(people);
 
-		Column id = new Column();
-		id.setName("id");
-		id.setTable(people);
-		columnRepository.save(id);
+		Column personId = new Column();
+		personId.setName("person_id");
+		personId.setTable(people);
+		columnRepository.save(personId);
 
 		Column first = new Column();
 		first.setName("first");
@@ -203,7 +203,7 @@ class SpringConfig implements CommandLineRunner {
 		email.setTable(people);
 		columnRepository.save(email);
 
-		people.getColumns().add(id);
+		people.getColumns().add(personId);
 		people.getColumns().add(first);
 		people.getColumns().add(last);
 		people.getColumns().add(email);
@@ -220,7 +220,7 @@ class SpringConfig implements CommandLineRunner {
 		columnRepository.save(orderId);
 
 		Column buyerId = new Column();
-		buyerId.setName("id");
+		buyerId.setName("buyer_id");
 		buyerId.setTable(orders);
 		columnRepository.save(buyerId);
 
@@ -230,18 +230,19 @@ class SpringConfig implements CommandLineRunner {
 		columnRepository.save(orderSummary);
 
 		Join join = new Join();
-		join.setJoinColumnA(id);
+		join.setJoinColumnA(personId);
 		join.setJoinColumnB(buyerId);
 		joinRepository.save(join);
 
 		com.angrysurfer.social.shrapnel.export.service.model.qbe.Query query = new com.angrysurfer.social.shrapnel.export.service.model.qbe.Query();
 		query.setName("get-people");
 		query.setSchema("sample");
-		query.getColumns().add(id);
+		query.getColumns().add(personId);
 		query.getColumns().add(first);
 		query.getColumns().add(last);
 		query.getColumns().add(email);
 		query.getColumns().add(orderId);
+		query.getColumns().add(buyerId);
 		query.getColumns().add(orderSummary);
 		query.getJoins().add(join);
 
