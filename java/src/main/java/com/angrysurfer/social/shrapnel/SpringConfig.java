@@ -35,7 +35,7 @@ class SpringConfig implements CommandLineRunner {
 	private static final String SHRAPNEL_MODEL_PACKAGE = "com.angrysurfer.social.shrapnel.services.model";
 
 	@Resource
-	FieldSpecRepository fieldSpecRepository;
+	FieldRepository fieldRepository;
 
 	@Resource
 	DataSourceRepository dataSourceRepository;
@@ -98,7 +98,7 @@ class SpringConfig implements CommandLineRunner {
 		pdfPageSizeRepository.save(new PdfPageSize("EXECUTIVE", 522, 756));
 
 		Arrays.stream(FieldTypeEnum.values())
-				.forEach(fieldType -> fieldTypeRepository.save(componentsService.createFieldType(fieldType)));
+				.forEach(fieldType -> componentsService.createFieldType(fieldType));
 
 		DataSource forumData = new DataSource();
 		forumData.setQueryName("get-forums");
@@ -114,7 +114,7 @@ class SpringConfig implements CommandLineRunner {
 				.findById(Integer.valueOf(FieldTypeEnum.STRING.getCode()))
 				.orElseThrow(() -> new IllegalArgumentException()));
 
-		idSpec1 = fieldSpecRepository.save(idSpec1);
+		idSpec1 = fieldRepository.save(idSpec1);
 
 		Field nameSpec = new Field();
 		nameSpec.setName("name");
@@ -124,7 +124,7 @@ class SpringConfig implements CommandLineRunner {
 		nameSpec.setFieldType(fieldTypeRepository
 				.findById(Integer.valueOf(FieldTypeEnum.STRING.getCode()))
 				.orElseThrow(() -> new IllegalArgumentException()));
-		nameSpec = fieldSpecRepository.save(nameSpec);
+		nameSpec = fieldRepository.save(nameSpec);
 
 		Export forumExport = new Export();
 		forumExport.setName("forum-list");
@@ -147,7 +147,7 @@ class SpringConfig implements CommandLineRunner {
 		idSpec2.setFieldType(fieldTypeRepository
 				.findById(Integer.valueOf(FieldTypeEnum.STRING.getCode()))
 				.orElseThrow(() -> new IllegalArgumentException()));
-		idSpec2 = fieldSpecRepository.save(idSpec2);
+		idSpec2 = fieldRepository.save(idSpec2);
 
 		Field emailSpec = new Field();
 		emailSpec.setName("email");
@@ -157,7 +157,7 @@ class SpringConfig implements CommandLineRunner {
 		emailSpec.setPropertyName("email");
 		emailSpec.setLabel("email");
 		emailSpec.setIndex(3);
-		emailSpec = fieldSpecRepository.save(emailSpec);
+		emailSpec = fieldRepository.save(emailSpec);
 
 		Field aliasSpec = new Field();
 		aliasSpec.setName("alias");
@@ -167,7 +167,7 @@ class SpringConfig implements CommandLineRunner {
 		aliasSpec.setPropertyName("alias");
 		aliasSpec.setLabel("alias");
 		aliasSpec.setIndex(2);
-		aliasSpec = fieldSpecRepository.save(aliasSpec);
+		aliasSpec = fieldRepository.save(aliasSpec);
 
 		Export userExport = new Export();
 		userExport.setName("user-list");

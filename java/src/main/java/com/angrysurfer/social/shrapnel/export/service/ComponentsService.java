@@ -11,7 +11,6 @@ import com.angrysurfer.social.shrapnel.export.service.repository.qbe.ColumnRepos
 import com.angrysurfer.social.shrapnel.export.service.repository.qbe.JoinRepository;
 import com.angrysurfer.social.shrapnel.export.service.repository.qbe.QueryRepository;
 import com.angrysurfer.social.shrapnel.export.service.repository.qbe.TableRepository;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -22,78 +21,78 @@ import java.util.Set;
 @Service
 public class ComponentsService {
 
-    @Resource
-    FieldSpecRepository fieldSpecRepository;
+	@Resource
+	FieldRepository fieldRepository;
 
-    @Resource
-    DataSourceRepository dataSourceRepository;
+	@Resource
+	DataSourceRepository dataSourceRepository;
 
-    @Resource
-    ExportRepository exportRepository;
+	@Resource
+	ExportRepository exportRepository;
 
-    @Resource
-    FieldTypeRepository fieldTypeRepository;
+	@Resource
+	FieldTypeRepository fieldTypeRepository;
 
-    @Resource
-    PdfPageSizeRepository pdfPageSizeRepository;
+	@Resource
+	PdfPageSizeRepository pdfPageSizeRepository;
 
-    @Resource
-    TableRepository tableRepository;
+	@Resource
+	TableRepository tableRepository;
 
-    @Resource
-    ColumnRepository columnRepository;
+	@Resource
+	ColumnRepository columnRepository;
 
-    @Resource
-    QueryRepository queryRepository;
+	@Resource
+	QueryRepository queryRepository;
 
-    @Resource
-    JoinRepository joinRepository;
+	@Resource
+	JoinRepository joinRepository;
 
-    @Resource
-    ComponentsService componentsService;
+	@Resource
+	ComponentsService componentsService;
 
-    public Export createExport(Query query) {
-        Export export = new Export();
-        export.setName(query.getName());
-        export.setFields(createFields(query));
-        export.setDataSource(createDataSource(query));
-        exportRepository.save(export);
-        return export;
-    }
+	public DataSource createDataSource(Query query) {
+		DataSource ds = new DataSource();
+		ds.setName(query.getName());
+		ds.setQuery(query);
+		dataSourceRepository.save(ds);
+		return ds;
+	}
 
-    private Set< Field> createFields(Query query) {
-        Set<Field> fields = new HashSet<>();
+	public Export createExport(Query query) {
+		Export export = new Export();
+		export.setName(query.getName());
+		export.setFields(createFields(query));
+		export.setDataSource(createDataSource(query));
+		exportRepository.save(export);
+		return export;
+	}
 
-        query.getColumns().forEach(column -> {
-            Field field = new Field();
+	public Field createField(String name, String propertyName, String label, Integer index) {
+		Field field = new Field();
+		field.setName(name);
+		field.setPropertyName(propertyName);
+		field.setLabel(label);
+		field.setIndex(index);
+		field.setFieldType(fieldTypeRepository
+				.findById(Integer.valueOf(FieldTypeEnum.STRING.getCode()))
+				.orElseThrow(() -> new IllegalArgumentException()));
+		fieldRepository.save(field);
+		return field;
+	}
 
-            field.setName(column.getName());
-            field.setPropertyName(column.getName());
-            field.setLabel(column.getName().toUpperCase(Locale.ROOT));
-            field.setIndex(column.getIndex());
-            field.setFieldType(fieldTypeRepository
-                    .findById(Integer.valueOf(FieldTypeEnum.STRING.getCode()))
-                    .orElseThrow(() -> new IllegalArgumentException()));
+	public Set< Field > createFields(Query query) {
+		Set< Field > fields = new HashSet<>();
+		query.getColumns().forEach(column -> fields.add(createField(column.getName(), column.getName(),
+				column.getName().toUpperCase(Locale.ROOT), column.getIndex())));
+		return fields;
+	}
 
-            fieldSpecRepository.save(field);
-            fields.add(field);
-        });
-
-        return fields;
-    }
-
-    private DataSource createDataSource(Query query) {
-        DataSource ds = new DataSource();
-        ds.setName(query.getName());
-        ds.setQuery(query);
-        dataSourceRepository.save(ds);
-        return ds;
-    }
-
-    public FieldType createFieldType(FieldTypeEnum fieldType) {
-        FieldType ft = new FieldType();
-        ft.setName(fieldType.name());
-        ft.setCode(fieldType.getCode());
-        return ft;
-    }
+	public FieldType createFieldType(FieldTypeEnum fieldType) {
+		FieldType ft = new FieldType();
+		ft.setName(fieldType.name());
+		ft.setCode(fieldType.getCode());
+		fieldTypeRepository.save(ft);
+		return ft;
+	}
 }
