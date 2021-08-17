@@ -2,6 +2,7 @@ package com.angrysurfer.social.shrapnel.export.service.model.qbe;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.Column;
 import javax.persistence.*;
@@ -12,7 +13,8 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 @Entity
-@javax.persistence.Table(name = "qbe_query_model")//, schema = "shrapnel")
+@Slf4j
+@javax.persistence.Table(name = "qbe_query", schema = "shrapnel")
 public class Query {
 
 	public static String SELECT = "\n\tSELECT \n\t";
@@ -37,13 +39,13 @@ public class Query {
 	private String schema;
 
 	@OneToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "query_column", joinColumns = { @JoinColumn(name = "query_id") }, inverseJoinColumns = {
+	@JoinTable(name = "qbe_query_column", joinColumns = { @JoinColumn(name = "query_id") }, inverseJoinColumns = {
 			@JoinColumn(name = "column_id") })
 	@Getter
 	private Set< com.angrysurfer.social.shrapnel.export.service.model.qbe.Column > columns = new HashSet<>();
 
 	@OneToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "join_column", joinColumns = { @JoinColumn(name = "join_id") }, inverseJoinColumns = {
+	@JoinTable(name = "qbe_join_column", joinColumns = { @JoinColumn(name = "join_id") }, inverseJoinColumns = {
 			@JoinColumn(name = "column_id") })
 	@Getter
 	private Set< com.angrysurfer.social.shrapnel.export.service.model.qbe.Join > joins = new HashSet<>();
@@ -54,6 +56,7 @@ public class Query {
 		sql.append(getSelect());
 		sql.append(getFrom());
 		sql.append(getWhere());
+		log.info("returning \n{}\n", sql.toString());
 		return sql.toString();
 	}
 

@@ -35,7 +35,7 @@ public class JdbcTemplateExportFactory implements IExportFactory {
 	public IExport newInstance() {
 		PageSize pageSize = Objects.nonNull(getExport().getPdfPageSize()) ?
 				                    new PageSize(getExport().getPdfPageSize().getWidth(), getExport().getPdfPageSize().getHeight()) :
-				                    getExport().hasCustomHeight() ?
+				                    getExport().hasCustomSize() ?
 						                    new PageSize(getExport().getCustomWidth(), getExport().getCustomHeight()) :
 						                    PageSize.LETTER;
 

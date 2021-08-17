@@ -11,7 +11,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @Entity
-@Table(name = "field_spec_model")//, schema = "shrapnel")
+@Table(name = "field", schema = "shrapnel")
 public class Field implements IField {
 
 	@ManyToOne

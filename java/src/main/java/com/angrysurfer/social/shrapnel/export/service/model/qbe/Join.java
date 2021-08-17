@@ -10,7 +10,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @Entity
-@javax.persistence.Table(name = "qbe_join_model")//, schema = "shrapnel")
+@javax.persistence.Table(name = "qbe_join", schema = "shrapnel")
 public class Join {
 
 	@Id

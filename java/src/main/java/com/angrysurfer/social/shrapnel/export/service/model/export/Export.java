@@ -2,6 +2,8 @@ package com.angrysurfer.social.shrapnel.export.service.model.export;
 
 import com.angrysurfer.social.shrapnel.Config;
 import com.angrysurfer.social.shrapnel.export.component.field.IField;
+import com.angrysurfer.social.shrapnel.export.service.model.style.PdfPageSize;
+import com.angrysurfer.social.shrapnel.export.service.model.style.Style;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,7 +15,7 @@ import java.util.*;
 @Getter
 @Setter
 @Entity
-@Table(name = "export_model")//, schema = "shrapnel")
+@Table(name = "export", schema = "shrapnel")
 public class Export {
 
 	@ManyToOne
@@ -33,10 +35,16 @@ public class Export {
 	private String name;
 
 	@OneToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "export_model_field_spec", joinColumns = { @JoinColumn(name = "model_id") }, inverseJoinColumns = {
-			@JoinColumn(name = "field_spec_id") })
+	@JoinTable(name = "export_field", joinColumns = { @JoinColumn(name = "export_id") }, inverseJoinColumns = {
+			@JoinColumn(name = "field_id") })
 	@Getter
 	private Set< Field > fields = new HashSet<>();
+
+	@OneToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "export_style", joinColumns = { @JoinColumn(name = "export_id") }, inverseJoinColumns = {
+			@JoinColumn(name = "style_id") })
+	@Getter
+	private Set< Style > styles = new HashSet<>();
 
 	@Column(name = "custom_width", nullable = true)
 	private Long customWidth;
@@ -74,8 +82,7 @@ public class Export {
 	}
 
 	@Transient
-	public boolean hasCustomHeight() {
-
+	public boolean hasCustomSize() {
 		return Objects.nonNull(customWidth) && Objects.nonNull(customHeight) && customWidth > 0 && customHeight > 0;
 	}
 }

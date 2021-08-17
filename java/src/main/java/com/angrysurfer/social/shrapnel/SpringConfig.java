@@ -5,7 +5,7 @@ import com.angrysurfer.social.shrapnel.export.service.ComponentsService;
 import com.angrysurfer.social.shrapnel.export.service.model.export.DataSource;
 import com.angrysurfer.social.shrapnel.export.service.model.export.Export;
 import com.angrysurfer.social.shrapnel.export.service.model.export.Field;
-import com.angrysurfer.social.shrapnel.export.service.model.export.PdfPageSize;
+import com.angrysurfer.social.shrapnel.export.service.model.style.PdfPageSize;
 import com.angrysurfer.social.shrapnel.export.service.model.qbe.Column;
 import com.angrysurfer.social.shrapnel.export.service.model.qbe.Join;
 import com.angrysurfer.social.shrapnel.export.service.model.qbe.Table;

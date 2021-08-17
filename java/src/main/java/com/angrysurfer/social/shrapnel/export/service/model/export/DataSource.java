@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-@Table(name = "data_source_model")//, schema = "shrapnel")
+@Table(name = "data_source", schema = "shrapnel")
 public class DataSource {
 
 	@ManyToOne

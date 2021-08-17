@@ -11,7 +11,7 @@ import javax.persistence.Table;
 @Getter
 @Setter
 @Entity
-@Table(name = "field_type_model")//, schema = "shrapnel")
+@Table(name = "field_type", schema = "shrapnel")
 public class FieldType {
 
 	@Id

@@ -10,7 +10,6 @@ public enum JoinTypeEnum {
 	private int code;
 
 	JoinTypeEnum(int code ) {
-
 		this.code = code;
 	}
 

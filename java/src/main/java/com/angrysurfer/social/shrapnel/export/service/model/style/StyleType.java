@@ -1,4 +1,4 @@
-package com.angrysurfer.social.shrapnel.export.service.model.qbe;
+package com.angrysurfer.social.shrapnel.export.service.model.style;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -11,8 +11,8 @@ import javax.persistence.Table;
 @Getter
 @Setter
 @Entity
-@Table(name = "qbe_join_type", schema = "shrapnel")
-public class JoinType {
+@Table(name = "style_type", schema = "shrapnel")
+public class StyleType {
 
 	@Id
 	@Column(name = "code", nullable = false)

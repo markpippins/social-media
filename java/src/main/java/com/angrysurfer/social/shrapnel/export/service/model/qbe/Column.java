@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-@javax.persistence.Table(name = "qbe_column_model")//, schema = "shrapnel")
+@javax.persistence.Table(name = "qbe_column", schema = "shrapnel")
 public class Column {
 
 	@ManyToOne

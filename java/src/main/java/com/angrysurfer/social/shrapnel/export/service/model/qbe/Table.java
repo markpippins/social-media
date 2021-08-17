@@ -11,7 +11,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-@javax.persistence.Table(name = "qbe_table")//, schema = "shrapnel")
+@javax.persistence.Table(name = "qbe_table", schema = "shrapnel")
 public class Table {
 
 	@Id
