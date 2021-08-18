@@ -1,6 +1,6 @@
 package com.angrysurfer.social.shrapnel.export.service.model.export;
 
-import com.angrysurfer.social.shrapnel.Config;
+import com.angrysurfer.social.shrapnel.PropertyConfig;
 import com.angrysurfer.social.shrapnel.export.component.field.IField;
 import com.angrysurfer.social.shrapnel.export.service.model.style.PdfPageSize;
 import com.angrysurfer.social.shrapnel.export.service.model.style.Style;
@@ -72,7 +72,7 @@ public class Export {
 		});
 
 		if (Objects.isNull(getDataSource().getQuery())) {
-			File sql = new File(Config.getInstance().getProperty(Config.SQL_FOLDER) + getDataSource().getQueryName() + ".sql");
+			File sql = new File(PropertyConfig.getInstance().getProperty(PropertyConfig.SQL_FOLDER) + getDataSource().getQueryName() + ".sql");
 			if (!sql.exists())
 				isConfigured[ 0 ] = false;
 		} else if (Objects.isNull(getDataSource().getQuery().getSQL()))

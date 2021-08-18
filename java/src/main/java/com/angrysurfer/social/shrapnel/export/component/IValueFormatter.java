@@ -12,7 +12,7 @@ import java.util.Objects;
 
 import static com.angrysurfer.social.shrapnel.export.component.writer.DataWriter.EMPTY_STRING;
 
-public interface IValueRenderer {
+public interface IValueFormatter {
 
     public final String DEFAULT_DATE_FORMAT = "MM/dd/yyyy";
     public final String DEFAULT_TIME_FORMAT = "HH:MM:SS";

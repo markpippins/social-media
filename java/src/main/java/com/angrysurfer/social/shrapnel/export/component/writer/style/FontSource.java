@@ -1,6 +1,8 @@
 package com.angrysurfer.social.shrapnel.export.component.writer.style;
 
-import com.angrysurfer.social.shrapnel.Config;
+import com.angrysurfer.social.shrapnel.PropertyConfig;
+import com.angrysurfer.social.shrapnel.export.service.exception.ExportConfigurationException;
+import com.itextpdf.io.font.FontConstants;
 import com.itextpdf.io.font.FontProgram;
 import com.itextpdf.io.font.FontProgramFactory;
 import com.itextpdf.io.font.PdfEncodings;
@@ -13,50 +15,79 @@ import java.io.IOException;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static com.angrysurfer.social.shrapnel.PropertyConfig.FONTS_FOLDER;
+
 @Slf4j
 public class FontSource {
 
-    static boolean deleteOnError = Config.getInstance().containsKey(Config.DELETE_ON_ERROR) ?
-            Boolean.parseBoolean(Config.getInstance().getProperty(Config.DELETE_ON_ERROR).toString()) : false;
+	private static final String FONT_NAME = "font.name";
 
-    public static boolean fontFileExists(String fontName) throws IOException {
+	static String DEFAULT_FONT = "comic.ttf";
 
-        File file = new File(Config.getInstance().getProperty(Config.FONTS_FOLDER).toString());
-        if ((Stream.of(file.listFiles()).filter(f -> f.getName().endsWith(".ttf")).collect(Collectors.toList()).size() > 0) ||
-                (Stream.of(file.listFiles()).filter(f -> f.getName().endsWith(".TTF")).collect(Collectors.toList()).size() > 0))
-            return true;
+	static String ACTIVE_FONT = "active";
 
-        return false;
-    }
+	static boolean deleteOnError = PropertyConfig.getInstance().containsKey(PropertyConfig.DELETE_ON_ERROR) ?
+			                               Boolean.parseBoolean(PropertyConfig.getInstance().getProperty(PropertyConfig.DELETE_ON_ERROR).toString()) : false;
 
-    public static PdfFont getPdfFont(String fontName) throws IOException {
+	public static boolean fontFileExists(String fontName) throws IOException {
 
-        File file = new File(Config.getInstance().getProperty(Config.FONTS_FOLDER).toString());
-        if (Stream.of(file.listFiles()).filter(f -> f.getName().endsWith(".ttf")).collect(Collectors.toList()).size() > 0)
-            return getPdfFont2(fontName + ".ttf");
+		File file = new File(PropertyConfig.getInstance().getProperty(PropertyConfig.FONTS_FOLDER).toString());
+		if ((Stream.of(file.listFiles()).filter(f -> f.getName().endsWith(".ttf")).collect(Collectors.toList()).size() > 0) ||
+				    (Stream.of(file.listFiles()).filter(f -> f.getName().endsWith(".TTF")).collect(Collectors.toList()).size() > 0))
+			return true;
 
-        else if (Stream.of(file.listFiles()).filter(f -> f.getName().endsWith(".TTF")).collect(Collectors.toList()).size() > 0)
-            return getPdfFont2(fontName + ".TTF");
+		return false;
+	}
 
-        return null;
-    }
+	public static PdfFont getPdfFont(String fontName) throws IOException {
 
-    public static PdfFont getPdfFont2(String fontName) throws IOException {
-        String fontFileName = Config.getInstance().getProperty(Config.FONTS_FOLDER) + fontName;
-        FontProgram fontProgram = FontProgramFactory.createFont(fontFileName);
-        try {
-            return PdfFontFactory.createFont(fontProgram, PdfEncodings.WINANSI, true);
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
+		File file = new File(PropertyConfig.getInstance().getProperty(PropertyConfig.FONTS_FOLDER).toString());
+		if (Stream.of(file.listFiles()).filter(f -> f.getName().endsWith(".ttf")).collect(Collectors.toList()).size() > 0)
+			return getPdfFont2(fontName + ".ttf");
 
-            if (deleteOnError) {
-                log.info("marking {} for deletion.", fontFileName);
-                File f = new File(fontFileName);
-                if (f.exists() && f.isFile())
-                    f.delete();
-            }
+		else if (Stream.of(file.listFiles()).filter(f -> f.getName().endsWith(".TTF")).collect(Collectors.toList()).size() > 0)
+			return getPdfFont2(fontName + ".TTF");
 
-            throw e;
-        }
-    }
+		return null;
+	}
+
+	public static PdfFont getPdfFont2(String fontName) throws IOException {
+		String      fontFileName = PropertyConfig.getInstance().getProperty(PropertyConfig.FONTS_FOLDER) + fontName;
+		FontProgram fontProgram  = FontProgramFactory.createFont(fontFileName);
+		try {
+			return PdfFontFactory.createFont(fontProgram, PdfEncodings.WINANSI, true);
+		}
+		catch (Exception e) {
+			log.error(e.getMessage(), e);
+
+			if (deleteOnError) {
+				log.info("marking {} for deletion.", fontFileName);
+				File f = new File(fontFileName);
+				if (f.exists() && f.isFile())
+					f.delete();
+			}
+
+			throw e;
+		}
+	}
+
+	public static PdfFont getFont() {
+		try {
+			PropertyConfig propertyConfig = PropertyConfig.getInstance();
+			return PdfFontFactory.createFont(
+					FontProgramFactory.createFont(propertyConfig.getProperty(FONTS_FOLDER).toString()
+							.concat(propertyConfig.containsKey(FONT_NAME) ?
+									        propertyConfig.getProperty(FONT_NAME).toString() : DEFAULT_FONT)),
+					PdfEncodings.WINANSI, true);
+		}
+		catch (Exception e) {
+			log.error(e.getMessage(), e);
+			try {
+				return PdfFontFactory.createFont(FontConstants.COURIER);
+			}
+			catch (Exception e2) {
+				throw new ExportConfigurationException(e2.getMessage(), e);
+			}
+		}
+	}
 }

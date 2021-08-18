@@ -11,6 +11,7 @@ import com.angrysurfer.social.shrapnel.export.service.repository.qbe.ColumnRepos
 import com.angrysurfer.social.shrapnel.export.service.repository.qbe.JoinRepository;
 import com.angrysurfer.social.shrapnel.export.service.repository.qbe.QueryRepository;
 import com.angrysurfer.social.shrapnel.export.service.repository.qbe.TableRepository;
+import com.angrysurfer.social.shrapnel.export.service.repository.style.PdfPageSizeRepository;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

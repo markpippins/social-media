@@ -1,7 +1,7 @@
 package com.angrysurfer.social.shrapnel.export.component.writer;
 
 import com.angrysurfer.social.shrapnel.export.component.IValueCalculator;
-import com.angrysurfer.social.shrapnel.export.component.IValueRenderer;
+import com.angrysurfer.social.shrapnel.export.component.IValueFormatter;
 import com.angrysurfer.social.shrapnel.export.component.field.Field;
 import com.angrysurfer.social.shrapnel.export.component.field.FieldTypeEnum;
 import com.angrysurfer.social.shrapnel.export.component.field.IField;
@@ -39,7 +39,7 @@ public abstract class DataWriter implements IDataWriter, IProxyPropertyAccessor 
 
     private List<IField> fields;
 
-    private IValueRenderer valueRenderer;
+    private IValueFormatter valueRenderer;
 
     private IValueCalculator valueCalculator;
 
@@ -48,7 +48,7 @@ public abstract class DataWriter implements IDataWriter, IProxyPropertyAccessor 
         setFields(fields);
     }
 
-    public DataWriter(List<IField> fields, IValueRenderer valueRenderer) {
+    public DataWriter(List<IField> fields, IValueFormatter valueRenderer) {
         setPropertyAccessor(new PropertyUtilsPropertyAccessor());
         setFields(fields);
         setValueRenderer(valueRenderer);
@@ -65,9 +65,9 @@ public abstract class DataWriter implements IDataWriter, IProxyPropertyAccessor 
         return valueCalculator;
     }
 
-    public IValueRenderer getValueRenderer() {
+    public IValueFormatter getValueRenderer() {
         if (Objects.isNull(valueRenderer))
-            valueRenderer = new IValueRenderer() {
+            valueRenderer = new IValueFormatter() {
 
                 @Override
                 public boolean canRender(IField field) {

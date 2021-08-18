@@ -1,6 +1,6 @@
 package com.angrysurfer.social.shrapnel.export.component.writer.style.adapter;
 
-import com.angrysurfer.social.shrapnel.Config;
+import com.angrysurfer.social.shrapnel.PropertyConfig;
 import com.itextpdf.kernel.color.Color;
 import com.itextpdf.kernel.color.WebColors;
 
@@ -10,7 +10,7 @@ public class HeaderCellStyleAdapter extends CellStyleAdapter {
 
     public HeaderCellStyleAdapter() {
         super();
-        Config defaults = Config.getInstance();
+        PropertyConfig defaults = PropertyConfig.getInstance();
         setBackgroundColor(WebColors.getRGBColor(defaults.getOrDefault("header.background", GREEN).toString()));
         setFontColor(defaults.containsKey("header.font.color") ?
                 WebColors.getRGBColor(defaults.getProperty("header.font.color").toString()) :

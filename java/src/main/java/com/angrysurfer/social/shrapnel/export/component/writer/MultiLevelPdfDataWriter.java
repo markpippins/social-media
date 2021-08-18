@@ -1,6 +1,6 @@
 package com.angrysurfer.social.shrapnel.export.component.writer;
 
-import com.angrysurfer.social.shrapnel.export.component.IValueRenderer;
+import com.angrysurfer.social.shrapnel.export.component.IValueFormatter;
 import com.angrysurfer.social.shrapnel.export.component.field.IField;
 import com.itextpdf.layout.element.Cell;
 import lombok.Getter;
@@ -19,7 +19,7 @@ public abstract class MultiLevelPdfDataWriter extends PdfDataWriter implements I
 
     private String levelPropertyName;
 
-    public MultiLevelPdfDataWriter(String levelPropertyName, List<IField> fields, IValueRenderer valueRenderer) {
+    public MultiLevelPdfDataWriter(String levelPropertyName, List<IField> fields, IValueFormatter valueRenderer) {
         super(fields, valueRenderer);
         setAutoCreateTopLevelHeader(false);
         setLevelPropertyName(levelPropertyName);

@@ -9,7 +9,7 @@ from export em,
      field fs,
      field_type ft,
      export_field emfs
-where em.id = emfs.model_id
+where em.id = emfs.export_id
   and fs.id = emfs.field_id
   and fs.field_type_id = ft.code
 order by em.name, fs.field_index;

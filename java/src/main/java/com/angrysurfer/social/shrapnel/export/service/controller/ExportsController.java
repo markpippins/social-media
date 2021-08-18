@@ -1,6 +1,6 @@
 package com.angrysurfer.social.shrapnel.export.service.controller;
 
-import com.angrysurfer.social.shrapnel.Config;
+import com.angrysurfer.social.shrapnel.PropertyConfig;
 import com.angrysurfer.social.shrapnel.export.service.IExportsService;
 import com.angrysurfer.social.shrapnel.export.service.Request;
 import com.angrysurfer.social.shrapnel.export.service.validation.IRequestValidator;
@@ -54,7 +54,7 @@ public class ExportsController {
 
     @PostMapping(value = "/flushConfig")
     public ResponseEntity flushConfig() {
-        Config.getInstance().flush();
+        PropertyConfig.getInstance().flush();
         return ResponseEntity.ok().build();
     }
 

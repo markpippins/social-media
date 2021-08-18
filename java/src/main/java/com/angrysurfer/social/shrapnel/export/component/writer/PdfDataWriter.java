@@ -1,6 +1,6 @@
 package com.angrysurfer.social.shrapnel.export.component.writer;
 
-import com.angrysurfer.social.shrapnel.export.component.IValueRenderer;
+import com.angrysurfer.social.shrapnel.export.component.IValueFormatter;
 import com.angrysurfer.social.shrapnel.export.component.field.IField;
 import com.angrysurfer.social.shrapnel.export.component.writer.filter.DataFilters;
 import com.angrysurfer.social.shrapnel.export.component.writer.filter.IDataFilters;
@@ -34,7 +34,7 @@ public class PdfDataWriter extends DataWriter {
         super(fields);
     }
 
-    public PdfDataWriter(List<IField> fields, IValueRenderer valueRenderer) {
+    public PdfDataWriter(List<IField> fields, IValueFormatter valueRenderer) {
         super(fields, valueRenderer);
     }
 

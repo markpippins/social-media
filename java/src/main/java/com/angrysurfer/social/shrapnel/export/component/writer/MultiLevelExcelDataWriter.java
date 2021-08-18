@@ -1,6 +1,6 @@
 package com.angrysurfer.social.shrapnel.export.component.writer;
 
-import com.angrysurfer.social.shrapnel.export.component.IValueRenderer;
+import com.angrysurfer.social.shrapnel.export.component.IValueFormatter;
 import com.angrysurfer.social.shrapnel.export.component.field.IField;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,7 +20,7 @@ public abstract class MultiLevelExcelDataWriter extends ExcelDataWriter implemen
 
     private String levelPropertyName;
 
-    public MultiLevelExcelDataWriter(String levelPropertyName, List<IField> fields, IValueRenderer valueRenderer) {
+    public MultiLevelExcelDataWriter(String levelPropertyName, List<IField> fields, IValueFormatter valueRenderer) {
         super(fields, valueRenderer);
         setAutoCreateTopLevelHeader(false);
         setLevelPropertyName(levelPropertyName);

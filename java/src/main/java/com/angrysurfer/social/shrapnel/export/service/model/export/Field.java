@@ -15,7 +15,7 @@ import java.util.Objects;
 public class Field implements IField {
 
 	@ManyToOne
-	@JoinColumn(name = "field_type_id")
+	@JoinColumn(name = "field_type_code")
 	public FieldType fieldType;
 
 	@Id

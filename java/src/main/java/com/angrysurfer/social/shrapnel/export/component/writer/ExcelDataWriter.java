@@ -1,6 +1,6 @@
 package com.angrysurfer.social.shrapnel.export.component.writer;
 
-import com.angrysurfer.social.shrapnel.export.component.IValueRenderer;
+import com.angrysurfer.social.shrapnel.export.component.IValueFormatter;
 import com.angrysurfer.social.shrapnel.export.component.field.IField;
 import com.angrysurfer.social.shrapnel.export.component.writer.filter.DataFilters;
 import com.angrysurfer.social.shrapnel.export.component.writer.filter.IDataFilters;
@@ -42,11 +42,11 @@ public class ExcelDataWriter extends DataWriter implements IDataWriter {
         super(fields);
     }
 
-    public ExcelDataWriter(List<IField> fields, IValueRenderer valueRenderer) {
+    public ExcelDataWriter(List<IField> fields, IValueFormatter valueRenderer) {
         super(fields, valueRenderer);
     }
 
-    public ExcelDataWriter(List<IField> fields, IValueRenderer valueRenderer, CombinedStyleProvider styleProvider) {
+    public ExcelDataWriter(List<IField> fields, IValueFormatter valueRenderer, CombinedStyleProvider styleProvider) {
         super(fields, valueRenderer);
         setStyleProvider(styleProvider);
     }

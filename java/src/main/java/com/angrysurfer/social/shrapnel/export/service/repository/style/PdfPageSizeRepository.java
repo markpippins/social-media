@@ -1,4 +1,4 @@
-package com.angrysurfer.social.shrapnel.export.service.repository.export;
+package com.angrysurfer.social.shrapnel.export.service.repository.style;
 
 import com.angrysurfer.social.shrapnel.export.service.model.style.PdfPageSize;
 import org.springframework.data.jpa.repository.JpaRepository;

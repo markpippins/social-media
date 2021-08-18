@@ -1,9 +1,9 @@
 package com.angrysurfer.social.shrapnel.example;
 
-import com.angrysurfer.social.shrapnel.Config;
+import com.angrysurfer.social.shrapnel.PropertyConfig;
 import com.angrysurfer.social.shrapnel.export.Export;
 import com.angrysurfer.social.shrapnel.export.component.IValueCalculator;
-import com.angrysurfer.social.shrapnel.export.component.IValueRenderer;
+import com.angrysurfer.social.shrapnel.export.component.IValueFormatter;
 import com.angrysurfer.social.shrapnel.export.component.field.Field;
 import com.angrysurfer.social.shrapnel.export.component.field.FieldTypeEnum;
 import com.angrysurfer.social.shrapnel.export.component.field.IField;
@@ -64,7 +64,7 @@ public class FontConfigExport extends Export {
     @Override
     public void init() {
         setStyleProvider(new FontListStyleProvider(Color.LIGHT_GRAY, IndexedColors.PALE_BLUE));
-        setValueRenderer(new FontListValueRenderer());
+        setValueRenderer(new FontListValueFormatter());
         setValueCalculator(new FontListValueCalculator());
         addFilter(new UniqueFontFilter());
     }
@@ -104,7 +104,7 @@ public class FontConfigExport extends Export {
         }
     }
 
-    static class FontListValueRenderer implements IValueRenderer {
+    static class FontListValueFormatter implements IValueFormatter {
         @Override
         public String render(IField field, String value) {
             if (field.getPropertyName().equals("name"))
@@ -142,7 +142,7 @@ public class FontConfigExport extends Export {
         public Collection<Object> getData() {
             File file = new File(".");
             return Arrays.stream(new File(file.getAbsolutePath().substring(0, file.getAbsolutePath().length() - 1)
-                            + Config.getInstance().getProperty(Config.FONTS_FOLDER)).listFiles())
+                            + PropertyConfig.getInstance().getProperty(PropertyConfig.FONTS_FOLDER)).listFiles())
                     .filter(f -> f.getPath().toLowerCase(Locale.ROOT).endsWith(".ttf"))
                     .sorted((File file1, File file2) -> file1.getAbsolutePath().toLowerCase(Locale.ROOT)
                             .compareTo(file2.getAbsolutePath().toLowerCase(Locale.ROOT)))

@@ -1,6 +1,6 @@
 package com.angrysurfer.social.shrapnel.export.util;
 
-import com.angrysurfer.social.shrapnel.Config;
+import com.angrysurfer.social.shrapnel.PropertyConfig;
 import com.angrysurfer.social.shrapnel.export.IExport;
 import com.angrysurfer.social.shrapnel.export.component.writer.CsvDataWriter;
 import com.angrysurfer.social.shrapnel.export.factory.IExportFactory;
@@ -128,7 +128,7 @@ public class FileUtil {
 
 	public static String getSQL(String filename) {
 		try {
-			return Files.readString(Path.of(Config.getInstance().getProperty(Config.SQL_FOLDER) + filename + ".sql"));
+			return Files.readString(Path.of(PropertyConfig.getInstance().getProperty(PropertyConfig.SQL_FOLDER) + filename + ".sql"));
 		} catch (IOException e) {
 			log.error(e.getMessage(), e);
 			throw new ExportRequestProcessingException(e.getMessage(), e);
