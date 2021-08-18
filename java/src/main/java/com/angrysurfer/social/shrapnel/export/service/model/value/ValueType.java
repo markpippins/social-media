@@ -1,4 +1,4 @@
-package com.angrysurfer.social.shrapnel.export.service.model.export;
+package com.angrysurfer.social.shrapnel.export.service.model.value;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -11,13 +11,13 @@ import javax.persistence.Table;
 @Getter
 @Setter
 @Entity
-@Table(name = "field_type", schema = "shrapnel")
-public class FieldType {
+@Table(name = "value_type", schema = "shrapnel")
+public class ValueType {
 
 	@Id
 	@Column(name = "code", nullable = false)
 	private Integer code;
 
-	@Column(name = "name", nullable = false)
-	private String name;
+	@Column(name = "table_name", nullable = false)
+	private String tableName;
 }

@@ -1,11 +1,11 @@
 package com.angrysurfer.social.shrapnel;
 
 import com.angrysurfer.social.shrapnel.export.component.field.FieldTypeEnum;
-import com.angrysurfer.social.shrapnel.export.component.writer.style.StyleTypeEnum;
+import com.angrysurfer.social.shrapnel.export.service.model.style.StyleTypeEnum;
 import com.angrysurfer.social.shrapnel.export.service.ComponentsService;
-import com.angrysurfer.social.shrapnel.export.service.model.export.DataSource;
-import com.angrysurfer.social.shrapnel.export.service.model.export.Export;
-import com.angrysurfer.social.shrapnel.export.service.model.export.Field;
+import com.angrysurfer.social.shrapnel.export.service.model.export.DBDataSource;
+import com.angrysurfer.social.shrapnel.export.service.model.export.DBExport;
+import com.angrysurfer.social.shrapnel.export.service.model.export.DBField;
 import com.angrysurfer.social.shrapnel.export.service.model.sqlgen.Column;
 import com.angrysurfer.social.shrapnel.export.service.model.sqlgen.Join;
 import com.angrysurfer.social.shrapnel.export.service.model.sqlgen.JoinTypeEnum;
@@ -127,12 +127,12 @@ class SpringConfig implements CommandLineRunner {
 		Arrays.stream(JoinTypeEnum.values())
 				.forEach(joinType -> componentsService.createJoinType(joinType));
 
-		DataSource forumData = new DataSource();
-		forumData.setQueryName("get-forums");
+		DBDataSource forumData = new DBDataSource();
+		forumData.setScriptName("get-forums");
 		forumData.setName("forum-list");
 		dataSourceRepository.save(forumData);
 
-		Field idSpec1 = new Field();
+		DBField idSpec1 = new DBField();
 		idSpec1.setName("id");
 		idSpec1.setPropertyName("id");
 		idSpec1.setLabel("id");
@@ -143,7 +143,7 @@ class SpringConfig implements CommandLineRunner {
 
 		idSpec1 = fieldRepository.save(idSpec1);
 
-		Field nameSpec = new Field();
+		DBField nameSpec = new DBField();
 		nameSpec.setName("name");
 		nameSpec.setPropertyName("name");
 		nameSpec.setLabel("name");
@@ -153,21 +153,21 @@ class SpringConfig implements CommandLineRunner {
 				.orElseThrow(() -> new IllegalArgumentException()));
 		nameSpec = fieldRepository.save(nameSpec);
 
-		Export forumExport = new Export();
-		forumExport.setName("forum-list");
-		forumExport.getFields().add(idSpec1);
-		forumExport.getFields().add(nameSpec);
-		forumExport.setDataSource(forumData);
-		forumExport.setPdfPageSize(pdfPageSizeRepository.findByName("A0"));
-		forumExport.getStyles().add(style);
-		exportRepository.save(forumExport);
+		DBExport forumDBExport = new DBExport();
+		forumDBExport.setName("forum-list");
+		forumDBExport.getFields().add(idSpec1);
+		forumDBExport.getFields().add(nameSpec);
+		forumDBExport.setDataSource(forumData);
+		forumDBExport.setPdfPageSize(pdfPageSizeRepository.findByName("A0"));
+		forumDBExport.getStyles().add(style);
+		exportRepository.save(forumDBExport);
 
-		DataSource userData = new DataSource();
-		userData.setQueryName("get-users");
+		DBDataSource userData = new DBDataSource();
+		userData.setScriptName("get-users");
 		userData.setName("user-list");
 		dataSourceRepository.save(userData);
 
-		Field idSpec2 = new Field();
+		DBField idSpec2 = new DBField();
 		idSpec2.setName("id");
 		idSpec2.setPropertyName("id");
 		idSpec2.setLabel("id");
@@ -177,7 +177,7 @@ class SpringConfig implements CommandLineRunner {
 				.orElseThrow(() -> new IllegalArgumentException()));
 		idSpec2 = fieldRepository.save(idSpec2);
 
-		Field emailSpec = new Field();
+		DBField emailSpec = new DBField();
 		emailSpec.setName("email");
 		emailSpec.setFieldType(fieldTypeRepository
 				.findById(Integer.valueOf(FieldTypeEnum.STRING.getCode()))
@@ -187,7 +187,7 @@ class SpringConfig implements CommandLineRunner {
 		emailSpec.setIndex(3);
 		emailSpec = fieldRepository.save(emailSpec);
 
-		Field aliasSpec = new Field();
+		DBField aliasSpec = new DBField();
 		aliasSpec.setName("alias");
 		aliasSpec.setFieldType(fieldTypeRepository
 				.findById(Integer.valueOf(FieldTypeEnum.STRING.getCode()))
@@ -197,15 +197,15 @@ class SpringConfig implements CommandLineRunner {
 		aliasSpec.setIndex(2);
 		aliasSpec = fieldRepository.save(aliasSpec);
 
-		Export userExport = new Export();
-		userExport.setName("user-list");
-		userExport.getFields().add(idSpec2);
-		userExport.getFields().add(aliasSpec);
-		userExport.getFields().add(emailSpec);
-		userExport.setDataSource(userData);
-		userExport.setPdfPageSize(pdfPageSizeRepository.findByName("A4"));
-		userExport.getStyles().add(style);
-		exportRepository.save(userExport);
+		DBExport userDBExport = new DBExport();
+		userDBExport.setName("user-list");
+		userDBExport.getFields().add(idSpec2);
+		userDBExport.getFields().add(aliasSpec);
+		userDBExport.getFields().add(emailSpec);
+		userDBExport.setDataSource(userData);
+		userDBExport.setPdfPageSize(pdfPageSizeRepository.findByName("A4"));
+		userDBExport.getStyles().add(style);
+		exportRepository.save(userDBExport);
 
 		Table people = new Table();
 		people.setSchema("social");
@@ -277,7 +277,7 @@ class SpringConfig implements CommandLineRunner {
 		queryRepository.save(query);
 
 		log.info(query.getSQL());
-		Export export = componentsService.createExport(query);
+		DBExport export = componentsService.createExport(query);
 	}
 }
 
@@ -303,7 +303,7 @@ class SpringConfig implements CommandLineRunner {
 //    }
 //
 //    @Bean
-//    public DataSource shrapnelDataSource() {
+//    public DBDataSource shrapnelDataSource() {
 //
 //        DriverManagerDataSource dataSource
 //                = new DriverManagerDataSource();

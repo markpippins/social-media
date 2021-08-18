@@ -62,6 +62,6 @@ public interface IValueFormatter {
         return Objects.isNull(value) ? EMPTY_STRING : value;
     }
 
-//    String render(Field col, Richtext value);
+//    String render(DBField col, Richtext value);
 
 }

@@ -1,8 +1,8 @@
 package com.angrysurfer.social.shrapnel.export.factory;
 
 import com.angrysurfer.social.shrapnel.export.service.Request;
-import com.angrysurfer.social.shrapnel.export.service.model.export.DataSource;
-import com.angrysurfer.social.shrapnel.export.service.model.export.Export;
+import com.angrysurfer.social.shrapnel.export.service.model.export.DBDataSource;
+import com.angrysurfer.social.shrapnel.export.service.model.export.DBExport;
 import com.angrysurfer.social.shrapnel.export.service.repository.export.DataSourceRepository;
 import com.angrysurfer.social.shrapnel.export.service.repository.export.ExportRepository;
 import com.angrysurfer.social.shrapnel.export.service.repository.mapping.HashMapResultSetExtractor;
@@ -31,28 +31,31 @@ public class JdbcTemplateMetaExportFactory implements IMetaExportFactory {
 
 	@Override
 	public boolean hasFactory(Request request) {
-		Export export = exportRepository.findByName(request.getName());
+		DBExport export = exportRepository.findByName(request.getName());
 		return Objects.nonNull(export) && export.isConfigured();
 	}
 
 	@Override
 	public IExportFactory newInstance(Request request) {
-		final Export export = exportRepository.findByName(request.getName());
-		final DataSource dataSource = dataSourceRepository.findByName(request.getName());
+		final DBExport     dbExport   = exportRepository.findByName(request.getName());
+		final DBDataSource dataSource = dataSourceRepository.findByName(request.getName());
 
-		return new JdbcTemplateExportFactory(request, export) {
+		return new JdbcTemplateExportFactory(request, dbExport) {
 
 			@Override
 			public Collection getData() {
-				Collection data = Collections.EMPTY_LIST;
-				String sql = Objects.nonNull(dataSource.getQuery()) ?
-						             dataSource.getQuery().getSQL() :
-						             FileUtil.getSQL(dataSource.getQueryName());
+				String sql = Objects.nonNull(dataSource.getScriptName()) ?
+						             // load query from sql folder
+						             // TODO: implement refreshable caching scheme for queries
+						             FileUtil.getSQL(dataSource.getScriptName()) :
+						             Objects.nonNull(dataSource.getQuery()) ?
+								             // build query from db definition
+								             dataSource.getQuery().getSQL() :
+								             null;
 
-				if (Objects.nonNull(sql))
-					data = (Collection) jdbcTemplate.query(sql, new HashMapResultSetExtractor(export));
-
-				return data;
+				return Objects.nonNull(sql) ?
+						       (Collection) jdbcTemplate.query(sql, new HashMapResultSetExtractor(dbExport)) :
+						       Collections.EMPTY_LIST;
 			}
 		};
 	}

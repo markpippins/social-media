@@ -1,4 +1,4 @@
-package com.angrysurfer.social.shrapnel.export.component.writer.style;
+package com.angrysurfer.social.shrapnel.export.service.model.style;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;

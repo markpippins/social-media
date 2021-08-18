@@ -2,7 +2,7 @@ package com.angrysurfer.social.shrapnel.export.service.model.export;
 
 import com.angrysurfer.social.shrapnel.PropertyConfig;
 import com.angrysurfer.social.shrapnel.export.component.field.IField;
-import com.angrysurfer.social.shrapnel.export.component.writer.style.StyleTypeEnum;
+import com.angrysurfer.social.shrapnel.export.service.model.style.StyleTypeEnum;
 import com.angrysurfer.social.shrapnel.export.service.model.style.PdfPageSize;
 import com.angrysurfer.social.shrapnel.export.service.model.style.Style;
 import lombok.Getter;
@@ -18,11 +18,11 @@ import java.util.stream.Collectors;
 @Setter
 @Entity
 @Table(name = "export", schema = "shrapnel")
-public class Export {
+public class DBExport {
 
 	@ManyToOne
 	@JoinColumn(name = "data_source_id")
-	public DataSource dataSource;
+	public DBDataSource dataSource;
 
 	@ManyToOne
 	@JoinColumn(name = "page_size_id")
@@ -41,7 +41,7 @@ public class Export {
 			name = "export_field",
 			joinColumns = @JoinColumn(name = "field_id"),
 			inverseJoinColumns = @JoinColumn(name = "export_id"))
-	private Set< Field > fields = new HashSet<>();
+	private Set< DBField > fields = new HashSet<>();
 
 	@ManyToMany
 	@JoinTable(
@@ -57,7 +57,7 @@ public class Export {
 		final boolean[] isConfigured = { true };
 
 		if (Objects.isNull(getName()) ||
-				    (Objects.isNull(getDataSource()) && Objects.isNull(getDataSource().getQueryName())))
+				    (Objects.isNull(getDataSource()) && Objects.isNull(getDataSource().getScriptName())))
 			isConfigured[ 0 ] = false;
 
 		Map< Integer, IField > indexMap = new HashMap<>();
@@ -71,7 +71,7 @@ public class Export {
 		});
 
 		if (Objects.isNull(getDataSource().getQuery())) {
-			File sql = new File(PropertyConfig.getInstance().getProperty(PropertyConfig.SQL_FOLDER) + getDataSource().getQueryName() + ".sql");
+			File sql = new File(PropertyConfig.getInstance().getProperty(PropertyConfig.SQL_FOLDER) + getDataSource().getScriptName() + ".sql");
 			if (!sql.exists())
 				isConfigured[ 0 ] = false;
 		}

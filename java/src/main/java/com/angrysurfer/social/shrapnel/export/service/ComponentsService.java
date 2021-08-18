@@ -1,12 +1,12 @@
 package com.angrysurfer.social.shrapnel.export.service;
 
 import com.angrysurfer.social.shrapnel.export.component.field.FieldTypeEnum;
+import com.angrysurfer.social.shrapnel.export.service.model.export.DBExport;
+import com.angrysurfer.social.shrapnel.export.service.model.export.DBField;
 import com.angrysurfer.social.shrapnel.export.service.model.sqlgen.JoinTypeEnum;
-import com.angrysurfer.social.shrapnel.export.component.writer.style.StyleTypeEnum;
-import com.angrysurfer.social.shrapnel.export.service.model.export.DataSource;
-import com.angrysurfer.social.shrapnel.export.service.model.export.Export;
-import com.angrysurfer.social.shrapnel.export.service.model.export.Field;
-import com.angrysurfer.social.shrapnel.export.service.model.export.FieldType;
+import com.angrysurfer.social.shrapnel.export.service.model.style.StyleTypeEnum;
+import com.angrysurfer.social.shrapnel.export.service.model.export.DBDataSource;
+import com.angrysurfer.social.shrapnel.export.service.model.export.DBFieldType;
 import com.angrysurfer.social.shrapnel.export.service.model.sqlgen.JoinType;
 import com.angrysurfer.social.shrapnel.export.service.model.sqlgen.Query;
 import com.angrysurfer.social.shrapnel.export.service.model.style.StyleType;
@@ -63,16 +63,16 @@ public class ComponentsService {
 	@Resource
 	ComponentsService componentsService;
 
-	public DataSource createDataSource(Query query) {
-		DataSource ds = new DataSource();
+	public DBDataSource createDataSource(Query query) {
+		DBDataSource ds = new DBDataSource();
 		ds.setName(query.getName());
 		ds.setQuery(query);
 		dataSourceRepository.save(ds);
 		return ds;
 	}
 
-	public Export createExport(Query query) {
-		Export export = new Export();
+	public DBExport createExport(Query query) {
+		DBExport export = new DBExport();
 		export.setName(query.getName());
 		export.setFields(createFields(query));
 		export.setDataSource(createDataSource(query));
@@ -80,8 +80,8 @@ public class ComponentsService {
 		return export;
 	}
 
-	public Field createField(String name, String propertyName, String label, Integer index) {
-		Field field = new Field();
+	public DBField createField(String name, String propertyName, String label, Integer index) {
+		DBField field = new DBField();
 		field.setName(name);
 		field.setPropertyName(propertyName);
 		field.setLabel(label);
@@ -93,15 +93,15 @@ public class ComponentsService {
 		return field;
 	}
 
-	public Set< Field > createFields(Query query) {
-		Set< Field > fields = new HashSet<>();
+	public Set< DBField > createFields(Query query) {
+		Set< DBField > fields = new HashSet<>();
 		query.getColumns().forEach(column -> fields.add(createField(column.getName(), column.getName(),
 				column.getName().toUpperCase(Locale.ROOT), column.getIndex())));
 		return fields;
 	}
 
-	public FieldType createFieldType(FieldTypeEnum fieldType) {
-		FieldType ft = new FieldType();
+	public DBFieldType createFieldType(FieldTypeEnum fieldType) {
+		DBFieldType ft = new DBFieldType();
 		ft.setName(fieldType.name());
 		ft.setCode(fieldType.getCode());
 		fieldTypeRepository.save(ft);

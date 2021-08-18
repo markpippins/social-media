@@ -5,6 +5,7 @@ import com.angrysurfer.social.shrapnel.export.IExport;
 import com.angrysurfer.social.shrapnel.export.component.field.IField;
 import com.angrysurfer.social.shrapnel.export.component.property.PropertyMapAccessor;
 import com.angrysurfer.social.shrapnel.export.service.Request;
+import com.angrysurfer.social.shrapnel.export.service.model.export.DBExport;
 import com.itextpdf.kernel.geom.PageSize;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -19,11 +20,11 @@ public class JdbcTemplateExportFactory implements IExportFactory {
 
 	private Request request;
 
-	private com.angrysurfer.social.shrapnel.export.service.model.export.Export export;
+	private DBExport dbExport;
 
-	public JdbcTemplateExportFactory(Request request, com.angrysurfer.social.shrapnel.export.service.model.export.Export export) {
-		this.request = request;
-		this.export = export;
+	public JdbcTemplateExportFactory(Request request, DBExport dbExport) {
+		this.request  = request;
+		this.dbExport = dbExport;
 	}
 
 	@Override
@@ -33,9 +34,9 @@ public class JdbcTemplateExportFactory implements IExportFactory {
 
 	@Override
 	public IExport newInstance() {
-		PageSize pageSize = getPageSize(getExport());
+		PageSize pageSize = getPageSize(getDbExport());
 
-		return new Export(getExportName(), getExport().getFields()
+		return new Export(getExportName(), getDbExport().getFields()
 				.stream()
 				.sorted(Comparator.comparing(IField::getIndex))
 				.collect(Collectors.toList())) {
@@ -52,7 +53,7 @@ public class JdbcTemplateExportFactory implements IExportFactory {
 		};
 	}
 
-	static PageSize getPageSize(com.angrysurfer.social.shrapnel.export.service.model.export.Export export) {
+	static PageSize getPageSize(DBExport export) {
 		return Objects.nonNull(export.getPdfPageSize()) ?
 				               new PageSize(export.getPdfPageSize().getWidth(), export.getPdfPageSize().getHeight()) :
 				               export.hasCustomSize() ?

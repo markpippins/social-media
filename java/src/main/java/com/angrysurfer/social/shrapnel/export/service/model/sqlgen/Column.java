@@ -1,6 +1,6 @@
 package com.angrysurfer.social.shrapnel.export.service.model.sqlgen;
 
-import com.angrysurfer.social.shrapnel.export.service.model.export.FieldType;
+import com.angrysurfer.social.shrapnel.export.service.model.export.DBFieldType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,7 +14,7 @@ public class Column {
 
 	@ManyToOne
 	@JoinColumn(name = "field_type_id")
-	public FieldType fieldType;
+	public DBFieldType fieldType;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

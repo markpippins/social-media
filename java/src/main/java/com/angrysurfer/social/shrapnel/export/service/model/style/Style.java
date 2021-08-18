@@ -1,6 +1,5 @@
 package com.angrysurfer.social.shrapnel.export.service.model.style;
 
-import com.angrysurfer.social.shrapnel.export.component.writer.style.StyleTypeEnum;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;

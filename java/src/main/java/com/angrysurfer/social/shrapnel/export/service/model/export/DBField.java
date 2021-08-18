@@ -12,11 +12,11 @@ import java.util.Objects;
 @Setter
 @Entity
 @Table(name = "field", schema = "shrapnel")
-public class Field implements IField {
+public class DBField implements IField {
 
 	@ManyToOne
 	@JoinColumn(name = "field_type_code")
-	public FieldType fieldType;
+	public DBFieldType fieldType;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

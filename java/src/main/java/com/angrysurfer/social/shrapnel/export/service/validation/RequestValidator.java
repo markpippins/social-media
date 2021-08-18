@@ -33,7 +33,7 @@ public class RequestValidator implements IRequestValidator {
 		if (!violations.isEmpty()) {
 			StringBuilder sb = new StringBuilder();
 			violations.forEach(v -> sb.append(v.getPropertyPath()).append(" ").append(v.getMessage()).append("\n"));
-			throw new InvalidExportRequestException(String.format("Invalid Export Request:\n%s", sb.toString()));
+			throw new InvalidExportRequestException(String.format("Invalid DBExport Request:\n%s", sb.toString()));
 		}
 
 		if (!Arrays.asList(ExportsService.CSV, ExportsService.PDF, ExportsService.XLSX).contains(request.getFileType().toLowerCase(Locale.ROOT)))

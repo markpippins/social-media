@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Setter
 @Entity
 @Table(name = "data_source", schema = "shrapnel")
-public class DataSource {
+public class DBDataSource {
 
 	@ManyToOne
 	@JoinColumn(name = "query_id", nullable = true)
@@ -23,6 +23,6 @@ public class DataSource {
 	@Column(name = "name", nullable = false)
 	private String name;
 
-	@Column(name = "query", nullable = true)
-	private String queryName;
+	@Column(name = "scriptName", nullable = true)
+	private String scriptName;
 }
