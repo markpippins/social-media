@@ -1,6 +1,5 @@
-package com.angrysurfer.social.shrapnel.export.service.model.qbe;
+package com.angrysurfer.social.shrapnel.export.service.model.sqlgen;
 
-import com.angrysurfer.social.shrapnel.export.component.field.JoinTypeEnum;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -33,7 +32,7 @@ public class Join {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@Getter
 	@Setter
-	@JoinColumn(name = "join_type_id")
+	@JoinColumn(name = "join_type_code")
 	private JoinType joinType;
 
 	@Transient

@@ -1,20 +1,28 @@
 package com.angrysurfer.social.shrapnel;
 
 import com.angrysurfer.social.shrapnel.export.component.field.FieldTypeEnum;
+import com.angrysurfer.social.shrapnel.export.component.writer.style.StyleTypeEnum;
 import com.angrysurfer.social.shrapnel.export.service.ComponentsService;
 import com.angrysurfer.social.shrapnel.export.service.model.export.DataSource;
 import com.angrysurfer.social.shrapnel.export.service.model.export.Export;
 import com.angrysurfer.social.shrapnel.export.service.model.export.Field;
+import com.angrysurfer.social.shrapnel.export.service.model.sqlgen.Column;
+import com.angrysurfer.social.shrapnel.export.service.model.sqlgen.Join;
+import com.angrysurfer.social.shrapnel.export.service.model.sqlgen.JoinTypeEnum;
+import com.angrysurfer.social.shrapnel.export.service.model.sqlgen.Table;
 import com.angrysurfer.social.shrapnel.export.service.model.style.PdfPageSize;
-import com.angrysurfer.social.shrapnel.export.service.model.qbe.Column;
-import com.angrysurfer.social.shrapnel.export.service.model.qbe.Join;
-import com.angrysurfer.social.shrapnel.export.service.model.qbe.Table;
-import com.angrysurfer.social.shrapnel.export.service.repository.export.*;
-import com.angrysurfer.social.shrapnel.export.service.repository.qbe.ColumnRepository;
-import com.angrysurfer.social.shrapnel.export.service.repository.qbe.JoinRepository;
-import com.angrysurfer.social.shrapnel.export.service.repository.qbe.QueryRepository;
-import com.angrysurfer.social.shrapnel.export.service.repository.qbe.TableRepository;
+import com.angrysurfer.social.shrapnel.export.service.model.style.Style;
+import com.angrysurfer.social.shrapnel.export.service.repository.export.DataSourceRepository;
+import com.angrysurfer.social.shrapnel.export.service.repository.export.ExportRepository;
+import com.angrysurfer.social.shrapnel.export.service.repository.export.FieldRepository;
+import com.angrysurfer.social.shrapnel.export.service.repository.export.FieldTypeRepository;
+import com.angrysurfer.social.shrapnel.export.service.repository.sqlgen.ColumnRepository;
+import com.angrysurfer.social.shrapnel.export.service.repository.sqlgen.JoinRepository;
+import com.angrysurfer.social.shrapnel.export.service.repository.sqlgen.QueryRepository;
+import com.angrysurfer.social.shrapnel.export.service.repository.sqlgen.TableRepository;
 import com.angrysurfer.social.shrapnel.export.service.repository.style.PdfPageSizeRepository;
+import com.angrysurfer.social.shrapnel.export.service.repository.style.StyleRepository;
+import com.angrysurfer.social.shrapnel.export.service.repository.style.StyleTypeRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -63,6 +71,12 @@ class SpringConfig implements CommandLineRunner {
 	JoinRepository joinRepository;
 
 	@Resource
+	StyleRepository styleRepository;
+
+	@Resource
+	StyleTypeRepository styleTypeRepository;
+
+	@Resource
 	ComponentsService componentsService;
 
 	@Override
@@ -98,8 +112,20 @@ class SpringConfig implements CommandLineRunner {
 		pdfPageSizeRepository.save(new PdfPageSize("LEDGER", 1224, 792));
 		pdfPageSizeRepository.save(new PdfPageSize("EXECUTIVE", 522, 756));
 
+		Arrays.stream(StyleTypeEnum.values())
+				.forEach(styleType -> componentsService.createStyleType(styleType));
+
+		Style style = new Style();
+		style.setName("Default");
+		style.setStyleType(styleTypeRepository.findByName("FONT"));
+		style.setValue("Calibri");
+		styleRepository.save(style);
+
 		Arrays.stream(FieldTypeEnum.values())
 				.forEach(fieldType -> componentsService.createFieldType(fieldType));
+
+		Arrays.stream(JoinTypeEnum.values())
+				.forEach(joinType -> componentsService.createJoinType(joinType));
 
 		DataSource forumData = new DataSource();
 		forumData.setQueryName("get-forums");
@@ -133,6 +159,7 @@ class SpringConfig implements CommandLineRunner {
 		forumExport.getFields().add(nameSpec);
 		forumExport.setDataSource(forumData);
 		forumExport.setPdfPageSize(pdfPageSizeRepository.findByName("A0"));
+		forumExport.getStyles().add(style);
 		exportRepository.save(forumExport);
 
 		DataSource userData = new DataSource();
@@ -177,6 +204,7 @@ class SpringConfig implements CommandLineRunner {
 		userExport.getFields().add(emailSpec);
 		userExport.setDataSource(userData);
 		userExport.setPdfPageSize(pdfPageSizeRepository.findByName("A4"));
+		userExport.getStyles().add(style);
 		exportRepository.save(userExport);
 
 		Table people = new Table();
@@ -235,7 +263,7 @@ class SpringConfig implements CommandLineRunner {
 		join.setJoinColumnB(postedById);
 		joinRepository.save(join);
 
-		com.angrysurfer.social.shrapnel.export.service.model.qbe.Query query = new com.angrysurfer.social.shrapnel.export.service.model.qbe.Query();
+		com.angrysurfer.social.shrapnel.export.service.model.sqlgen.Query query = new com.angrysurfer.social.shrapnel.export.service.model.sqlgen.Query();
 		query.setName("get-posts");
 		query.setSchema("sample");
 		query.getColumns().add(personId);

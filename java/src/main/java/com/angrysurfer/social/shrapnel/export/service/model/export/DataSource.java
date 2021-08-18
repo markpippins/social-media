@@ -13,7 +13,7 @@ public class DataSource {
 
 	@ManyToOne
 	@JoinColumn(name = "query_id", nullable = true)
-	public com.angrysurfer.social.shrapnel.export.service.model.qbe.Query query;
+	public com.angrysurfer.social.shrapnel.export.service.model.sqlgen.Query query;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

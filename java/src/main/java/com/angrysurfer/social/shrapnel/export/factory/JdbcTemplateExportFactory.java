@@ -33,11 +33,7 @@ public class JdbcTemplateExportFactory implements IExportFactory {
 
 	@Override
 	public IExport newInstance() {
-		PageSize pageSize = Objects.nonNull(getExport().getPdfPageSize()) ?
-				                    new PageSize(getExport().getPdfPageSize().getWidth(), getExport().getPdfPageSize().getHeight()) :
-				                    getExport().hasCustomSize() ?
-						                    new PageSize(getExport().getCustomWidth(), getExport().getCustomHeight()) :
-						                    PageSize.LETTER;
+		PageSize pageSize = getPageSize(getExport());
 
 		return new Export(getExportName(), getExport().getFields()
 				.stream()
@@ -54,5 +50,14 @@ public class JdbcTemplateExportFactory implements IExportFactory {
 				setPropertyAccessor(new PropertyMapAccessor());
 			}
 		};
+	}
+
+	static PageSize getPageSize(com.angrysurfer.social.shrapnel.export.service.model.export.Export export) {
+		return Objects.nonNull(export.getPdfPageSize()) ?
+				               new PageSize(export.getPdfPageSize().getWidth(), export.getPdfPageSize().getHeight()) :
+				               export.hasCustomSize() ?
+						               new PageSize(export.getCustomWidth(), export.getCustomHeight()) :
+						               PageSize.LETTER;
+
 	}
 }

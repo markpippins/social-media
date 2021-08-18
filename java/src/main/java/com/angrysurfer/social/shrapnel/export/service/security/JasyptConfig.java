@@ -17,7 +17,7 @@ public class JasyptConfig {
 	public StringEncryptor stringEncryptor() {
 		PooledPBEStringEncryptor encryptor = new PooledPBEStringEncryptor();
 		SimpleStringPBEConfig    config    = new SimpleStringPBEConfig();
-		config.setPassword("blackops");
+		config.setPassword(System.getProperty("jasypt.encryptor.password"));
 		config.setAlgorithm(algorithm);
 		config.setKeyObtentionIterations(1000);
 		config.setPoolSize(1);

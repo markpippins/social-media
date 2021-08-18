@@ -1,4 +1,4 @@
-package com.angrysurfer.social.shrapnel.export.service.model.qbe;
+package com.angrysurfer.social.shrapnel.export.service.model.sqlgen;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -6,15 +6,16 @@ import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.Column;
 import javax.persistence.*;
+import javax.persistence.Table;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Getter
 @Setter
 @Entity
-@Slf4j
-@javax.persistence.Table(name = "qbe_query", schema = "shrapnel")
+@Table(name = "qbe_query", schema = "shrapnel")
 public class Query {
 
 	public static String SELECT = "\n\tSELECT \n\t";
@@ -41,14 +42,12 @@ public class Query {
 	@OneToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "qbe_query_column", joinColumns = { @JoinColumn(name = "query_id") }, inverseJoinColumns = {
 			@JoinColumn(name = "column_id") })
-	@Getter
-	private Set< com.angrysurfer.social.shrapnel.export.service.model.qbe.Column > columns = new HashSet<>();
+	private Set< com.angrysurfer.social.shrapnel.export.service.model.sqlgen.Column > columns = new HashSet<>();
 
 	@OneToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "qbe_join_column", joinColumns = { @JoinColumn(name = "join_id") }, inverseJoinColumns = {
-			@JoinColumn(name = "column_id") })
-	@Getter
-	private Set< com.angrysurfer.social.shrapnel.export.service.model.qbe.Join > joins = new HashSet<>();
+	@JoinTable(name = "qbe_query_join", joinColumns = { @JoinColumn(name = "query_id") }, inverseJoinColumns = {
+			@JoinColumn(name = "join_id") })
+	private Set< com.angrysurfer.social.shrapnel.export.service.model.sqlgen.Join > joins = new HashSet<>();
 
 	@Transient
 	public String getSQL() {
@@ -114,7 +113,7 @@ public class Query {
 		return equals.toString();
 	}
 
-	private String getTableName(com.angrysurfer.social.shrapnel.export.service.model.qbe.Column column, boolean prefix) {
+	private String getTableName(com.angrysurfer.social.shrapnel.export.service.model.sqlgen.Column column, boolean prefix) {
 		return prefix ? column.getTable().getSchema() + "." + column.getTable().getName() + " " +
 				                column.getTable().getName().replace("_", "") + "_" :
 				       column.getTable().getName().replace("_", "") + "_";

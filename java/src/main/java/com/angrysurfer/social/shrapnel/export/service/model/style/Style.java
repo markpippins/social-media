@@ -16,7 +16,7 @@ import java.util.Objects;
 public class Style {
 
 	@ManyToOne
-	@JoinColumn(name = "style_type_id")
+	@JoinColumn(name = "style_type_code")
 	public StyleType styleType;
 
 	@Id
@@ -26,6 +26,9 @@ public class Style {
 
 	@Column(name = "name", nullable = false)
 	private String name;
+
+	@Column(name = "value", nullable = false)
+	private String value;
 
 	public StyleTypeEnum getType() {
 		return Objects.isNull(this.styleType) ? null : StyleTypeEnum.from(this.styleType.getCode());

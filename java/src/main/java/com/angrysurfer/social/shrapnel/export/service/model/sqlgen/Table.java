@@ -1,4 +1,4 @@
-package com.angrysurfer.social.shrapnel.export.service.model.qbe;
+package com.angrysurfer.social.shrapnel.export.service.model.sqlgen;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -26,8 +26,8 @@ public class Table {
 	private String schema;
 
 	@OneToMany( fetch = FetchType.EAGER )
-	@JoinTable( name = "qbe_table_columns", joinColumns = { @JoinColumn( name = "column_id" ) }, inverseJoinColumns = {
+	@JoinTable( name = "qbe_table_column", joinColumns = { @JoinColumn( name = "column_id" ) }, inverseJoinColumns = {
 			@JoinColumn( name = "table_id" ) } )
 	@Getter
-	private Set< com.angrysurfer.social.shrapnel.export.service.model.qbe.Column> columns = new HashSet<>( );
+	private Set< com.angrysurfer.social.shrapnel.export.service.model.sqlgen.Column> columns = new HashSet<>( );
 }

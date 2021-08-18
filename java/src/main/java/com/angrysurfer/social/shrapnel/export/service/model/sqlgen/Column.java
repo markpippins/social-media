@@ -1,4 +1,4 @@
-package com.angrysurfer.social.shrapnel.export.service.model.qbe;
+package com.angrysurfer.social.shrapnel.export.service.model.sqlgen;
 
 import com.angrysurfer.social.shrapnel.export.service.model.export.FieldType;
 import lombok.Getter;

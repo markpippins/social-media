@@ -2,6 +2,7 @@ package com.angrysurfer.social.shrapnel.export.service.model.export;
 
 import com.angrysurfer.social.shrapnel.PropertyConfig;
 import com.angrysurfer.social.shrapnel.export.component.field.IField;
+import com.angrysurfer.social.shrapnel.export.component.writer.style.StyleTypeEnum;
 import com.angrysurfer.social.shrapnel.export.service.model.style.PdfPageSize;
 import com.angrysurfer.social.shrapnel.export.service.model.style.Style;
 import lombok.Getter;
@@ -10,6 +11,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.io.File;
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 @Getter
@@ -34,23 +36,20 @@ public class Export {
 	@Column(name = "name", nullable = false)
 	private String name;
 
-	@OneToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "export_field", joinColumns = { @JoinColumn(name = "export_id") }, inverseJoinColumns = {
-			@JoinColumn(name = "field_id") })
-	@Getter
+	@ManyToMany
+	@JoinTable(
+			name = "export_field",
+			joinColumns = @JoinColumn(name = "field_id"),
+			inverseJoinColumns = @JoinColumn(name = "export_id"))
 	private Set< Field > fields = new HashSet<>();
 
-	@OneToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "export_style", joinColumns = { @JoinColumn(name = "export_id") }, inverseJoinColumns = {
-			@JoinColumn(name = "style_id") })
-	@Getter
+	@ManyToMany
+	@JoinTable(
+			name = "export_style",
+			joinColumns = @JoinColumn(name = "style_id"),
+			inverseJoinColumns = @JoinColumn(name = "export_id"))
 	private Set< Style > styles = new HashSet<>();
 
-	@Column(name = "custom_width", nullable = true)
-	private Long customWidth;
-
-	@Column(name = "custom_height", nullable = true)
-	private Long customHeight;
 
 	@Transient
 	public boolean isConfigured() {
@@ -75,7 +74,8 @@ public class Export {
 			File sql = new File(PropertyConfig.getInstance().getProperty(PropertyConfig.SQL_FOLDER) + getDataSource().getQueryName() + ".sql");
 			if (!sql.exists())
 				isConfigured[ 0 ] = false;
-		} else if (Objects.isNull(getDataSource().getQuery().getSQL()))
+		}
+		else if (Objects.isNull(getDataSource().getQuery().getSQL()))
 			isConfigured[ 0 ] = false;
 
 		return isConfigured[ 0 ];
@@ -83,6 +83,17 @@ public class Export {
 
 	@Transient
 	public boolean hasCustomSize() {
-		return Objects.nonNull(customWidth) && Objects.nonNull(customHeight) && customWidth > 0 && customHeight > 0;
+		return getStyles().stream().filter(st -> Arrays.asList(StyleTypeEnum.HEIGHT, StyleTypeEnum.WIDTH)
+						.contains(StyleTypeEnum.from(st.styleType.getCode())))
+				.collect(Collectors.toList()).size() == 2;
+	}
+
+	// TODO: implement star model such that all primitive style values can be saved to db
+	public float getCustomWidth() {
+		return 0;
+	}
+
+	public float getCustomHeight() {
+		return 0;
 	}
 }
