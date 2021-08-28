@@ -63,4 +63,5 @@ public class PropertyMapAccessor implements IPropertyAccessor {
 			log.info(propertyName + " = " + getString(item, propertyName));
 		});
 	}
+
 }
