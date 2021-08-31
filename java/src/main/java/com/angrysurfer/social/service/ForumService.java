@@ -1,6 +1,6 @@
 package com.angrysurfer.social.service;
 
-import com.angrysurfer.social.ResourceNotFoundException;
+import com.angrysurfer.ResourceNotFoundException;
 import com.angrysurfer.social.dto.ForumDTO;
 import com.angrysurfer.social.model.Forum;
 import com.angrysurfer.social.repository.ForumRepository;
@@ -23,7 +23,7 @@ public class ForumService {
 
 	public ForumDTO findById(Long forumId) throws ResourceNotFoundException {
 
-		Optional<Forum> forum = forumRepository.findById(forumId);
+		Optional< Forum > forum = forumRepository.findById(forumId);
 		if (forum.isPresent()) {
 			return ForumDTO.fromForum(forum.get());
 		}

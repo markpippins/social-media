@@ -1,6 +1,6 @@
 package com.angrysurfer.social.controller;
 
-import com.angrysurfer.social.ResourceNotFoundException;
+import com.angrysurfer.ResourceNotFoundException;
 import com.angrysurfer.social.dto.ProfileDTO;
 import com.angrysurfer.social.service.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,8 @@ public class ProfileController {
 	private ProfileService profileService;
 
 	@GetMapping(path = "/userId/{userId}")
-	public @ResponseBody ProfileDTO getProfileByUserId(@PathVariable Long userId) {
+	public @ResponseBody
+	ProfileDTO getProfileByUserId(@PathVariable Long userId) {
 		try {
 			return profileService.findByUserId(userId);
 		} catch (IllegalArgumentException e) {

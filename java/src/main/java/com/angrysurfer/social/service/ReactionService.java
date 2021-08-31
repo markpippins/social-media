@@ -20,7 +20,7 @@ public class ReactionService {
 		return "redirect:/Reaction/all";
 	}
 
-	public Optional<Reaction> findById(Long reactionId) {
+	public Optional< Reaction > findById(Long reactionId) {
 		return reactionRepository.findById(reactionId);
 	}
 

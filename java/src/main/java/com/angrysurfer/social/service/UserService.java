@@ -1,6 +1,6 @@
 package com.angrysurfer.social.service;
 
-import com.angrysurfer.social.ResourceNotFoundException;
+import com.angrysurfer.ResourceNotFoundException;
 import com.angrysurfer.social.dto.UserDTO;
 import com.angrysurfer.social.model.Profile;
 import com.angrysurfer.social.model.User;
@@ -27,8 +27,8 @@ public class UserService {
 		userRepository.deleteById(userId);
 	}
 
-	public Set<UserDTO> findAll() {
-		HashSet<User> result = new HashSet<>();
+	public Set< UserDTO > findAll() {
+		HashSet< User > result = new HashSet<>();
 		userRepository.findAll().forEach(result::add);
 		return result.stream().map(user -> UserDTO.fromUser(user)).collect(Collectors.toSet());
 	}
@@ -47,7 +47,7 @@ public class UserService {
 
 		Optional<User> user = userRepository.findByAlias(alias);
 		if (user.isPresent()) {
-			Optional<Profile> profile = profileRepository.findByUserId(user.get().getId());
+			Optional< Profile > profile = profileRepository.findByUserId(user.get().getId());
 			if (profile.isPresent()) {
 				result = UserDTO.fromUser(user.get());
 				result.setProfileImageUrl(profile.get().getProfileImageUrl());

@@ -1,6 +1,6 @@
 package com.angrysurfer.social.service;
 
-import com.angrysurfer.social.ResourceNotFoundException;
+import com.angrysurfer.ResourceNotFoundException;
 import com.angrysurfer.social.dto.ProfileDTO;
 import com.angrysurfer.social.model.Profile;
 import com.angrysurfer.social.model.User;
@@ -17,7 +17,7 @@ public class ProfileService {
 	private ProfileRepository profileRepository;
 
 	public ProfileDTO findByUserId(Long userId) throws ResourceNotFoundException {
-		Optional<Profile> profile = profileRepository.findByUserId(userId);
+		Optional< Profile > profile = profileRepository.findByUserId(userId);
 		if (profile.isPresent())
 			return ProfileDTO.fromProfile(profile.get());
 

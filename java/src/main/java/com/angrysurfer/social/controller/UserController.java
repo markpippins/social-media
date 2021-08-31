@@ -1,6 +1,6 @@
 package com.angrysurfer.social.controller;
 
-import com.angrysurfer.social.ResourceNotFoundException;
+import com.angrysurfer.ResourceNotFoundException;
 import com.angrysurfer.social.dto.ProfileDTO;
 import com.angrysurfer.social.dto.UserDTO;
 import com.angrysurfer.social.service.UserService;
@@ -20,7 +20,8 @@ public class UserController {
 	private UserService userService;
 
 	@PostMapping(path = "/add")
-	public @ResponseBody UserDTO addUser(@RequestParam UserDTO newUser, @RequestParam ProfileDTO newProfile) {
+	public @ResponseBody
+	UserDTO addUser(@RequestParam UserDTO newUser, @RequestParam ProfileDTO newProfile) {
 		return userService.save(newUser);
 	}
 

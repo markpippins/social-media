@@ -1,6 +1,6 @@
 package com.angrysurfer.social.controller;
 
-import com.angrysurfer.social.ResourceNotFoundException;
+import com.angrysurfer.ResourceNotFoundException;
 import com.angrysurfer.social.dto.CommentDTO;
 import com.angrysurfer.social.dto.PostDTO;
 import com.angrysurfer.social.dto.PostStatDTO;

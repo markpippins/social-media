@@ -1,12 +1,11 @@
 package com.angrysurfer.social.service;
 
-import com.angrysurfer.social.ResourceNotFoundException;
+import com.angrysurfer.ResourceNotFoundException;
 import com.angrysurfer.social.dto.CommentDTO;
 import com.angrysurfer.social.dto.ReactionDTO;
 import com.angrysurfer.social.model.Comment;
 import com.angrysurfer.social.model.Post;
 import com.angrysurfer.social.model.Reaction;
-import com.angrysurfer.social.model.Reaction.ReactionType;
 import com.angrysurfer.social.model.User;
 import com.angrysurfer.social.repository.CommentRepository;
 import com.angrysurfer.social.repository.PostRepository;
@@ -42,7 +41,7 @@ public class CommentService {
 
 	public CommentDTO findById(Long commentId) throws ResourceNotFoundException {
 
-		Optional<Comment> comment = commentRepository.findById(commentId);
+		Optional< Comment > comment = commentRepository.findById(commentId);
 		if (comment.isPresent()) {
 			return new CommentDTO(comment.get());
 		}
@@ -89,7 +88,7 @@ public class CommentService {
 
 	private CommentDTO addCommentToPost(User user, CommentDTO data) throws IllegalArgumentException {
 
-		Optional<Post> postOpt = postRepository.findById(data.getPostId());
+		Optional< Post > postOpt = postRepository.findById(data.getPostId());
 
 		if (postOpt.isPresent()) {
 			Post post = postOpt.get();
@@ -125,7 +124,7 @@ public class CommentService {
 
 
 	public ReactionDTO addReaction(Long commentId, ReactionDTO reactionDTO) {
-		ReactionType type = ReactionType.valueOf(reactionDTO.getType().toUpperCase());
+		Reaction.ReactionType type = Reaction.ReactionType.valueOf(reactionDTO.getType().toUpperCase());
 
 		Optional<User> userOpt = this.userRepository.findByAlias(reactionDTO.getAlias());
 		Optional<Comment> commentOpt = commentRepository.findById(commentId);

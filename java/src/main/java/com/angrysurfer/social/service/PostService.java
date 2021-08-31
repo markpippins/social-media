@@ -1,13 +1,12 @@
 package com.angrysurfer.social.service;
 
-import com.angrysurfer.social.ResourceNotFoundException;
+import com.angrysurfer.ResourceNotFoundException;
 import com.angrysurfer.social.dto.PostDTO;
 import com.angrysurfer.social.dto.PostStatDTO;
 import com.angrysurfer.social.dto.ReactionDTO;
 import com.angrysurfer.social.model.Edit;
 import com.angrysurfer.social.model.Post;
 import com.angrysurfer.social.model.Reaction;
-import com.angrysurfer.social.model.Reaction.ReactionType;
 import com.angrysurfer.social.model.User;
 import com.angrysurfer.social.repository.EditRepository;
 import com.angrysurfer.social.repository.PostRepository;
@@ -47,7 +46,7 @@ public class PostService {
 	}
 
 	public PostDTO findById(Long postId) throws ResourceNotFoundException {
-		Optional<Post> result = postRepository.findById(postId);
+		Optional< Post > result = postRepository.findById(postId);
 		if (result.isPresent())
 			return new PostDTO(result.get());
 
@@ -160,9 +159,9 @@ public class PostService {
 
 	public ReactionDTO addReaction(Long postId, ReactionDTO reactionDTO) throws ResourceNotFoundException {
 
-		ReactionType type = ReactionType.valueOf(reactionDTO.getType().toUpperCase());
-		Optional<User> userOpt = this.userRepository.findByAlias(reactionDTO.getAlias());
-		Optional<Post> postOpt = postRepository.findById(postId);
+		Reaction.ReactionType type    = Reaction.ReactionType.valueOf(reactionDTO.getType().toUpperCase());
+		Optional<User>        userOpt = this.userRepository.findByAlias(reactionDTO.getAlias());
+		Optional<Post>        postOpt = postRepository.findById(postId);
 
 		if (postOpt.isPresent() && userOpt.isPresent()) {
 			Post post = postOpt.get();

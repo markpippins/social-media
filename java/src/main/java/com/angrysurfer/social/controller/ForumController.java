@@ -1,6 +1,6 @@
 package com.angrysurfer.social.controller;
 
-import com.angrysurfer.social.ResourceNotFoundException;
+import com.angrysurfer.ResourceNotFoundException;
 import com.angrysurfer.social.dto.ForumDTO;
 import com.angrysurfer.social.service.ForumService;
 import org.springframework.beans.factory.annotation.Autowired;
